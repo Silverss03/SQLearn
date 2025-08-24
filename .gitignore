@@ -1,0 +1,78 @@
+# React Native & Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+
+# Metro / Babel / Cache
+.expo/
+.expo-shared/
+dist/
+tmp/
+temp/
+*.tmp
+*.temp
+*.log
+*.lock
+*.bak
+*.cache
+.cache/
+.expo-web/
+.expo-dev/
+
+# Android
+android/.gradle/
+android/app/build/
+android/build/
+android/local.properties
+android/keystores/
+*.iml
+*.apk
+*.aar
+*.dex
+*.class
+*.jar
+*.so
+*.out
+*.hprof
+
+# Firebase / Google Services
+android/app/google-services.json
+ios/Runner/GoogleService-Info.plist
+
+# iOS
+ios/Pods/
+ios/build/
+*.mode1v3
+*.mode2v3
+*.perspectivev3
+*.pbxuser
+*.xcuserstate
+*.xcworkspace
+!default.xcworkspace
+DerivedData/
+*.xcuserdata
+
+# macOS / Xcode
+*.DS_Store
+xcuserdata/
+*.xccheckout
+*.moved-aside
+*.xcscmblueprint
+
+# VSCode / JetBrains IDE
+.vscode/
+.idea/
+*.swp
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# Others
+coverage/
+*.tgz
+*.tar.gz
+*.zip
