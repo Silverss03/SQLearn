@@ -37,7 +37,7 @@ const useCallPagingAPI = <T, E>(
 
     const page = useRef(1);
 
-    const callApi = useCallback( async (params: E & P, isRefresh?: boolean) => {
+    const callApi = useCallback(async (params: E & P, isRefresh?: boolean) => {
         try {
             setLoading(true);
             onPreRun && onPreRun();

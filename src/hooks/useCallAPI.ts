@@ -28,7 +28,7 @@ const useCallAPI = <T, E>(
     const [refreshing, setRefreshing] = useState(false);
     const [data, setData] = useState<T>();
 
-    const doCall = useCallback( async (params?: E, isRefresh?: boolean) => {
+    const doCall = useCallback(async (params?: E, isRefresh?: boolean) => {
         try {
             setLoading(true);
             onPreRun && onPreRun();

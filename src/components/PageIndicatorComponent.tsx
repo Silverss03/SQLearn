@@ -89,7 +89,7 @@ const PageIndicatorComponent = forwardRef<any, IProps>(({ totalPage, onSelectPag
                 </TextComponent>
             </TouchableComponent>
 
-            <ThreeDotIcon fill={'#6F6F6F'}/>
+            <ThreeDotIcon fill={'#6F6F6F'} />
 
             <TouchableComponent
                 onPress={selectPage(totalPage - 1)}
