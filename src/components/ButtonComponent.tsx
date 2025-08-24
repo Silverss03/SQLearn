@@ -43,26 +43,26 @@ const ButtonComponent: FC<IProps> = ({ title, style, disableStyle, loading, load
             {...rest}
         >
             {loading ? (
-                    <ActivityIndicator color={loadingColor || themeColors.color_loading_indicator} />
-                ) : (
-                    <>
-                        {leftIcon && (
-                            <View
-                                style={styles.leftIcon}
-                            >
-                                {leftIcon}
-                            </View>
-                        )}
-                        <TextComponent style={StyleSheet.flatten([styles.textButton, { color: themeColors.color_button_text }, styleTitle, disabled && (disableStyle || { color: themeColors.color_button_text, backgroundColor: themeColors.color_button_disable_default })])}>{title}</TextComponent>
-                        {rightIcon && (
-                            <View
-                                style={styles.rightIcon}
-                            >
-                                {rightIcon}
-                            </View>
-                        )}
-                    </>
-                )}
+                <ActivityIndicator color={loadingColor || themeColors.color_loading_indicator} />
+            ) : (
+                <>
+                    {leftIcon && (
+                        <View
+                            style={styles.leftIcon}
+                        >
+                            {leftIcon}
+                        </View>
+                    )}
+                    <TextComponent style={StyleSheet.flatten([styles.textButton, { color: themeColors.color_button_text }, styleTitle, disabled && (disableStyle || { color: themeColors.color_button_text, backgroundColor: themeColors.color_button_disable_default })])}>{title}</TextComponent>
+                    {rightIcon && (
+                        <View
+                            style={styles.rightIcon}
+                        >
+                            {rightIcon}
+                        </View>
+                    )}
+                </>
+            )}
         </TouchableComponent>
     );
 };

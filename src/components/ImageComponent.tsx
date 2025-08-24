@@ -51,31 +51,31 @@ const ImageComponent = (props: ImageComponentProps) => {
     }, [defaultImage, source]);
 
     const handleOnLoad = useCallback(
-            (e: OnLoadEvent) => {
-                const { transition, onLoad } = props;
+        (e: OnLoadEvent) => {
+            const { transition, onLoad } = props;
 
-                if (!transition) {
-                    placeholderOpacity.setValue(0);
-                    return;
-                }
+            if (!transition) {
+                placeholderOpacity.setValue(0);
+                return;
+            }
 
-                const minimumWait = 100;
-                const staggerNonce = 200 * Math.random();
+            const minimumWait = 100;
+            const staggerNonce = 200 * Math.random();
 
-                debounce(
-                        () => {
-                            Animated.timing(placeholderOpacity, {
-                                toValue: 0,
-                                duration: 350,
-                                useNativeDriver: IS_ANDROID ? false : true,
-                            }).start();
-                        },
+            debounce(
+                () => {
+                    Animated.timing(placeholderOpacity, {
+                        toValue: 0,
+                        duration: 350,
+                        useNativeDriver: IS_ANDROID ? false : true,
+                    }).start();
+                },
                 IS_ANDROID ? 0 : Math.floor(minimumWait + staggerNonce),
-                )();
+            )();
 
-                onLoad && onLoad(e);
-            },
-            [placeholderOpacity, props],
+            onLoad && onLoad(e);
+        },
+        [placeholderOpacity, props],
     );
 
     const handleOnLoadEnd = useCallback(() => {

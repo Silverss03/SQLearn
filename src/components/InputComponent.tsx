@@ -88,13 +88,13 @@ const InputComponent = forwardRef<TextInput, InputComponentProps>(({ containerSt
                 <EyeSlashIcon
                     width={Dimens.H_22}
                     height={Dimens.H_22}
-                    fill={ (eyeColor || themeColors.color_text)}
+                    fill={(eyeColor || themeColors.color_text)}
                 />
             ) : (
                 <EyeIcon
                     width={Dimens.H_22}
                     height={Dimens.H_22}
-                    fill={ (eyeColor || themeColors.color_text)}
+                    fill={(eyeColor || themeColors.color_text)}
                 />
             ));
         } else {
