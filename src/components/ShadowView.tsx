@@ -45,7 +45,7 @@ const ShadowView: FC<ShadowProps> = ({ disabledShadow, style, ...props }) => {
                     opacity: 1,
                 }),
                 styleObj,
-                { shadowRadius: IS_ANDROID ? shadowRadius : shadowRadius / 2  },
+                { shadowRadius: IS_ANDROID ? shadowRadius : shadowRadius / 2 },
             ]}
         >
             {props.children}

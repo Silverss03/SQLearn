@@ -7,4 +7,4 @@ export type RootStackParamList = {
     };
 };
 
-export type PokemonDetailScreenProps = RouteProp<RootStackParamList,'PokemonDetailScreen'>;
+export type PokemonDetailScreenProps = RouteProp<RootStackParamList, 'PokemonDetailScreen'>;

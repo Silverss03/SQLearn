@@ -5,7 +5,7 @@ import Svg, {
     SvgProps,
 } from 'react-native-svg';
 
-const           SVGComponent = (props: SvgProps) => (
+const SVGComponent = (props: SvgProps) => (
     <Svg
         width={props.width || 24}
         height={props.height || 24}

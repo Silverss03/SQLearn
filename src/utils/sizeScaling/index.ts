@@ -31,7 +31,7 @@ export const fontScaleAndroid = (fontSize: number, width: number, height: number
     return Math.round(heightPercent + 1);
 };
 
-export const fontScale = (fontSize: number, screenWidth: number, screenHeight: number) => IS_ANDROID ?  fontScaleAndroid(fontSize, screenWidth, screenHeight) : fontScaleIOS(fontSize, screenWidth, screenHeight);
+export const fontScale = (fontSize: number, screenWidth: number, screenHeight: number) => IS_ANDROID ? fontScaleAndroid(fontSize, screenWidth, screenHeight) : fontScaleIOS(fontSize, screenWidth, screenHeight);
 
 export const radiusScale = (radius: number, screenWidth: number, screenHeight: number) => {
     const ratio = (metricsNumber(screenWidth, screenHeight) + pixelDensity) / 10;

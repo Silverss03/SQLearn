@@ -39,11 +39,11 @@ const ImageComponent = (props: ImageComponentProps) => {
 
     const getImage = useCallback(() => {
         if (!isEmptyOrUndefined(source?.uri)) {
-            return  source;
+            return source;
         }
 
         if (typeof source === 'number') {
-            return  source;
+            return source;
         }
 
         return defaultImage;

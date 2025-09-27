@@ -321,7 +321,7 @@ export type DimensType = {
 }
 
 const useDimens = (type = 'window'): DimensType => {
-    const { screen, window  } = useDimensions();
+    const { screen, window } = useDimensions();
 
     let width = window.width;
     let height = window.height + (IS_ANDROID ? getStatusBarHeight() : 0);
@@ -556,27 +556,27 @@ const useDimens = (type = 'window'): DimensType => {
         H_97: verticalScale(97, height),
         H_98: verticalScale(98, height),
         H_99: verticalScale(99, height),
-        H_100:verticalScale(100, height),
-        H_106:verticalScale(106, height),
-        H_110:verticalScale(110, height),
-        H_120:verticalScale(120, height),
-        H_124:verticalScale(124, height),
-        H_127:verticalScale(127, height),
-        H_128:verticalScale(128, height),
-        H_130:verticalScale(130, height),
-        H_138:verticalScale(138, height),
-        H_140:verticalScale(140, height),
-        H_144:verticalScale(144, height),
-        H_150:verticalScale(150, height),
-        H_160:verticalScale(160, height),
-        H_180:verticalScale(180, height),
-        H_186:verticalScale(186, height),
-        H_199:verticalScale(199, height),
-        H_200:verticalScale(200, height),
-        H_206:verticalScale(206, height),
-        H_216:verticalScale(216, height),
-        H_220:verticalScale(220, height),
-        H_999:verticalScale(999, height),
+        H_100: verticalScale(100, height),
+        H_106: verticalScale(106, height),
+        H_110: verticalScale(110, height),
+        H_120: verticalScale(120, height),
+        H_124: verticalScale(124, height),
+        H_127: verticalScale(127, height),
+        H_128: verticalScale(128, height),
+        H_130: verticalScale(130, height),
+        H_138: verticalScale(138, height),
+        H_140: verticalScale(140, height),
+        H_144: verticalScale(144, height),
+        H_150: verticalScale(150, height),
+        H_160: verticalScale(160, height),
+        H_180: verticalScale(180, height),
+        H_186: verticalScale(186, height),
+        H_199: verticalScale(199, height),
+        H_200: verticalScale(200, height),
+        H_206: verticalScale(206, height),
+        H_216: verticalScale(216, height),
+        H_220: verticalScale(220, height),
+        H_999: verticalScale(999, height),
 
         FONT_30: fontScale(30, width, height),
         FONT_28: fontScale(28, width, height),
@@ -631,7 +631,7 @@ const useDimens = (type = 'window'): DimensType => {
         },
         DEFAULT_HIT_SLOP_SMALL: {
             left: verticalScale(4, height),
-            top:verticalScale(4, height),
+            top: verticalScale(4, height),
             right: verticalScale(4, height),
             bottom: verticalScale(4, height),
         }

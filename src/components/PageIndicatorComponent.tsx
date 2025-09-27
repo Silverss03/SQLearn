@@ -134,7 +134,7 @@ const PageIndicatorComponent = forwardRef<any, IProps>(({ totalPage, onSelectPag
                 />
             </TouchableComponent>
 
-            {totalPage > 5 ? renderView() :  renderView5()}
+            {totalPage > 5 ? renderView() : renderView5()}
 
             <TouchableComponent
                 disabled={currentPage >= totalPage}
@@ -159,7 +159,7 @@ const stylesF = (Dimens: DimensType) => StyleSheet.create({
         textAlign: 'center',
     },
     text: {
-        color:'#6F6F6F',
+        color: '#6F6F6F',
         textAlign: 'center',
     },
     homeContainer: {

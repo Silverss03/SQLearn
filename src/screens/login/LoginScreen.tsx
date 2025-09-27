@@ -1,7 +1,8 @@
 import React, {
     memo,
-    useMemo,
     useState,
+    useMemo,
+    useCallback,
 } from 'react';
 
 import {
@@ -13,53 +14,115 @@ import {
 import TextComponent from '@src/components/TextComponent';
 import useDimens, { DimensType } from '@src/hooks/useDimens';
 import useThemeColors from '@src/themes/useThemeColors';
-import CardComponent from '@src/components/CardComponent';
-import ImageComponent from '@src/components/ImageComponent';
-import { AvatarIcon, TabHomeIcon } from '@src/assets/svg';
-import { assign, set } from 'lodash';
 import InputComponent from '@src/components/InputComponent';
 import ButtonComponent from '@src/components/ButtonComponent';
-import { useEffectOnce } from 'react-use';
 import useCallAPI from '@src/hooks/useCallAPI';
 import { loginService } from '@src/network/services/authServices';
-import { handleLogin } from '@src/network/util/authUtility';
-import DialogComponent from '@src/components/DialogComponent';
-import { EMAIL_REGEX, MIN_PASSWORD_LENGTH } from '@src/configs/constants';
 import { LoginImage } from '@src/assets/images';
 import TouchableComponent from '@src/components/TouchableComponent';
-
-type key = 'email' | 'password'
+import { useTranslation } from 'react-i18next';
+import { useAppDispatch } from '@src/hooks';
+import { validateEmail } from '@src/utils';
 
 const LoginScreen = () => {
     const Dimens = useDimens();
-    const styles = stylesF(Dimens);
+    const { t } = useTranslation();
+    const themeColors = useThemeColors();
+    const styles = stylesF(Dimens, themeColors);
+    const dispatch = useAppDispatch();
 
-    const { themeColors } = useThemeColors();
-    const [userInfo, setUserInfo] = useState({ email: '', password: '' })
+    const [email, setEmail] = useState(__DEV__ ? 'john2@example.com' : '');
+    const [password, setPassword] = useState(__DEV__ ? '123@12345' : '');
+    const [emailErrorMessage, setEmailErrorMessage] = useState('');
+    const [passwordErrorMessage, setPasswordErrorMessage] = useState('');
+    const [submitAttempted, setSubmitAttempted] = useState(false);
+    const [forceErrorStyle, setForceErrorStyle] = useState(false);
 
-    const { callApi: loginApi, data, loading } = useCallAPI(
-        loginService,
+    const isFormComplete = useMemo(() =>
+        email.trim() !== '' && password.trim() !== '', [email, password]);
+
+    const validatePassword = useCallback((password: string) => {
+        if (!password) return t('empty_password');
+        if (password.length < 8) return t('wrong_password');
+        return '';
+    }, [t]);
+
+    const handleEmailChange = useCallback((text: string) => {
+        setEmail(text);
+        if (submitAttempted) {
+            setEmailErrorMessage('');
+            setForceErrorStyle(false);
+        }
+    }, [submitAttempted]);
+
+    const handlePasswordChange = useCallback((text: string) => {
+        setPassword(text.replace(/\s/g, ''));
+        if (submitAttempted) {
+            setPasswordErrorMessage('');
+            setForceErrorStyle(false);
+        }
+    }, [submitAttempted]);
+
+    const { callApi: login } = useCallAPI(
+            loginService,
+            undefined,
+            useCallback(( data : AuthType.User) => {
+                dispatch(StorageActions.completeFirstLaunch());
+                setHeaderToken(data.access_token);
+                dispatch(StorageActions.setStorageUserData(data));
+            }, [dispatch]),
+            undefined,
+            false
     );
 
-    const [isValid, setIsValid] = useState({ email: false, password: false });
-    const [touched, setTouched] = useState({ email: false, password: false });
-    const onLogin = async () => {
-        if (loading) return;
-        await loginApi(userInfo)
-        if (data) {
-            handleLogin(data)
+    const handleLogin = useCallback(async () => {
+        if (isFormComplete) {
+            try {
+                const response = await login({ email, password });
+                if (!response.success) {
+                    setPasswordErrorMessage(response.message);
+                    setForceErrorStyle(true);
+                }
+            } catch (error) {
+                console.error('Login error:', error);
+            }
         }
-    }
+    }, [isFormComplete, login, email, password]);
 
+    const onLogin = useCallback(async () => {
+        console.log('onLogin');
+        setSubmitAttempted(true);
 
-    const handleChangeText = (key: string, text: string) => {
-        setUserInfo(prev => ({ ...prev, [key]: text }))
-        if (key === 'email') {
-            setIsValid(prev => ({ ...prev, email: EMAIL_REGEX.test(text) }))
+        const isEmailValid = validateEmail(email);
+        const passwordError = validatePassword(password);
+        console.log('isEmailValid', isEmailValid);
+
+        if (!email) {
+            setEmailErrorMessage(t('empty_email'));
+            setForceErrorStyle(true);
             return;
         }
-        setIsValid(prev => ({ ...prev, password: text.length >= MIN_PASSWORD_LENGTH }))
-    }
+        if (!isEmailValid) {
+            setEmailErrorMessage(t('invalid_email'));
+            setForceErrorStyle(true);
+            return;
+        }
+        if (passwordError) {
+            setPasswordErrorMessage(passwordError);
+            setForceErrorStyle(true);
+            return;
+        }
+
+        setPasswordErrorMessage('');
+        setEmailErrorMessage('');
+        setForceErrorStyle(false);
+
+        handleLogin();
+    }, [email, handleLogin, password, t, validatePassword]);
+
+    // const handleForgetPasswordPress = () => {
+    //     NavigationService.navigate(SCREENS.FILL_EMAIL_SCREEN);
+    // };
 
     return (
         <View style={styles.loginContainer}>
@@ -68,32 +131,34 @@ const LoginScreen = () => {
                 style={{ width: Dimens.W_297, height: Dimens.W_297 }}
                 source={LoginImage}
             />
+
             <InputComponent
+                error={emailErrorMessage}
                 containerStyle={styles.input}
-                placeholder="Email"
-                rightIcon
-                value={userInfo.email}
-                onChangeText={(text) => handleChangeText('email', text)}
-                onBlur={() => setTouched({ ...touched, email: true })}
-                error={!isValid.email && touched.email ? 'Email không hợp lệ.' : null}
-                borderInput={themeColors.color_primary}
+                value={email}
+                onChangeText={handleEmailChange}
+                inputBorderRadius={Dimens.RADIUS_32}
+                placeholder='Email'
+                keyboardType='email-address'
+                autoCapitalize='none'
+                forceErrorStyle={forceErrorStyle}
             />
 
             <InputComponent
+                error={passwordErrorMessage}
                 containerStyle={styles.input}
-                placeholder="Mật khẩu"
-                rightIcon
-                value={userInfo.password}
-                onChangeText={(text) => handleChangeText('password', text)}
-                onBlur={() => setTouched({ ...touched, password: true })}
-                error={!isValid.password && touched.password ? 'Mật khẩu phải có ít nhất 6 ký tự.' : null}
-                borderInput={themeColors.color_primary}
-
+                //style={styles.inputStyle}
+                value={password}
+                onChangeText={handlePasswordChange}
+                inputBorderRadius={Dimens.RADIUS_32}
+                placeholder={t('password_holder')}
+                secureTextEntry
+                forceErrorStyle={forceErrorStyle}
             />
 
             <TouchableComponent
                 onPress={() => { }}
-                disabled={loading}
+                // disabled={loading}
                 style={{ alignSelf: 'flex-end', marginTop: Dimens.H_8, marginBottom: Dimens.H_24, backgroundColor: 'transparent' }}
             >
                 <TextComponent style={{ color: themeColors.color_primary }} >Quên mật khẩu</TextComponent>
@@ -101,7 +166,7 @@ const LoginScreen = () => {
             <ButtonComponent
                 title='Đăng nhập'
                 onPress={onLogin}
-                disabled={loading || !isValid.email || !isValid.password}
+                // disabled={loading || !isValid.email || !isValid.password}
                 style={{ marginTop: Dimens.H_8, marginBottom: Dimens.H_24, width: '100%' }}
             />
 

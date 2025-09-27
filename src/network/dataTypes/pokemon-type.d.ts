@@ -1,4 +1,4 @@
-/* eslint-disable no-use-before-define */
+
 export declare namespace PokemonType {
     export interface PokemonListItemModel {
         name: string

@@ -8,7 +8,7 @@ export const EMAIL_REGEX = /^[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-zA-Z0-9!#$%&
 export const MIN_PASSWORD_LENGTH = 6;
 export const MAX_PHONE_LENGTH = 18;
 export const MIN_PHONE_LENGTH = 11;
-export const PHONE_MASK = ['+', /\d/, /\d/, /\d/, /\d/, /\d/,'/', /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/];
+export const PHONE_MASK = ['+', /\d/, /\d/, /\d/, /\d/, /\d/, '/', /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/];
 
 export const SOCIAL_PROVIDER = {
     FACEBOOK: 'facebook',

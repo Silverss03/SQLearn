@@ -18,7 +18,7 @@ const SplashScreen = () => {
 
     const renderLogo = useMemo(() => (
         <Image
-            style={{ width:Dimens.H_88, height: Dimens.H_88 }}
+            style={{ width: Dimens.H_88, height: Dimens.H_88 }}
             source={ic_launcher}
         />
     ), [Dimens.H_88]);

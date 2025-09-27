@@ -79,7 +79,7 @@ const useCallPagingAPI = <T, E>(
 
             dispatch(LoadingActions.showGlobalLoading(false));
 
-            const errorMessage = error?.response?.data?.error ||  error?.response?.data?.message || error?.message;
+            const errorMessage = error?.response?.data?.error || error?.response?.data?.message || error?.message;
             const errorStatus = error?.response?.status;
 
             onError && onError(errorStatus, errorMessage);

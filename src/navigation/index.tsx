@@ -129,7 +129,6 @@ const AppNavigation = () => {
         );
     }, [loading, isUserLoggedIn]);
 
-
     return (
         <NavigationContainer
             ref={ref}

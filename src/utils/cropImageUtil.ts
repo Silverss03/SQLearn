@@ -78,7 +78,7 @@ const resizeImage = async (imageObj: Image, width: number, height: number) => {
             }));
 };
 
-export const openAndCropImage = async (imageFrom: number , width: number, height: number): Promise<CropImageResponse> => {
+export const openAndCropImage = async (imageFrom: number, width: number, height: number): Promise<CropImageResponse> => {
     let response;
 
     if (imageFrom === IMAGE_SOURCE.CAMERA) {

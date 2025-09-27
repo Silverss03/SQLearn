@@ -1,4 +1,4 @@
-/* eslint-disable react-native/no-inline-styles */
+
 import React, {
     FC,
     memo,
@@ -48,7 +48,7 @@ export interface ImageProps extends FastImageProps, PressableProps {
     /** Perform fade transition on image load. */
     transitionDuration?: number;
 
-    pressableProps?:  StyleProp<TouchableOpacityProps>
+    pressableProps?: StyleProp<TouchableOpacityProps>
 }
 
 export const ImageLoader: FC<ImageProps> = ({

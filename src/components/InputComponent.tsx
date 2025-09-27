@@ -72,7 +72,7 @@ const InputComponent = forwardRef<TextInput, InputComponentProps>(({ containerSt
     const [mIconRight, setIconRight] = useState(rightIcon);
 
     const onRightIconPress = useCallback(() => {
-        rightIconPress &&  rightIconPress();
+        rightIconPress && rightIconPress();
         if (secureTextEntry) {
             setIsTextPassWord(!isTextPassWord);
         }

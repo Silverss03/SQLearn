@@ -21,34 +21,34 @@ export const convertFontWeightToFontFamily = (style: any) => {
         let fFamily = '';
         switch (fontWeight) {
             case '100':
-                fFamily =  'SFProDisplay-Ultralight';
+                fFamily = 'SFProDisplay-Ultralight';
                 break;
             case '200':
-                fFamily =  'SFProDisplay-Thin';
+                fFamily = 'SFProDisplay-Thin';
                 break;
             case '300':
-                fFamily =  'SFProDisplay-Light';
+                fFamily = 'SFProDisplay-Light';
                 break;
             case '400':
-                fFamily =  'SFProDisplay-Regular';
+                fFamily = 'SFProDisplay-Regular';
                 break;
             case '500':
-                fFamily =  'SFProDisplay-Medium';
+                fFamily = 'SFProDisplay-Medium';
                 break;
             case '600':
-                fFamily =  'SFProDisplay-Semibold';
+                fFamily = 'SFProDisplay-Semibold';
                 break;
             case '700':
-                fFamily =  'SFProDisplay-Bold';
+                fFamily = 'SFProDisplay-Bold';
                 break;
             case '800':
-                fFamily =  'SFProDisplay-Heavy';
+                fFamily = 'SFProDisplay-Heavy';
                 break;
             case '900':
-                fFamily =  'SFProDisplay-Black';
+                fFamily = 'SFProDisplay-Black';
                 break;
             default:
-                fFamily =  'SFProDisplay-Regular';
+                fFamily = 'SFProDisplay-Regular';
                 break;
         }
         return fFamily + (fontStyle === 'italic' ? 'Italic' : '');
