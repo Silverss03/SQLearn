@@ -41,6 +41,7 @@ export interface InputComponentProps extends TextInputProps {
     style?: TextStyle;
     containerStyle?: ViewStyle;
     inputContainerStyle?: ViewStyle;
+    rightIconContainerStyle?: ViewStyle;
     leftIconContainerStyle?: ViewStyle;
     rightIcon?: ReactNode;
     leftIcon?: ReactNode;
@@ -57,10 +58,11 @@ export interface InputComponentProps extends TextInputProps {
     errorBackgroundInput?: any;
     eyeColor?: any;
     inputBorderRadius?: any;
+    forceErrorStyle?: boolean;
 }
 
-const InputComponent = forwardRef<TextInput, InputComponentProps>(({ containerStyle, style, rightIcon, leftIcon, value, placeholderTextColor, inputPress, leftIconPress, rightIconPress, secureTextEntry, error, backgroundInput, borderInput, textColorInput, errorBackgroundInput, eyeColor, inputBorderRadius, inputContainerStyle, leftIconContainerStyle, ...rest }, ref) => {
-    const { themeColors } = useThemeColors();
+const InputComponent = forwardRef<TextInput, InputComponentProps>(({ containerStyle, style, rightIcon, leftIcon, value, placeholderTextColor, inputPress, leftIconPress, rightIconPress, secureTextEntry, error, backgroundInput, borderInput, textColorInput, errorBackgroundInput, eyeColor, inputBorderRadius, inputContainerStyle, leftIconContainerStyle, rightIconContainerStyle, forceErrorStyle = false, ...rest }, ref) => {
+    const themeColors = useThemeColors();
     const Dimens = useDimens();
     const styles = stylesF(Dimens);
 
@@ -84,29 +86,28 @@ const InputComponent = forwardRef<TextInput, InputComponentProps>(({ containerSt
         if (secureTextEntry) {
             setIconRight(isTextPassWord ? (
                 <EyeSlashIcon
-                    width={Dimens.H_24}
-                    height={Dimens.H_24}
-                    fill={error ? themeColors.color_error : (eyeColor || themeColors.color_text)}
+                    width={Dimens.H_22}
+                    height={Dimens.H_22}
+                    fill={ (eyeColor || themeColors.color_text)}
                 />
             ) : (
                 <EyeIcon
-                    width={Dimens.H_24}
-                    height={Dimens.H_24}
-                    fill={error ? themeColors.color_error : (eyeColor || themeColors.color_text)}
+                    width={Dimens.H_22}
+                    height={Dimens.H_22}
+                    fill={ (eyeColor || themeColors.color_text)}
                 />
             ));
-
         } else {
             setIconRight(rightIcon);
         }
-    }, [secureTextEntry, rightIcon, isTextPassWord, value, themeColors.color_text, eyeColor, error, themeColors.color_error, Dimens.H_24]);
+    }, [Dimens.H_22, error, eyeColor, isTextPassWord, rightIcon, secureTextEntry, themeColors.color_error, themeColors.color_text, forceErrorStyle]);
 
     return (
         <View
             style={{
                 ...styles.inputWrapper,
                 ...containerStyle,
-                marginBottom: error ? containerStyle?.marginBottom ? (Number(containerStyle.marginBottom) + Dimens.H_16) : Dimens.H_16 : containerStyle?.marginBottom
+                marginBottom: error ? (containerStyle?.marginBottom ? (Number(containerStyle.marginBottom) + Dimens.H_16) : Dimens.H_16) : containerStyle?.marginBottom
             }}
         >
             <TouchableComponent
@@ -117,8 +118,8 @@ const InputComponent = forwardRef<TextInput, InputComponentProps>(({ containerSt
                     ...styles.inputContainer,
                     ...inputContainerStyle,
                     borderRadius: inputBorderRadius || Dimens.RADIUS_10,
-                    borderColor: error ? themeColors.color_input_border_error : (borderInput || themeColors.color_input_background),
-                    backgroundColor: error ? (errorBackgroundInput || themeColors.color_input_error_background) : (backgroundInput || themeColors.color_input_background)
+                    borderColor: error || forceErrorStyle ? themeColors.color_input_border_error : (borderInput || themeColors.color_input_background),
+                    backgroundColor: (backgroundInput || themeColors.color_input_background)
                 }}
             >
                 {leftIcon && (
@@ -138,12 +139,12 @@ const InputComponent = forwardRef<TextInput, InputComponentProps>(({ containerSt
                     style={[
                         styles.inputStyle,
                         style,
-                        { color: error ? themeColors.color_input_border_error : (textColorInput || themeColors.color_text) },
+                        { color: (textColorInput || themeColors.color_text) },
                         { fontFamily: convertFontWeightToFontFamily(style) },
                         IS_ANDROID && { fontStyle: 'normal', fontWeight: 'normal' }
                     ]}
                     allowFontScaling={false}
-                    placeholderTextColor={error ? themeColors.color_input_border_error : (placeholderTextColor || themeColors.color_input_place_holder)}
+                    placeholderTextColor={(placeholderTextColor || themeColors.color_input_place_holder)}
                     secureTextEntry={isTextPassWord}
                     value={value}
                     {...rest}
@@ -153,7 +154,7 @@ const InputComponent = forwardRef<TextInput, InputComponentProps>(({ containerSt
                     <TouchableComponent
                         disabled={disableInput}
                         onPress={onRightIconPress}
-                        style={styles.rightIcon}
+                        style={[styles.rightIcon, rightIconContainerStyle]}
                         hitSlop={Dimens.DEFAULT_HIT_SLOP}
                     >
                         {mIconRight}
@@ -205,11 +206,12 @@ const stylesF = (Dimens: DimensType) => StyleSheet.create({
         paddingHorizontal: Dimens.W_10,
     },
     errorText: {
-        fontSize: Dimens.FONT_11,
+        fontSize: Dimens.FONT_12,
         color: Colors.COLOR_RED_ERROR,
         marginTop: Dimens.H_4,
         alignSelf: 'flex-start',
-        marginLeft: Dimens.W_8
+        marginLeft: Dimens.W_8,
+        fontStyle: 'italic'
     },
 });
 

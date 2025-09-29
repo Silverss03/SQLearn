@@ -4,7 +4,7 @@ import AXIOS from '@network/axios';
 import { AuthType } from '../dataTypes/auth-types';
 import { APIResponseCommon } from '../dataTypes/common-types';
 
-export const loginService = (params: { email: string; password: string }) =>
+export const loginService = (params?: { email: string; password: string; } | undefined) =>
     AXIOS.post<APIResponseCommon.ResponseCommon<AuthType.User>>(
             ApiConfigs.LOGIN,
             params,

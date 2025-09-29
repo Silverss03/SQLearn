@@ -21,7 +21,6 @@ import { loginService } from '@src/network/services/authServices';
 import { LoginImage } from '@src/assets/images';
 import TouchableComponent from '@src/components/TouchableComponent';
 import { useTranslation } from 'react-i18next';
-import { useAppDispatch } from '@src/hooks';
 import { validateEmail } from '@src/utils';
 
 const LoginScreen = () => {
@@ -29,7 +28,6 @@ const LoginScreen = () => {
     const { t } = useTranslation();
     const themeColors = useThemeColors();
     const styles = stylesF(Dimens, themeColors);
-    const dispatch = useAppDispatch();
 
     const [email, setEmail] = useState(__DEV__ ? 'john2@example.com' : '');
     const [password, setPassword] = useState(__DEV__ ? '123@12345' : '');
@@ -66,13 +64,12 @@ const LoginScreen = () => {
     const { callApi: login } = useCallAPI(
             loginService,
             undefined,
-            useCallback(( data : AuthType.User) => {
-                dispatch(StorageActions.completeFirstLaunch());
-                setHeaderToken(data.access_token);
-                dispatch(StorageActions.setStorageUserData(data));
-            }, [dispatch]),
+            // useCallback(( data : AuthType.User) => {
+            //     dispatch(StorageActions.completeFirstLaunch());
+            //     setHeaderToken(data.access_token);
+            //     dispatch(StorageActions.setStorageUserData(data));
+            // }, [dispatch]),
             undefined,
-            false
     );
 
     const handleLogin = useCallback(async () => {
@@ -95,7 +92,6 @@ const LoginScreen = () => {
 
         const isEmailValid = validateEmail(email);
         const passwordError = validatePassword(password);
-        console.log('isEmailValid', isEmailValid);
 
         if (!email) {
             setEmailErrorMessage(t('empty_email'));
@@ -159,9 +155,9 @@ const LoginScreen = () => {
             <TouchableComponent
                 onPress={() => { }}
                 // disabled={loading}
-                style={{ alignSelf: 'flex-end', marginTop: Dimens.H_8, marginBottom: Dimens.H_24, backgroundColor: 'transparent' }}
+                style={styles.forgetPasswordContainer}
             >
-                <TextComponent style={{ color: themeColors.color_primary }} >Quên mật khẩu</TextComponent>
+                <TextComponent style={styles.forgetPasswordText} >Quên mật khẩu</TextComponent>
             </TouchableComponent>
             <ButtonComponent
                 title='Đăng nhập'
@@ -176,7 +172,7 @@ const LoginScreen = () => {
 
 export default memo(LoginScreen);
 
-const stylesF = (Dimens: DimensType) => StyleSheet.create({
+const stylesF = (Dimens: DimensType, themeColors: ReturnType<typeof useThemeColors>) => StyleSheet.create({
 
     image: { width: Dimens.W_336, height: Dimens.W_336 },
     input: {
@@ -191,5 +187,16 @@ const stylesF = (Dimens: DimensType) => StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
     },
+
+    forgetPasswordContainer: {
+        alignSelf: 'flex-end',
+        marginTop: Dimens.H_8,
+        marginBottom: Dimens.H_24,
+        backgroundColor: 'transparent'
+    },
+
+    forgetPasswordText: {
+        color: themeColors.color_primary
+    }
 
 });

@@ -95,18 +95,16 @@ const Colors = {
 
 const useThemeColors = () => {
     const colorScheme = useColorScheme() || 'light';
-    const isDarkMode = colorScheme === 'dark';
 
     const appColors = useMemo(() => {
-        let themeColors = Colors[colorScheme];
+        const themeColors = Colors[colorScheme];
 
-        return {
-            themeColors,
-            isDarkMode
-        };
-    }, [colorScheme, isDarkMode]);
+        return themeColors;
+    }, [colorScheme]);
 
     return appColors;
 };
 
 export default useThemeColors;
+
+export type ThemeColorType = ReturnType<typeof useThemeColors>;
