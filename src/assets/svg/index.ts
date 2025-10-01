@@ -12,6 +12,8 @@ import ArrowLeftLightIcon from './ArrowLeftLightIcon';
 import ArrowRightLightIcon from './ArrowRightLightIcon';
 import ThreeDotIcon from './ThreeDotIcon';
 import ArrowRightIcon from './ArrowRightIcon';
+import AvatarIcon from './AvatarIcon';
+import ChapterIcon from './ChapterIcon';
 
 export {
     EyeIcon,
@@ -28,4 +30,6 @@ export {
     ArrowLeftLightIcon,
     ThreeDotIcon,
     ArrowRightIcon,
+    AvatarIcon,
+    ChapterIcon,
 };
