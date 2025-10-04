@@ -2,20 +2,20 @@ import i18next, { Resource } from 'i18next';
 import { initReactI18next } from 'react-i18next';
 
 import en from './locales/en.json';
-import nl from './locales/nl.json';
+import vi from './locales/vi.json';
 
 const resources: Resource = {
     en: {
         translation: en
     },
-    nl: {
-        translation: nl
+    vi: {
+        translation: vi
     },
 };
 
 i18next.use(initReactI18next).init({
-    lng: 'en',
-    fallbackLng: 'en',
+    lng: 'vi',
+    fallbackLng: 'vi',
     debug: false,
     resources: resources,
     compatibilityJSON: 'v3',
@@ -29,4 +29,4 @@ const I18nApp = i18next;
 
 export default I18nApp;
 
-export const DEFAULT_LANGUAGE = 'en';
+export const DEFAULT_LANGUAGE = 'vi';
