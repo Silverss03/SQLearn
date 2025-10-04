@@ -1,0 +1,19 @@
+account:
+  account_id: "948862615142"
+pipeline:
+  source:
+    git_branch: develop
+  build:
+    environment_variables:
+      VITE_KERNEL_BACKEND_BASE_URL: https://www.dev.mkplacedev.jp/api/kernel
+      VITE_API_CONNECTION_TIMEOUT: "10000"
+      VITE_ENV_NAME: "dev"
+      VITE_ZENDESK_BASE_URL: ""
+      BUILD_MODE: "dev"
+cdn:
+  route53:
+    exports:
+      public_hosted_zone: /MPShared/Route53/PublicHostedZone/Name
+  cloudfront:
+    distribution_id: E3Q6VKVHH2D3CD
+    bucket_name: mp-shared-dev-948862615142-us-east-1
