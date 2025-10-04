@@ -1,8 +1,10 @@
-import React, { FC, ReactNode } from "react";
-import { View, StyleSheet, ViewStyle } from "react-native";
+import React, { FC, ReactNode } from 'react';
+import {
+    View, StyleSheet, ViewStyle
+} from 'react-native';
 
-import useDimens, { DimensType } from "@src/hooks/useDimens";
-import useThemeColors from "@src/themes/useThemeColors";
+import useDimens, { DimensType } from '@src/hooks/useDimens';
+import useThemeColors from '@src/themes/useThemeColors';
 
 interface CardComponentProps {
     children?: ReactNode;
@@ -12,10 +14,10 @@ interface CardComponentProps {
 
 const CardComponent: FC<CardComponentProps> = ({
     children,
-    backgroundColor = "#fff",
+    backgroundColor = '#fff',
     style,
 }) => {
-    const { themeColors } = useThemeColors();
+    const themeColors = useThemeColors();
     const Dimens = useDimens();
     const styles = stylesF(Dimens);
 
@@ -34,13 +36,13 @@ const stylesF = (Dimens: DimensType) =>
             borderRadius: Dimens.RADIUS_12,
             padding: Dimens.H_16,
             marginVertical: Dimens.H_8,
-            shadowColor: "#000",
+            shadowColor: '#000',
             shadowOffset: { width: 0, height: 2 },
             shadowOpacity: 0.2,
             shadowRadius: 4,
             elevation: 4,
-            justifyContent: "center",
-            alignItems: "center",
-            flexDirection: "row",
+            justifyContent: 'center',
+            alignItems: 'center',
+            flexDirection: 'row',
         },
     });

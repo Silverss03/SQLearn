@@ -1,5 +1,7 @@
 import React, { FC } from 'react';
-import { View, StyleSheet, ViewStyle } from 'react-native';
+import {
+    View, StyleSheet, ViewStyle
+} from 'react-native';
 import Svg, { Circle } from 'react-native-svg';
 
 import useDimens, { DimensType } from '@src/hooks/useDimens';
@@ -22,7 +24,7 @@ const DonutChartComponent: FC<DonutChartProps> = ({
     progressColor,
     containerStyle
 }) => {
-    const { themeColors } = useThemeColors();
+    const themeColors = useThemeColors();
     const Dimens = useDimens();
     const styles = stylesF(Dimens);
 
@@ -31,7 +33,10 @@ const DonutChartComponent: FC<DonutChartProps> = ({
 
     return (
         <View style={[styles.container, containerStyle]}>
-            <Svg width={size} height={size}>
+            <Svg
+                width={size}
+                height={size}
+            >
                 <Circle
                     stroke={backgroundColor || '#61AE9F'}
                     fill="none"

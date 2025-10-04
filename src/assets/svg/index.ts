@@ -12,7 +12,7 @@ import ArrowLeftLightIcon from './ArrowLeftLightIcon';
 import ArrowRightLightIcon from './ArrowRightLightIcon';
 import ThreeDotIcon from './ThreeDotIcon';
 import ArrowRightIcon from './ArrowRightIcon';
-import AvatarIcon from './AvatarIcon';
+// import AvatarIcon from './AvatarIcon';
 import ChapterIcon from './ChapterIcon';
 
 export {
@@ -30,6 +30,6 @@ export {
     ArrowLeftLightIcon,
     ThreeDotIcon,
     ArrowRightIcon,
-    AvatarIcon,
+    // AvatarIcon,
     ChapterIcon,
 };

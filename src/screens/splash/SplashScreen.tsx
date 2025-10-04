@@ -14,7 +14,7 @@ const SplashScreen = () => {
     const Dimens = useDimens();
     const styles = stylesF(Dimens);
 
-    const { themeColors } = useThemeColors();
+    const themeColors = useThemeColors();
 
     const renderLogo = useMemo(() => (
         <Image

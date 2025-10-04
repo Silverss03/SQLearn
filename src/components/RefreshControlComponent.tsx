@@ -16,7 +16,7 @@ interface IProps extends RefreshControlProps, RefreshControlPropsAndroid, Refres
 }
 
 const RefreshControlComponent: FC<IProps> = ({ ...rest }) => {
-    const { themeColors } = useThemeColors();
+    const themeColors = useThemeColors();
 
     return (
         <RefreshControl

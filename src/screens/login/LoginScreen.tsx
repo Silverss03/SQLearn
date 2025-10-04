@@ -21,13 +21,18 @@ import { loginService } from '@src/network/services/authServices';
 import { LoginImage } from '@src/assets/images';
 import TouchableComponent from '@src/components/TouchableComponent';
 import { useTranslation } from 'react-i18next';
+import { setHeaderToken } from '@src/network/axios';
 import { validateEmail } from '@src/utils';
+import { useAppDispatch } from '@src/hooks';
+import { StorageActions } from '@src/redux/toolkit/actions/storageActions';
+import { AuthType } from '@src/network/dataTypes/auth-types';
 
 const LoginScreen = () => {
     const Dimens = useDimens();
     const { t } = useTranslation();
     const themeColors = useThemeColors();
     const styles = stylesF(Dimens, themeColors);
+    const dispatch = useAppDispatch();
 
     const [email, setEmail] = useState(__DEV__ ? 'john2@example.com' : '');
     const [password, setPassword] = useState(__DEV__ ? '123@12345' : '');
@@ -64,11 +69,11 @@ const LoginScreen = () => {
     const { callApi: login } = useCallAPI(
             loginService,
             undefined,
-            // useCallback(( data : AuthType.User) => {
-            //     dispatch(StorageActions.completeFirstLaunch());
-            //     setHeaderToken(data.access_token);
-            //     dispatch(StorageActions.setStorageUserData(data));
-            // }, [dispatch]),
+            useCallback(( data : AuthType.User) => {
+                // dispatch(StorageActions.completeFirstLaunch());
+                setHeaderToken(data.access_token);
+                dispatch(StorageActions.setStorageUserData(data));
+            }, [dispatch]),
             undefined,
     );
 
@@ -87,7 +92,6 @@ const LoginScreen = () => {
     }, [isFormComplete, login, email, password]);
 
     const onLogin = useCallback(async () => {
-        console.log('onLogin');
         setSubmitAttempted(true);
 
         const isEmailValid = validateEmail(email);

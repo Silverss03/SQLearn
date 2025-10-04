@@ -6,8 +6,8 @@ import { APIResponseCommon } from '../dataTypes/common-types';
 
 export const loginService = (params?: { email: string; password: string; } | undefined) =>
     AXIOS.post<APIResponseCommon.ResponseCommon<AuthType.User>>(
-        ApiConfigs.LOGIN,
-        params,
+            ApiConfigs.LOGIN,
+            params,
     );
 
 export const loginWithSocialService = (params: {
@@ -16,8 +16,8 @@ export const loginWithSocialService = (params: {
     device_token: string;
 }) =>
     AXIOS.post<APIResponseCommon.ResponseCommon<AuthType.User>>(
-        ApiConfigs.LOGIN_SOCIAL,
-        params,
+            ApiConfigs.LOGIN_SOCIAL,
+            params,
     );
 
 export const logoutService = (params: any) =>
@@ -31,13 +31,13 @@ export const registerService = (params: {
     password_confirmation: string;
 }) =>
     AXIOS.post<APIResponseCommon.ResponseCommon<AuthType.User>>(
-        ApiConfigs.REGISTER,
-        params,
+            ApiConfigs.REGISTER,
+            params,
     );
 
 export const getUserProfileService = () =>
     AXIOS.get<APIResponseCommon.ResponseCommon<AuthType.User>>(
-        ApiConfigs.PROFILE,
+            ApiConfigs.PROFILE,
     );
 
 export const updateUserProfileService = (params: {
@@ -52,14 +52,14 @@ export const updateUserProfileService = (params: {
     gender?: any;
 }) =>
     AXIOS.post<APIResponseCommon.ResponseCommon<AuthType.User>>(
-        ApiConfigs.PROFILE,
-        params,
+            ApiConfigs.PROFILE,
+            params,
     );
 
 export const forgotPasswordService = (params: { email: string }) =>
     AXIOS.post<APIResponseCommon.ResponseCommon<AuthType.User>>(
-        ApiConfigs.FORGOT_PASSWORD,
-        params,
+            ApiConfigs.FORGOT_PASSWORD,
+            params,
     );
 
 export const refreshTokenService = () => AXIOS.post(ApiConfigs.REFRESH_TOKEN);

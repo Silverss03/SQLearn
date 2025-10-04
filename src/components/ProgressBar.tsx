@@ -1,8 +1,10 @@
-import React, { FC } from "react";
-import { View, Text, StyleSheet, ViewStyle } from "react-native";
+import React, { FC } from 'react';
+import {
+    View, Text, StyleSheet, ViewStyle
+} from 'react-native';
 
-import useDimens, { DimensType } from "@src/hooks/useDimens";
-import useThemeColors from "@src/themes/useThemeColors";
+import useDimens, { DimensType } from '@src/hooks/useDimens';
+import useThemeColors from '@src/themes/useThemeColors';
 
 interface ProgressBarProps {
     progress: number; // 0 - 100
@@ -21,14 +23,14 @@ const ProgressBar: FC<ProgressBarProps> = ({
     progressColor,
     style,
 }) => {
-    const { themeColors } = useThemeColors();
+    const themeColors = useThemeColors();
     const Dimens = useDimens();
     const styles = stylesF(Dimens);
 
     const safeProgress = Math.min(Math.max(progress, 0), 100);
 
     return (
-        <View style={[{ width: width || "100%", flexDirection: 'row', alignItems: 'center' } as ViewStyle, style]}>
+        <View style={[{ width: width || '100%', flexDirection: 'row', alignItems: 'center' } as ViewStyle, style]}>
             <View style={styles.row}>
                 <Text>{safeProgress}%</Text>
             </View>
@@ -37,7 +39,7 @@ const ProgressBar: FC<ProgressBarProps> = ({
                 style={[
                     styles.background,
                     {
-                        width: width || "100%",
+                        width: width || '100%',
                         height: height || Dimens.H_8,
                         backgroundColor: backgroundColor || themeColors.color_button_disable_default,
                     } as ViewStyle,
@@ -67,7 +69,7 @@ const stylesF = (Dimens: DimensType) =>
         },
         background: {
             borderRadius: Dimens.RADIUS_8,
-            overflow: "hidden",
+            overflow: 'hidden',
         },
         progress: {
             borderRadius: Dimens.RADIUS_8,

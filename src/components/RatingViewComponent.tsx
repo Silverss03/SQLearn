@@ -23,7 +23,7 @@ export interface RatingViewComponentProps extends ViewProps {
 }
 
 const RatingViewComponent: FC<RatingViewComponentProps> = ({ style, starSize, rate = 0 }) => {
-    // const { themeColors } = useThemeColors();
+    // const themeColors= useThemeColors();
     const Dimens = useDimens();
     const styles = stylesF(Dimens);
 
