@@ -32,7 +32,7 @@ interface IProps extends TouchableOpacityProps {
 }
 
 const ButtonComponent: FC<IProps> = ({ title, style, disableStyle, loading, loadingColor, disabled, styleTitle, leftIcon, rightIcon, ...rest }) => {
-    const { themeColors } = useThemeColors();
+    const themeColors = useThemeColors();
     const Dimens = useDimens();
     const styles = stylesF(Dimens);
 

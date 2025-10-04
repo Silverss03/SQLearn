@@ -23,7 +23,7 @@ interface IProps extends TabBarProps<any> {
 }
 
 const TabBarComponent: FC<IProps> = (props) => {
-    const { themeColors } = useThemeColors();
+    const themeColors = useThemeColors();
     const Dimens = useDimens();
     const styles = stylesF(Dimens);
 

@@ -17,7 +17,7 @@ interface DialogComponentProps extends Partial<ModalProps> {
 }
 
 const DialogComponent: FC<DialogComponentProps> = ({ hideModal, containerStyle, ...rest }) => {
-    const { themeColors } = useThemeColors();
+    const themeColors = useThemeColors();
     const Dimens = useDimens();
     const styles = stylesF(Dimens);
 

@@ -16,7 +16,7 @@ const CartScreen = () => {
     const Dimens = useDimens();
     const styles = stylesF(Dimens);
 
-    const { themeColors } = useThemeColors();
+    const themeColors = useThemeColors();
 
     const renderText = useMemo(() => (
         <TextComponent

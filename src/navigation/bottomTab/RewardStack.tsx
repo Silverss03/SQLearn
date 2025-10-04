@@ -11,7 +11,7 @@ import { RootStackParamList } from '../NavigationRouteProps';
 const StackNavigator = createNativeStackNavigator<RootStackParamList>();
 
 const AwardStack = () => {
-    const { themeColors } = useThemeColors();
+    const themeColors = useThemeColors();
 
     return (
         <StackNavigator.Navigator

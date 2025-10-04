@@ -60,22 +60,22 @@ const resizeImage = async (imageObj: Image, width: number, height: number) => {
     const path = imageObj.path;
 
     return await ImageResizer.createResizedImage(
-        path,
-        width,
-        height,
-        'PNG',
-        100,
-        0)
-        .then((res) => ({ ...res, mime: imageObj.mime, name: res.name || 'image.png' }))
-        .catch(() => ({
-            width: imageObj.width,
-            height: imageObj.height,
-            name: imageObj.filename || 'image.png',
-            path: imageObj.path,
-            uri: imageObj.sourceURL,
-            size: imageObj.size,
-            mime: imageObj.mime,
-        }));
+            path,
+            width,
+            height,
+            'PNG',
+            100,
+            0)
+            .then((res) => ({ ...res, mime: imageObj.mime, name: res.name || 'image.png' }))
+            .catch(() => ({
+                width: imageObj.width,
+                height: imageObj.height,
+                name: imageObj.filename || 'image.png',
+                path: imageObj.path,
+                uri: imageObj.sourceURL,
+                size: imageObj.size,
+                mime: imageObj.mime,
+            }));
 };
 
 export const openAndCropImage = async (imageFrom: number, width: number, height: number): Promise<CropImageResponse> => {

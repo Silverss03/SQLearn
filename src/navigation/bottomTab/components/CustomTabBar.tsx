@@ -24,7 +24,7 @@ import useDimens, { DimensType } from '@src/hooks/useDimens';
 import useThemeColors from '@src/themes/useThemeColors';
 
 const CustomTabBar = ({ state, descriptors, navigation }: BottomTabBarProps) => {
-    const { themeColors } = useThemeColors();
+    const themeColors = useThemeColors();
     const Dimens = useDimens();
     const styles = stylesF(Dimens);
 

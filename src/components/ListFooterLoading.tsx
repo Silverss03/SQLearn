@@ -10,7 +10,7 @@ import useDimens, { DimensType } from '@src/hooks/useDimens';
 import useThemeColors from '@src/themes/useThemeColors';
 
 const ListFooterLoading = ({ canLoadMore } : {canLoadMore: boolean | undefined}) => {
-    const { themeColors } = useThemeColors();
+    const themeColors = useThemeColors();
     const Dimens = useDimens();
     const styles = stylesF(Dimens);
 

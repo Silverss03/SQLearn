@@ -30,7 +30,7 @@ import LoginScreen from '@src/screens/login/LoginScreen';
 const StackNavigator = createStackNavigator<RootStackParamList>();
 
 const AppNavigation = () => {
-    const { themeColors } = useThemeColors();
+    const themeColors = useThemeColors();
     // useMessaging();
     // useDeepLinkHandle();
 

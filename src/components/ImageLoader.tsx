@@ -72,19 +72,19 @@ export const ImageLoader: FC<ImageProps> = ({
     const placeholderOpacity = React.useRef(new Animated.Value(1));
 
     const onLoadHandler = useCallback(
-        (event: any) => {
-            if (transition) {
-                Animated.timing(placeholderOpacity.current, {
-                    toValue: 0,
-                    duration: transitionDuration,
-                    useNativeDriver: true,
-                }).start();
-            } else {
-                placeholderOpacity.current.setValue(0);
-            }
-            onLoad?.(event);
-        },
-        [transition, transitionDuration, onLoad],
+            (event: any) => {
+                if (transition) {
+                    Animated.timing(placeholderOpacity.current, {
+                        toValue: 0,
+                        duration: transitionDuration,
+                        useNativeDriver: true,
+                    }).start();
+                } else {
+                    placeholderOpacity.current.setValue(0);
+                }
+                onLoad?.(event);
+            },
+            [transition, transitionDuration, onLoad],
     );
 
     const hasImage = Boolean(props.source);

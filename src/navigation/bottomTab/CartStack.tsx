@@ -11,7 +11,7 @@ import { screenOptionsDefault } from '../config/screenOptionsDefault';
 const StackNavigator = createNativeStackNavigator<RootStackParamList>();
 
 const CartStack = () => {
-    const { themeColors } = useThemeColors();
+    const themeColors = useThemeColors();
 
     return (
         <StackNavigator.Navigator

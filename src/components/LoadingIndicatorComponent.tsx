@@ -21,7 +21,7 @@ interface IProps {
 }
 
 const LoadingIndicatorComponent: FC<IProps> = () => {
-    const { themeColors } = useThemeColors();
+    const themeColors = useThemeColors();
     const Dimens = useDimens();
 
     const rotate = useSharedValue(0);

@@ -21,7 +21,7 @@ interface ModalProps {
 }
 
 const SelectPhotoOptionDialog = ({ isShow, hideModal, showDeleteButton, onSelectOption, title }: ModalProps) => {
-    const { themeColors } = useThemeColors();
+    const themeColors = useThemeColors();
     const Dimens = useDimens();
     const styles = stylesF(Dimens);
 

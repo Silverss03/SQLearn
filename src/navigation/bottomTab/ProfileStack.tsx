@@ -10,7 +10,7 @@ import useThemeColors from '@src/themes/useThemeColors';
 const StackNavigator = createNativeStackNavigator<RootStackParamList>();
 
 const ProfileStack = () => {
-    const { themeColors } = useThemeColors();
+    const themeColors = useThemeColors();
 
     return (
         <StackNavigator.Navigator

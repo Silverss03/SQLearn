@@ -8,7 +8,7 @@ interface IProps extends ViewProps {
 }
 
 const ListItemSeparator: FC<IProps> = ({ style, ...rest }) => {
-    const { themeColors } = useThemeColors();
+    const themeColors = useThemeColors();
 
     return (
         <View
