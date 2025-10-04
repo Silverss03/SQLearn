@@ -21,7 +21,6 @@ export const POKEMON_DETAIL = 'pokemon-species';
 export const CHAPTER_LIST = 'chapters';
 export const HOME_INFO = 'home';
 
-
 export const CHECK_TOKEN_EXPIRED_WHITE_LIST = [
     LOGIN,
     REGISTER,

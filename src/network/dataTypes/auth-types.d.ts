@@ -1,12 +1,16 @@
-export declare namespace AuthType {
+declare namespace AuthType {
     export interface User {
-        token: string;
-        firstName: string;
-        lastName: string;
-        cityName: string;
-        country: string;
-        termsAndPrivacyPolicyAcceptedAt: string;
-        subscribedToNewsletter: boolean;
-        wantsToReceivePromotions: boolean;
+        user: UserInfo;
+        access_token: string;
+        token_type: string;
+        isPassword: boolean;
+    }
+
+    export interface UserInfo {
+        id: number;
+        email: string;
+        name: string;
+        image_url: string;
+        role: string;
     }
 }
