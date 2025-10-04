@@ -4,7 +4,7 @@ import { useAppSelector } from './';
 import { useMemo } from 'react';
 
 const useIsUserLoggedIn = (): boolean => {
-    const isUserLoggedIn = useAppSelector((state) => state.storageReducer.userData?.token);
+    const isUserLoggedIn = useAppSelector((state) => state.storageReducer.userData?.access_token);
 
     return useMemo(() => !isEmptyOrUndefined(isUserLoggedIn), [isUserLoggedIn]);
 };
