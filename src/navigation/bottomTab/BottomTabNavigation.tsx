@@ -44,29 +44,6 @@ const BottomTab = () => {
             />
             <BottomTabNavigator.Screen
                 options={{
-                    title: t('Menu'),
-                    lazy: false
-                }}
-                name={SCREENS.MENU_TAB_SCREEN}
-                component={MenuStack}
-            />
-            <BottomTabNavigator.Screen
-                options={{
-                    title: t('Cart'),
-                    lazy: false
-                }}
-                name={SCREENS.SHOPPING_CARD_TAB_SCREEN}
-                component={CartStack}
-            />
-            <BottomTabNavigator.Screen
-                options={{
-                    title: t('Loyalty'),
-                }}
-                name={SCREENS.REWARD_TAB_SCREEN}
-                component={RewardStack}
-            />
-            <BottomTabNavigator.Screen
-                options={{
                     title: t('Profile'),
                     lazy: false
                 }}
