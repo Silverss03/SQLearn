@@ -26,7 +26,7 @@ import useThemeColors from '@src/themes/useThemeColors';
 const CustomTabBar = ({ state, descriptors, navigation }: BottomTabBarProps) => {
     const themeColors = useThemeColors();
     const Dimens = useDimens();
-    const styles = stylesF(Dimens);
+    const styles = stylesF(Dimens, themeColors); 
 
     const iconSize = Dimens.H_26;
 
@@ -99,7 +99,7 @@ const CustomTabBar = ({ state, descriptors, navigation }: BottomTabBarProps) => 
     }, [navigation]);
 
     return (
-        <View style={[styles.tabBarContainer, { backgroundColor: themeColors.color_app_background }]}>
+        <View style={[styles.tabBarContainer]}>
             {state?.routes?.map((route, index) => {
                 const { options } = descriptors[route.key];
                 const label: any = options.tabBarLabel !== undefined
@@ -141,7 +141,7 @@ const CustomTabBar = ({ state, descriptors, navigation }: BottomTabBarProps) => 
     );
 };
 
-const stylesF = (Dimens: DimensType) => StyleSheet.create({
+const stylesF = (Dimens: DimensType, themeColors: ReturnType<typeof useThemeColors>) => StyleSheet.create({
     badgeText: {
         fontSize: Dimens.FONT_10,
         fontWeight: '500',
@@ -164,6 +164,8 @@ const stylesF = (Dimens: DimensType) => StyleSheet.create({
         justifyContent: 'space-around',
         paddingBottom: Dimens.TAB_BAR_BOTTOM_PADDING,
         paddingTop: Dimens.H_8,
+        backgroundColor: themeColors.color_dialog_background,
+        borderRadius: Dimens.W_8,
     },
     tabBarButton: {
         alignItems: 'center',
