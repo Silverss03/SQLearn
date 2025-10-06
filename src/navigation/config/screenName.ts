@@ -3,16 +3,13 @@ export const SCREENS = {
 
     HOME_TAB_SCREEN: 'HOME_TAB_SCREEN',
     MENU_TAB_SCREEN: 'MENU_TAB_SCREEN',
-    SHOPPING_CARD_TAB_SCREEN: 'SHOPPING_CARD_TAB_SCREEN',
-    REWARD_TAB_SCREEN: 'REWARD_TAB_SCREEN',
     ACCOUNT_TAB_SCREEN: 'ACCOUNT_TAB_SCREEN',
     LOGIN_SCREEN: 'LoginScreen',
 
     HOME_SCREEN: 'HomeScreen',
     MENU_SCREEN: 'MenuScreen',
-    CART_SCREEN: 'CartScreen',
-    REWARD_SCREEN: 'RewardScreen',
     PROFILE_SCREEN: 'ProfileScreen',
+    CHAPTERS_SCREEN: 'ChaptersScreen',
 
     SPLASH_SCREEN: 'SplashScreen',
     POKEMON_LIST_SCREEN: 'PokemonListScreen',

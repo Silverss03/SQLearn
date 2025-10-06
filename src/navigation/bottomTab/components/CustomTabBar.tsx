@@ -11,10 +11,8 @@ import {
 
 import {
     TabAccountIcon,
-    TabCustomerIcon,
     TabHomeIcon,
-    TabMenuIcon,
-    TabShoppingIcon,
+    TabChaptersIcon
 } from '@assets/svg/index';
 import TextComponent from '@components/TextComponent';
 import { BottomTabBarProps } from '@react-navigation/bottom-tabs';
@@ -26,7 +24,7 @@ import useThemeColors from '@src/themes/useThemeColors';
 const CustomTabBar = ({ state, descriptors, navigation }: BottomTabBarProps) => {
     const themeColors = useThemeColors();
     const Dimens = useDimens();
-    const styles = stylesF(Dimens, themeColors); 
+    const styles = stylesF(Dimens, themeColors);
 
     const iconSize = Dimens.H_26;
 
@@ -48,7 +46,7 @@ const CustomTabBar = ({ state, descriptors, navigation }: BottomTabBarProps) => 
 
             case 1:
                 return (
-                    <TabMenuIcon
+                    <TabChaptersIcon
                         width={iconSize}
                         height={iconSize}
                         stroke={isFocused ? themeColors.color_primary : themeColors.color_tab_inactive}
@@ -57,29 +55,29 @@ const CustomTabBar = ({ state, descriptors, navigation }: BottomTabBarProps) => 
 
             case 2:
                 return (
-                    <TabShoppingIcon
-                        width={iconSize}
-                        height={iconSize}
-                        stroke={isFocused ? themeColors.color_primary : themeColors.color_tab_inactive}
-                    />
-                );
-
-            case 3:
-                return (
-                    <TabCustomerIcon
-                        width={iconSize}
-                        height={iconSize}
-                        stroke={isFocused ? themeColors.color_primary : themeColors.color_tab_inactive}
-                    />
-                );
-            case 4:
-                return (
                     <TabAccountIcon
                         width={iconSize}
                         height={iconSize}
                         stroke={isFocused ? themeColors.color_primary : themeColors.color_tab_inactive}
                     />
                 );
+
+                // case 3:
+                //     return (
+                //         <TabCustomerIcon
+                //             width={iconSize}
+                //             height={iconSize}
+                //             stroke={isFocused ? themeColors.color_primary : themeColors.color_tab_inactive}
+                //         />
+                //     );
+                // case 4:
+                //     return (
+                //         <TabAccountIcon
+                //             width={iconSize}
+                //             height={iconSize}
+                //             stroke={isFocused ? themeColors.color_primary : themeColors.color_tab_inactive}
+                //         />
+                //     );
 
             default:
                 return <View/>;
