@@ -4,8 +4,8 @@ import { SCREENS } from '@navigation/config/screenName';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { screenOptionsDefault } from '@src/navigation/config/screenOptionsDefault';
 import { RootStackParamList } from '@src/navigation/NavigationRouteProps';
-import MenuScreen from '@src/screens/menu/MenuScreen';
 import useThemeColors from '@src/themes/useThemeColors';
+import ChaptersScreen from '@src/screens/chapters/ChaptersScreen';
 
 const StackNavigator = createNativeStackNavigator<RootStackParamList>();
 
@@ -23,8 +23,8 @@ const ProfileStack = () => {
             // initialRouteName={SCREENS.MENU_SCREEN}
         >
             <StackNavigator.Screen
-                name={SCREENS.MENU_SCREEN}
-                component={MenuScreen}
+                name={SCREENS.CHAPTERS_SCREEN}
+                component={ChaptersScreen}
             />
         </StackNavigator.Navigator>
     );

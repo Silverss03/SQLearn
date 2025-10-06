@@ -54,7 +54,7 @@ const HomeScreen = () => {
                 {item.topic_name}
             </TextComponent>
         </TouchableComponent>
-    ), []);
+    ), [styles.chapterContainer, styles.chapterItemText]);
 
     return (
         <View style={{ flex: 1 }}>
@@ -88,20 +88,20 @@ const HomeScreen = () => {
                 </View>
             </LinearGradient>
 
-            <ScrollView style={styles.contentContainer}>
-                <TextComponent style={styles.chapterText}>
-                    {t('Danh sách chương')}
-                </TextComponent>
+            <View style={styles.contentContainer}>
 
                 <FlatListComponent
                     data={chapterList}
                     renderItem={renderChapterItems}
                     keyExtractor={(item) => item.id.toString()}
+                    ListHeaderComponent={
+                        <TextComponent style={styles.chapterText}>
+                            {t('Danh sách chương')}
+                        </TextComponent>
+                    }
                 />
 
-                <View style={{ height: Dimens.H_40 }} />
-
-            </ScrollView>
+            </View>
         </View>
     );
 };
