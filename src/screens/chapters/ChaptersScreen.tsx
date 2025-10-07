@@ -20,6 +20,8 @@ import TouchableComponent from '@src/components/TouchableComponent';
 import FlatListComponent from '@src/components/FlatListComponent';
 import StudyGirlIcon from '@src/assets/svg/StudyGirlIcon';
 import { ArrowRightIcon } from '@src/assets/svg';
+import NavigationService from '@src/navigation/NavigationService';
+import { SCREENS } from '@src/navigation/config/screenName';
 
 const ChapterScreen = () => {
     const Dimens = useDimens();
@@ -41,14 +43,28 @@ const ChapterScreen = () => {
         fetchChapterList();
     }, [fetchChapterList]);
 
+    const onChapterPress = useCallback(({ item } : { item: ChapterType.Chapter }) => {
+        console.log('onChapterPress');
+        NavigationService.navigate(SCREENS.LESSONS_SCREEN, {
+            topicId: item.id,
+            topicName: item.topic_name,
+        });
+    }, []);
+
     const renderChapterItems = useCallback(({ item }: { item: ChapterType.Chapter }) => (
-        <TouchableComponent style={styles.chapterContainer}>
+        <TouchableComponent
+            style={styles.chapterContainer}
+            onPress={() => onChapterPress({ item })}
+        >
             <View style={styles.textContainer}>
                 <TextComponent style={styles.chapterItemText}>
                     {item.topic_name}
                 </TextComponent>
                 <View style={styles.line} />
-                <TextComponent style={styles.chapterDescription}>
+                <TextComponent
+                    style={styles.chapterDescription}
+                    numberOfLines={2}
+                >
                     {item.description}
                 </TextComponent>
             </View>
@@ -66,7 +82,7 @@ const ChapterScreen = () => {
                 </View>
             </View>
         </TouchableComponent>
-    ), [styles.chapterContainer, styles.textContainer, styles.chapterItemText, styles.line, styles.chapterDescription, styles.iconContainer, Dimens.H_24, Dimens.W_4, Dimens.FONT_12, themeColors.color_text_2, t]);
+    ), [styles.chapterContainer, styles.textContainer, styles.chapterItemText, styles.line, styles.chapterDescription, styles.iconContainer, onChapterPress, Dimens.H_24, Dimens.W_4, Dimens.FONT_12, themeColors.color_text_2, t]);
 
     return (
         <View style={styles.contentContainer}>

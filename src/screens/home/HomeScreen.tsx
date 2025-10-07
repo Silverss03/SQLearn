@@ -22,6 +22,8 @@ import FlatListComponent from '@src/components/FlatListComponent';
 import TouchableComponent from '@src/components/TouchableComponent';
 import { ChapterIcon } from '@src/assets/svg';
 import { ScrollView } from 'react-native-gesture-handler';
+import NavigationService from '@src/navigation/NavigationService';
+import { SCREENS } from '@src/navigation/config/screenName';
 
 const HomeScreen = () => {
     const Dimens = useDimens();
@@ -47,14 +49,24 @@ const HomeScreen = () => {
         fetchChapterList();
     }, [fetchChapterList]);
 
+    const onChapterPress = useCallback(({ item } : { item: ChapterType.Chapter }) => {
+        NavigationService.navigate(SCREENS.LESSONS_SCREEN, {
+            topicId: item.id,
+            topicName: item.topic_name,
+        });
+    }, []);
+
     const renderChapterItems = useCallback(({ item }: { item: ChapterType.Chapter }) => (
-        <TouchableComponent style={styles.chapterContainer}>
+        <TouchableComponent
+            style={styles.chapterContainer}
+            onPress={() => onChapterPress({ item })}
+        >
             <ChapterIcon/>
             <TextComponent style={styles.chapterItemText}>
                 {item.topic_name}
             </TextComponent>
         </TouchableComponent>
-    ), [styles.chapterContainer, styles.chapterItemText]);
+    ), [onChapterPress, styles.chapterContainer, styles.chapterItemText]);
 
     return (
         <View style={{ flex: 1 }}>

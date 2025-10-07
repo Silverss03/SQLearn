@@ -6,6 +6,7 @@ import { screenOptionsDefault } from '@src/navigation/config/screenOptionsDefaul
 import { RootStackParamList } from '@src/navigation/NavigationRouteProps';
 import useThemeColors from '@src/themes/useThemeColors';
 import ChaptersScreen from '@src/screens/chapters/ChaptersScreen';
+import LessonsScreen from '@src/screens/lessons/LessonsScreen';
 
 const StackNavigator = createNativeStackNavigator<RootStackParamList>();
 
@@ -25,6 +26,10 @@ const ProfileStack = () => {
             <StackNavigator.Screen
                 name={SCREENS.CHAPTERS_SCREEN}
                 component={ChaptersScreen}
+            />
+            <StackNavigator.Screen
+                name={SCREENS.LESSONS_SCREEN}
+                component={LessonsScreen}
             />
         </StackNavigator.Navigator>
     );

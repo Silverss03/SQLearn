@@ -10,6 +10,7 @@ export const SCREENS = {
     MENU_SCREEN: 'MenuScreen',
     PROFILE_SCREEN: 'ProfileScreen',
     CHAPTERS_SCREEN: 'ChaptersScreen',
+    LESSONS_SCREEN: 'LessonsScreen',
 
     SPLASH_SCREEN: 'SplashScreen',
     POKEMON_LIST_SCREEN: 'PokemonListScreen',

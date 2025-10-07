@@ -19,6 +19,7 @@ export const CLUBS = 'clubs';
 export const POKEMON_LIST = 'pokemon';
 export const POKEMON_DETAIL = 'pokemon-species';
 export const CHAPTER_LIST = 'topics';
+export const LESSONS_BY_TOPIC = (topicId: number) => `topics/${topicId}/lessons`;
 export const HOME_INFO = 'home';
 
 export const CHECK_TOKEN_EXPIRED_WHITE_LIST = [
