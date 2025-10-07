@@ -50,11 +50,15 @@ const HomeScreen = () => {
     }, [fetchChapterList]);
 
     const onChapterPress = useCallback(({ item } : { item: ChapterType.Chapter }) => {
-        NavigationService.navigate(SCREENS.LESSONS_SCREEN, {
-            topicId: item.id,
-            topicName: item.topic_name,
+        // First navigate to MenuTab, then to LessonsScreen
+        NavigationService.navigate(SCREENS.MENU_TAB_SCREEN, {
+            screen: SCREENS.LESSONS_SCREEN,
+            params: {
+                topicId: item.id,
+                topicName: item.topic_name,
+            }
         });
-    }, []);
+}, []);
 
     const renderChapterItems = useCallback(({ item }: { item: ChapterType.Chapter }) => (
         <TouchableComponent
