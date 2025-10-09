@@ -7,6 +7,8 @@ import { RootStackParamList } from '@src/navigation/NavigationRouteProps';
 import useThemeColors from '@src/themes/useThemeColors';
 import ChaptersScreen from '@src/screens/chapters/ChaptersScreen';
 import LessonsScreen from '@src/screens/lessons/LessonsScreen';
+import LessonDetailScreen from '@src/screens/lessons/LessonDetailScreen';
+import LessonQuestionScreen from '@src/screens/questions/LessonQuestionScreen';
 
 const StackNavigator = createNativeStackNavigator<RootStackParamList>();
 
@@ -30,6 +32,14 @@ const ProfileStack = () => {
             <StackNavigator.Screen
                 name={SCREENS.LESSONS_SCREEN}
                 component={LessonsScreen}
+            />
+            <StackNavigator.Screen
+                name={SCREENS.LESSON_DETAIL_SCREEN}
+                component={LessonDetailScreen}
+            />
+            <StackNavigator.Screen
+                name={SCREENS.LESSON_QUESTION_SCREEN}
+                component={LessonQuestionScreen}
             />
         </StackNavigator.Navigator>
     );

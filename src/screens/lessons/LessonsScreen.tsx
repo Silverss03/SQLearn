@@ -26,6 +26,7 @@ import StudyGirlIcon from '@src/assets/svg/StudyGirlIcon';
 import Accordion from 'react-native-collapsible/Accordion';
 import { ArrowDownIcon } from '@src/assets/svg';
 import ArrowUpIcon from '@src/assets/svg/ArrowUpIcon';
+import { SCREENS } from '@src/navigation/config/screenName';
 
 const LessonsScreen = () => {
     const Dimens = useDimens();
@@ -43,7 +44,6 @@ const LessonsScreen = () => {
     if (match) {
         chapter = match[1];
         content = match[2];
-        console.log(chapter, content);
     }
 
     const [lessonsList, setLessonsList] = React.useState<LessonType.Lesson[]>([]);
@@ -53,7 +53,6 @@ const LessonsScreen = () => {
             undefined,
             useCallback((data: LessonType.Lesson[]) => {
                 setLessonsList(data);
-                console.log('lessonsList', data);
             }, []),
     );
 
@@ -80,12 +79,14 @@ const LessonsScreen = () => {
         </View>
     ), [styles]);
 
+    const onLearnPress = useCallback((lesson: LessonType.Lesson) => {
+        NavigationService.navigate(SCREENS.LESSON_DETAIL_SCREEN, { lesson, topicName });
+    }, [topicName]);
+
     const renderContent = useCallback((section: LessonType.Lesson) => (
         <View style={styles.accordionContentContainer}>
             <TouchableComponent
-                onPress={() => {
-                    console.log('Learn pressed for lesson:', section.lesson_title);
-                }}
+                onPress={() => onLearnPress(section)}
             >
                 <TextComponent style={styles.accordionContentText}>
                     {t('Học lý thuyết')}
@@ -101,7 +102,7 @@ const LessonsScreen = () => {
                 </TextComponent>
             </TouchableComponent>
         </View>
-    ), [t]);
+    ), [onLearnPress, styles.accordionContentContainer, styles.accordionContentText, t]);
 
     return (
         <View style={{ flex: 1 }}>
@@ -161,7 +162,9 @@ const stylesF = (Dimens: DimensType, themeColors: ReturnType<typeof useThemeColo
     homeHeader: {
         paddingHorizontal: Dimens.W_16,
         paddingVertical: Dimens.H_48,
-        justifyContent: 'space-between'
+        justifyContent: 'space-between',
+        borderBottomLeftRadius: Dimens.RADIUS_12,
+        borderBottomRightRadius: Dimens.RADIUS_12,
     },
     nameText: {
         fontSize: Dimens.FONT_21,
@@ -226,7 +229,7 @@ const stylesF = (Dimens: DimensType, themeColors: ReturnType<typeof useThemeColo
 
         // Shadow for iOS
         shadowColor: '#000',
-        shadowOffset: { width: 2, height: 3 }, // left/right/bottom shadow direction
+        shadowOffset: { width: 2, height: 3 },
         shadowOpacity: 0.25,
         shadowRadius: 4,
 
