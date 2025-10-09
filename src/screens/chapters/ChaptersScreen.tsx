@@ -19,7 +19,7 @@ import { useTranslation } from 'react-i18next';
 import TouchableComponent from '@src/components/TouchableComponent';
 import FlatListComponent from '@src/components/FlatListComponent';
 import StudyGirlIcon from '@src/assets/svg/StudyGirlIcon';
-import { ArrowRightIcon } from '@src/assets/svg';
+import { ArrowRightIcon, ChapterIcon } from '@src/assets/svg';
 import NavigationService from '@src/navigation/NavigationService';
 import { SCREENS } from '@src/navigation/config/screenName';
 
@@ -44,7 +44,6 @@ const ChapterScreen = () => {
     }, [fetchChapterList]);
 
     const onChapterPress = useCallback(({ item } : { item: ChapterType.Chapter }) => {
-        console.log('onChapterPress');
         NavigationService.navigate(SCREENS.LESSONS_SCREEN, {
             topicId: item.id,
             topicName: item.topic_name,

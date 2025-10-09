@@ -65,9 +65,7 @@ const App = () => {
         const state = store.getState();
         const userData = state.storageReducer?.userData;
         if (userData?.access_token) {
-            console.log('🔑 Setting global token from persisted state');
             setHeaderToken(userData.access_token);
-            console.log('✅ Global token set in axios headers');
         }
     }, []);
 

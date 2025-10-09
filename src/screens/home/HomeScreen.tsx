@@ -41,7 +41,6 @@ const HomeScreen = () => {
             undefined,
             useCallback((data: ChapterType.Chapter[]) => {
                 setChapterList(data);
-                console.log('chapterList', data);
             }, []),
     );
 
@@ -50,7 +49,6 @@ const HomeScreen = () => {
     }, [fetchChapterList]);
 
     const onChapterPress = useCallback(({ item } : { item: ChapterType.Chapter }) => {
-        // First navigate to MenuTab, then to LessonsScreen
         NavigationService.navigate(SCREENS.MENU_TAB_SCREEN, {
             screen: SCREENS.LESSONS_SCREEN,
             params: {
@@ -58,7 +56,7 @@ const HomeScreen = () => {
                 topicName: item.topic_name,
             }
         });
-}, []);
+    }, []);
 
     const renderChapterItems = useCallback(({ item }: { item: ChapterType.Chapter }) => (
         <TouchableComponent
@@ -129,7 +127,9 @@ const stylesF = (Dimens: DimensType, themeColors: ReturnType<typeof useThemeColo
         flexDirection: 'row',
         paddingHorizontal: Dimens.W_16,
         paddingVertical: Dimens.H_48,
-        justifyContent: 'space-between'
+        justifyContent: 'space-between',
+        borderBottomLeftRadius: Dimens.RADIUS_12,
+        borderBottomRightRadius: Dimens.RADIUS_12,
     },
     nameText: {
         fontSize: Dimens.FONT_21,
