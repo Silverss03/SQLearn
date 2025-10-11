@@ -15,6 +15,11 @@ export type RootStackParamList = {
         lesson: LessonType.Lesson
         topicName: string
     }
+    LessonQuestionScreen: {
+        lessonId: number
+        lessonTitle: string
+        topicName: string
+    }
 };
 
 export type PokemonDetailScreenProps = RouteProp<RootStackParamList, 'PokemonDetailScreen'>;
@@ -22,3 +27,5 @@ export type PokemonDetailScreenProps = RouteProp<RootStackParamList, 'PokemonDet
 export type LessonsScreenProps = RouteProp<RootStackParamList, 'LessonsScreen'>;
 
 export type LessonDetailScreenProps = RouteProp<RootStackParamList, 'LessonDetailScreen'>;
+
+export type LessonQuestionScreenProps = RouteProp<RootStackParamList, 'LessonQuestionScreen'>;
