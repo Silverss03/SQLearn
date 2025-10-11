@@ -84,10 +84,13 @@ const LessonDetailScreen = () => {
     const onMessage = useCallback((event : any) => {
         const message = event.nativeEvent.data;
         if (message === 'exercise_pressed') {
-            // Navigate to exercise screen
-            NavigationService.navigate(SCREENS.LESSON_QUESTION_SCREEN);
+            NavigationService.navigate(SCREENS.LESSON_QUESTION_SCREEN, {
+                lessonId: lesson?.id,
+                lessonTitle: lesson?.lesson_title,
+                topicName: topicName,
+            });
         }
-    }, []);
+    }, [lesson?.id, lesson?.lesson_title, topicName]);
 
     return (
         <View style={{ flex: 1 }}>

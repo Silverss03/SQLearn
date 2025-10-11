@@ -83,6 +83,14 @@ const LessonsScreen = () => {
         NavigationService.navigate(SCREENS.LESSON_DETAIL_SCREEN, { lesson, topicName });
     }, [topicName]);
 
+    const onDoQuestionsPress = useCallback((lesson: LessonType.Lesson) => {
+        NavigationService.navigate(SCREENS.LESSON_QUESTION_SCREEN, {
+            lessonId: lesson?.id,
+            lessonTitle: lesson?.lesson_title,
+            topicName: topicName,
+        });
+    }, [topicName]);
+
     const renderContent = useCallback((section: LessonType.Lesson) => (
         <View style={styles.accordionContentContainer}>
             <TouchableComponent
@@ -93,16 +101,14 @@ const LessonsScreen = () => {
                 </TextComponent>
             </TouchableComponent>
             <TouchableComponent
-                onPress={() => {
-                    console.log('Do questions pressed for lesson:', section.lesson_title);
-                }}
+                onPress={() => onDoQuestionsPress(section)}
             >
                 <TextComponent style={styles.accordionContentText}>
                     {t('Làm bài')}
                 </TextComponent>
             </TouchableComponent>
         </View>
-    ), [onLearnPress, styles.accordionContentContainer, styles.accordionContentText, t]);
+    ), [onDoQuestionsPress, onLearnPress, styles.accordionContentContainer, styles.accordionContentText, t]);
 
     return (
         <View style={{ flex: 1 }}>
