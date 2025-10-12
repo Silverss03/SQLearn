@@ -1,0 +1,16 @@
+{
+  "folders": [
+    {
+      "name": "mp-libs",
+      "path": "src/mp-libs"
+    },
+    {
+      "name": "mp-configs",
+      "path": "src/mp-configs"
+    },
+    {
+      "name": "root",
+      "path": "."
+    }
+  ]
+}

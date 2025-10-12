@@ -1,0 +1,31 @@
+{
+  "VALIDATE": {
+    "MSG_ERROR_COMMON_001": "Đã thực hiện thao tác dữ liệu mà bạn không có quyền.",
+    "MSG_ERROR_COMMON_002": "Không tìm thấy dữ liệu bạn đang cố truy cập.",
+    "MSG_ERROR_COMMON_003": "Dữ liệu đã được người dùng khác cập nhật. Vui lòng tải lại và thử cập nhật lại sau khi xác nhận.",
+    "MSG_ERROR_COMMON_004": "Đã xảy ra lỗi không mong muốn khi truy cập dữ liệu.",
+    "MSG_ERROR_COMMON_005": "Trường này là bắt buộc.",
+    "MSG_ERROR_COMMON_006": "Vui lòng nhập bằng số nửa chiều rộng (half-width digits).",
+    "MSG_ERROR_COMMON_007": "Vui lòng nhập bằng chữ và số nửa chiều rộng (half-width alphanumeric).",
+    "MSG_ERROR_COMMON_008": "Vui lòng nhập bằng chữ.",
+    "MSG_ERROR_COMMON_009": "Vui lòng nhập bằng chữ.",
+    "MSG_ERROR_COMMON_010": "Vui lòng nhập ít nhất {{min}} ký tự.",
+    "MSG_ERROR_COMMON_011": "Vui lòng nhập tối đa {{max}} ký tự.",
+    "MSG_ERROR_COMMON_012": "Vui lòng nhập từ {{min}} đến {{max}} ký tự.",
+    "MSG_ERROR_COMMON_013": "Vui lòng nhập bằng chữ cái nửa chiều rộng (half-width letters).",
+    "MSG_ERROR_COMMON_014": "Giá trị không hợp lệ.",
+    "MSG_ERROR_COMMON_015": "Vui lòng nhập ngày hợp lệ. Ví dụ: 2023/01/01",
+    "MSG_ERROR_COMMON_016": "Vui lòng nhập giờ hợp lệ. Ví dụ: 00:00:00",
+    "MSG_ERROR_COMMON_017": "Vui lòng nhập ngày và giờ hợp lệ. Ví dụ: 2023/01/01 00:00:00",
+    "MSG_ERROR_COMMON_018": "Vui lòng nhập giá trị lớn hơn hoặc bằng {{min}}.",
+    "MSG_ERROR_COMMON_019": "Vui lòng nhập giá trị nhỏ hơn hoặc bằng {{max}}.",
+    "MSG_ERROR_COMMON_020": "Chỉ được phép tải lên các tệp có định dạng: {{fileExtensions}}.",
+    "MSG_ERROR_COMMON_021": "Vui lòng nhập đúng định dạng e-mail.",
+    "MSG_ERROR_COMMON_022": "Vui lòng nhập {{len}} ký tự.",
+    "MSG_ERROR_COMMON_023": "Vui lòng nhập bằng chữ Katakana toàn chiều rộng hoặc chữ/số nửa chiều rộng.",
+    "MSG_ERROR_COMMON_024": "Vui lòng chọn tệp có tên và phần mở rộng.",
+    "MSG_ERROR_COMMON_026": "Vui lòng chọn tệp có dung lượng nhỏ hơn hoặc bằng {{maxSize}}MB.",
+    "MSG_ERROR_COMMON_027": "Vui lòng chọn tối đa {{maxCount}} tệp.",
+    "MSG_ERROR_COMMON_028": "(Chỉ sử dụng để xác định mã lỗi của API, thông báo này không được hiển thị.)"
+  }
+}
