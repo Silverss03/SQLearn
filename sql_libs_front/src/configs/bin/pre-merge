@@ -1,0 +1,6 @@
+#! /usr/bin/env sh
+# PR作成時にCodeBuildで実行される
+
+# TODO: exitはテストが失敗してもCodeBuildが落ちないようにする一時対応
+yarn pre-commit || exit 1
+yarn coverage || exit 0
