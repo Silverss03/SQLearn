@@ -30,15 +30,13 @@ const FillblankQuestion = ({ question, questionData, sqlAnswers, setSqlAnswers, 
     };
     return (
         <View>
-            <TextComponent style={styles.questionText}>
-                {question.description}
-            </TextComponent>
-
-            {/* Query Template with blanks */}
-            <View style={styles.queryContainer}>
-                <TextComponent style={styles.queryLabel}>
-                    SQL Query:
+            <View style={styles.questionDescription}>
+                <TextComponent style={styles.questionText}>
+                    {question.description}
                 </TextComponent>
+            </View>
+
+            <View style={styles.queryContainer}>
                 <View style={styles.queryTemplateContainer}>
                     <TextComponent style={styles.queryTemplateText}>
                         {renderQueryTemplate()}
@@ -77,7 +75,8 @@ const FillblankQuestion = ({ question, questionData, sqlAnswers, setSqlAnswers, 
                                     <TextComponent style={[
                                         styles.optionText,
                                         sqlAnswers[blank.index.toString()] === option.id && styles.selectedOptionText
-                                    ]}>
+                                    ]}
+                                    >
                                         {option.text}
                                     </TextComponent>
                                 </TouchableComponent>
@@ -92,10 +91,10 @@ const FillblankQuestion = ({ question, questionData, sqlAnswers, setSqlAnswers, 
 
 const stylesF = (Dimens: DimensType, themeColors: ReturnType<typeof useThemeColors>) => StyleSheet.create({
     questionText: {
-        fontSize: Dimens.FONT_18,
+        fontSize: Dimens.FONT_16,
         fontWeight: '600',
-        color: themeColors.color_text,
-        marginBottom: Dimens.H_32,
+        color: themeColors.color_text_2,
+        marginBottom: Dimens.H_16,
         textAlign: 'center',
     },
     fillBlanksContainer: {
@@ -106,8 +105,8 @@ const stylesF = (Dimens: DimensType, themeColors: ReturnType<typeof useThemeColo
     },
     queryTemplateText: {
         fontSize: Dimens.FONT_16,
-        color: themeColors.color_text,
-        fontFamily: 'monospace', // Use monospace for code
+        color: themeColors.color_text_2,
+        fontFamily: 'monospace',
         lineHeight: Dimens.H_24,
     },
     blankContainer: {
@@ -134,11 +133,12 @@ const stylesF = (Dimens: DimensType, themeColors: ReturnType<typeof useThemeColo
     },
     queryContainer: {
         marginBottom: Dimens.H_24,
+        marginTop: Dimens.H_16,
     },
     queryLabel: {
         fontSize: Dimens.FONT_14,
         fontWeight: '600',
-        color: themeColors.color_text,
+        color: themeColors.color_text_2,
         marginBottom: Dimens.H_8,
     },
     queryTemplateContainer: {
@@ -154,7 +154,7 @@ const stylesF = (Dimens: DimensType, themeColors: ReturnType<typeof useThemeColo
     optionsLabel: {
         fontSize: Dimens.FONT_16,
         fontWeight: '600',
-        color: themeColors.color_text,
+        color: themeColors.color_text_2,
         marginBottom: Dimens.H_16,
     },
     blankSection: {
@@ -172,12 +172,11 @@ const stylesF = (Dimens: DimensType, themeColors: ReturnType<typeof useThemeColo
         gap: Dimens.W_8,
     },
     optionButton: {
-        backgroundColor: themeColors.color_app_background,
         paddingHorizontal: Dimens.W_16,
         paddingVertical: Dimens.H_12,
         borderRadius: Dimens.RADIUS_6,
-        borderWidth: 2,
-        borderColor: themeColors.color_text_3,
+        borderWidth: 1,
+        borderColor: themeColors.color_question_border,
         minWidth: Dimens.W_80,
         alignItems: 'center',
     },
@@ -187,7 +186,7 @@ const stylesF = (Dimens: DimensType, themeColors: ReturnType<typeof useThemeColo
     },
     optionText: {
         fontSize: Dimens.FONT_14,
-        color: themeColors.color_text,
+        color: themeColors.color_text_2,
         fontFamily: 'monospace',
         fontWeight: '500',
     },
@@ -195,6 +194,13 @@ const stylesF = (Dimens: DimensType, themeColors: ReturnType<typeof useThemeColo
         color: '#FFFFFF',
         fontWeight: '600',
     },
+    questionDescription: {
+        borderWidth: 1,
+        borderColor: themeColors.color_question_border,
+        padding: Dimens.W_12,
+        borderRadius: Dimens.RADIUS_4,
+        backgroundColor: themeColors.color_question_background
+    }
 });
 
 export default FillblankQuestion;
