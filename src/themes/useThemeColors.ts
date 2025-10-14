@@ -37,6 +37,10 @@ const Colors = {
         color_common_line: '#D1D1D1',
         color_product_option: '#717171',
         color_fix_tab_selected: '#EE7C14',
+        color_question_border: '#9390FF',
+        color_question_background: '#F4F3FF',
+        color_text_correct: '#32C670',
+        color_text_incorrect: '#FF2E32',
 
         //template app
         workspace_home_button_text: '#FFFFFF',
@@ -82,6 +86,10 @@ const Colors = {
         color_common_line: '#D1D1D1',
         color_product_option: '#FFFFFF',
         color_fix_tab_selected: '#EE7C14',
+        color_question_border: '#9390FF',
+        color_question_background: '#F4F3FF',
+        color_text_correct: '#32C670',
+        color_text_incorrect: '#FF2E32',
 
         //template app
         workspace_home_button_text: '#B5B268',

@@ -259,6 +259,7 @@ export type DimensType = {
     H_206: number,
     H_216: number,
     H_220: number,
+    H_300: number,
     H_999: number,
 
     FONT_40: number,
@@ -577,6 +578,7 @@ const useDimens = (type = 'window'): DimensType => {
         H_206: verticalScale(206, height),
         H_216: verticalScale(216, height),
         H_220: verticalScale(220, height),
+        H_300: verticalScale(300, height),
         H_999: verticalScale(999, height),
 
         FONT_40: fontScale(40, width, height),

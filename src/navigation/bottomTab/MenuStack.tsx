@@ -9,6 +9,7 @@ import ChaptersScreen from '@src/screens/chapters/ChaptersScreen';
 import LessonsScreen from '@src/screens/lessons/LessonsScreen';
 import LessonDetailScreen from '@src/screens/lessons/LessonDetailScreen';
 import LessonQuestionScreen from '@src/screens/questions/LessonQuestionScreen';
+import LessonQuestionScreenComplete from '@src/screens/questions/LessonQuestionScreenComplete';
 
 const StackNavigator = createNativeStackNavigator<RootStackParamList>();
 
@@ -40,6 +41,10 @@ const ProfileStack = () => {
             <StackNavigator.Screen
                 name={SCREENS.LESSON_QUESTION_SCREEN}
                 component={LessonQuestionScreen}
+            />
+            <StackNavigator.Screen
+                name={SCREENS.LESSON_QUESTION_COMPLETE_SCREEN}
+                component={LessonQuestionScreenComplete}
             />
         </StackNavigator.Navigator>
     );

@@ -36,9 +36,11 @@ const MultipleChoiceQuestion = ({ currentQuestion, isSubmitted, selectedAnswer, 
     }, [currentQuestion?.correct_answer, isSubmitted, selectedAnswer, styles.answerOption, styles.correctAnswer, styles.incorrectAnswer, styles.selectedAnswer]);
     return (
         <View>
-            <TextComponent style={styles.questionText}>
-                {currentQuestion.description}
-            </TextComponent>
+            <View style={styles.questionDescription}>
+                <TextComponent style={styles.questionText}>
+                    {currentQuestion.description}
+                </TextComponent>
+            </View>
 
             <View style={styles.answersContainer}>
                 {[
@@ -54,7 +56,7 @@ const MultipleChoiceQuestion = ({ currentQuestion, isSubmitted, selectedAnswer, 
                         disabled={isSubmitted}
                     >
                         <TextComponent style={styles.answerLabel}>
-                            {option.key}
+                            {option.key}.
                         </TextComponent>
                         <TextComponent style={styles.answerText}>
                             {option.text}
@@ -77,41 +79,55 @@ const stylesF = (Dimens: DimensType, themeColors: ReturnType<typeof useThemeColo
         padding: Dimens.W_16,
         marginBottom: Dimens.H_12,
         borderRadius: Dimens.RADIUS_8,
-        borderWidth: 2,
-        borderColor: 'transparent',
+        borderWidth: 1,
+        borderColor: themeColors.color_question_border,
+
+        shadowColor: '#000',
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+        elevation: 3,
     },
     selectedAnswer: {
         borderColor: themeColors.color_primary,
-        backgroundColor: `${themeColors.color_primary}20`,
+        borderWidth: 2,
     },
     correctAnswer: {
-        borderColor: '#28a745',
-        backgroundColor: '#d4edda',
+        borderColor: themeColors.color_text_correct,
     },
     incorrectAnswer: {
-        borderColor: '#dc3545',
-        backgroundColor: '#f8d7da',
+        borderColor: themeColors.color_text_incorrect,
     },
     answerLabel: {
         fontSize: Dimens.FONT_16,
         fontWeight: 'bold',
-        color: themeColors.color_text,
+        color: themeColors.color_text_2,
         width: Dimens.W_32,
         textAlign: 'center',
         marginRight: Dimens.W_12,
     },
     answerText: {
         fontSize: Dimens.FONT_14,
-        color: themeColors.color_text,
+        color: themeColors.color_text_2,
         flex: 1,
     },
     questionText: {
-        fontSize: Dimens.FONT_18,
+        fontSize: Dimens.FONT_16,
         fontWeight: '600',
-        color: themeColors.color_text,
+        color: themeColors.color_text_2,
         marginBottom: Dimens.H_32,
         textAlign: 'center',
     },
+    questionDescription: {
+        borderWidth: 1,
+        borderColor: themeColors.color_question_border,
+        padding: Dimens.W_16,
+        borderRadius: Dimens.RADIUS_4,
+        backgroundColor: themeColors.color_question_background
+    }
 });
 
 export default MultipleChoiceQuestion;
