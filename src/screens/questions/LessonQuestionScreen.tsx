@@ -24,7 +24,7 @@ import { QuestionType } from '@src/network/dataTypes/question-types';
 import { LessonQuestionScreenProps } from '@src/navigation/NavigationRouteProps';
 import { useRoute } from '@react-navigation/native';
 import useCallAPI from '@src/hooks/useCallAPI';
-import { getMcQuestionByLessonService, getSqlQuestionByLessonService } from '@src/network/services/questionServices';
+import { getExerciseByLessonService } from '@src/network/services/questionServices';
 import {
     canSubmit,
     getButtonText,
@@ -42,6 +42,7 @@ import IncorrectIcon from '@src/assets/svg/IncorrectIcon';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SCREENS } from '@src/navigation/config/screenName';
 import { DuoDragDropRef } from '@jamsch/react-native-duo-drag-drop';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 type QuestionResult = 'correct' | 'incorrect' | null;
 
@@ -64,38 +65,31 @@ const LessonQuestionScreen = () => {
     const [score, setScore] = useState(0);
     const [isSubmitted, setIsSubmitted] = useState(false);
     const [progressAnim] = useState(new Animated.Value(0));
+    const [lessonQuestionId, setLessonQuestionId] = useState<number | null>(null);
 
     const currentQuestion = allQuestions[currentQuestionIndex];
     const isLastQuestion = currentQuestionIndex === allQuestions.length - 1;
     const totalQuestions = allQuestions.length;
     const ref = useRef<DuoDragDropRef>(null);
 
-    const { callApi: fetchMcQuestion } = useCallAPI(
-            useCallback(() => getMcQuestionByLessonService(lessonId), [lessonId]),
+    const { callApi: fetchExerciseQuestion } = useCallAPI(
+            useCallback(() => getExerciseByLessonService(lessonId), [lessonId]),
             undefined,
-            useCallback((data: QuestionType.McqQuestion[]) => {
-                setAllQuestions((prev) => [...prev, ...data]);
-            }, []),
-    );
-
-    const { callApi: fetchSqlQuestions } = useCallAPI(
-            useCallback(() => getSqlQuestionByLessonService(lessonId), [lessonId]),
-            undefined,
-            useCallback((data: QuestionType.SqlQuestion[]) => {
-                setAllQuestions((prev) => {
-                    const combined = [...prev, ...data];
-                    const shuffled = combined.sort(() => Math.random() - 0.5);
-                    return shuffled;
-                });
-            }, []),
+            useCallback((data: QuestionType.Exercise) => {
+                setLessonQuestionId(data.lessonExercise.id);
+                const questions = data.questions;
+                const sqlQuestionsArray = Object.values(questions.sqlQuestions || {});
+                const combined = [...questions.multipleChoice, ...sqlQuestionsArray];
+                const shuffled = combined.sort(() => Math.random() - 0.5);
+                setAllQuestions(shuffled);
+            }, [])
     );
 
     useEffect(() => {
         if (lessonId) {
-            fetchMcQuestion();
-            fetchSqlQuestions();
+            fetchExerciseQuestion();
         }
-    }, [fetchMcQuestion, fetchSqlQuestions, lessonId]);
+    }, [lessonId]);
 
     useEffect(() => {
         if (currentQuestion && isSqlQuestion(currentQuestion)) {
@@ -134,7 +128,6 @@ const LessonQuestionScreen = () => {
                 if (currentQuestion.interaction_type === 'drag_drop' && ref.current) {
                     const answeredWords = ref.current.getAnsweredWords();
                     answer = answeredWords.join(' ');
-                    console.log('Answered Words from DragDrop:', answer);
                 }
                 isCorrect = validateSqlAnswer({ currentQuestion, dragDropAnswer: answer, sqlAnswers });
             }
@@ -148,10 +141,11 @@ const LessonQuestionScreen = () => {
         } else {
             if (isLastQuestion) {
                 NavigationService.navigate(SCREENS.LESSON_QUESTION_COMPLETE_SCREEN, {
+                    lessonQuestionId,
                     lessonId,
-                    lessonTitle,
+                    score: score,
                     totalQuestions,
-                    score: isMcQuestion(currentQuestion) || isSqlQuestion(currentQuestion) ? (questionResult === 'correct' ? score : score - 1) : score
+                    lessonTitle
                 });
             } else {
                 setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
@@ -162,7 +156,7 @@ const LessonQuestionScreen = () => {
                 setDragDropAnswer([]);
             }
         }
-    }, [currentQuestion, isLastQuestion, isSubmitted, lessonId, lessonTitle, questionResult, score, selectedAnswer, sqlAnswers, t, totalQuestions]);
+    }, [currentQuestion, isLastQuestion, isSubmitted, lessonQuestionId, score, selectedAnswer, sqlAnswers, t]);
 
     const renderDragDropQuestion = useCallback((question: QuestionType.SqlQuestion) => {
         const data = getSqlQuestionData(question);
@@ -214,7 +208,7 @@ const LessonQuestionScreen = () => {
 
     return (
         <GestureHandlerRootView style={{ flex: 1 }}>
-            <View style={{ flex: 1 }}>
+            <SafeAreaView style={{ flex: 1 }}>
                 <LinearGradient
                     colors={['#55CCFF', '#A282FFBD']}
                     start={{ x: 1, y: 0 }}
@@ -278,7 +272,12 @@ const LessonQuestionScreen = () => {
                         renderFillBlanksQuestion(currentQuestion)}
                     </View>
 
-                    <View style={styles.bottomContainer}>
+                    <View
+                        style={[
+                            styles.bottomContainer,
+                            questionResult && styles.bottomContainerExpanded,
+                        ]}
+                    >
                         {questionResult && (
                             <View style={[
                                 styles.resultContainer,
@@ -307,6 +306,7 @@ const LessonQuestionScreen = () => {
                             </View>
                         )}
 
+                        <View style={{ flex: 1 }} />
                         <TouchableComponent
                             style={[
                                 styles.submitButton,
@@ -322,7 +322,7 @@ const LessonQuestionScreen = () => {
                         </TouchableComponent>
                     </View>
                 </View>
-            </View>
+            </SafeAreaView>
 
         </GestureHandlerRootView>
     );
@@ -333,7 +333,7 @@ export default memo(LessonQuestionScreen);
 const stylesF = (Dimens: DimensType, themeColors: ReturnType<typeof useThemeColors>) => StyleSheet.create({
     homeHeader: {
         paddingHorizontal: Dimens.W_16,
-        paddingVertical: Dimens.H_36,
+        paddingVertical: Dimens.H_16,
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
@@ -370,7 +370,7 @@ const stylesF = (Dimens: DimensType, themeColors: ReturnType<typeof useThemeColo
     },
     questionContainer: {
         flex: 1,
-        paddingVertical: Dimens.H_20,
+        paddingVertical: Dimens.H_16,
         paddingHorizontal: Dimens.W_16,
     },
     bottomContainer: {
@@ -379,6 +379,10 @@ const stylesF = (Dimens: DimensType, themeColors: ReturnType<typeof useThemeColo
         paddingVertical: Dimens.H_16,
         borderTopWidth: 1,
         borderTopColor: themeColors.color_text_3,
+        height: Dimens.H_90,
+    },
+    bottomContainerExpanded: {
+        height: Dimens.H_180,
     },
     resultContainer: {
         borderRadius: Dimens.RADIUS_8,

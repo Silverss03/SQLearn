@@ -5,4 +5,7 @@ import { APIResponseCommon } from '../dataTypes/common-types';
 import { HomeInfoType } from '../dataTypes/home-types';
 
 export const getHomeService = () => AXIOS.get<APIResponseCommon.ResponseCommon<HomeInfoType.HomeInfoModel>>(`${ApiConfigs.HOME_INFO}`);
-
+export const getAverageScoreService = (_params?: { user_id: number; } | undefined) => AXIOS.get<APIResponseCommon.ResponseCommon<HomeInfoType.AverageScore>>(
+        `${ApiConfigs.AVERAGE_SCORE}`,
+        { params: _params }
+);

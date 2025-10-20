@@ -4,4 +4,9 @@ export declare namespace HomeInfoType {
         averageMark: number
         flashcardsCount: number
     }
+
+    export interface AverageScore {
+        student_id: number
+        average_score: number
+    }
 }

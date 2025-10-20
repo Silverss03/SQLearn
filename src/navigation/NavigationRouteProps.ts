@@ -20,6 +20,13 @@ export type RootStackParamList = {
         lessonTitle: string
         topicName: string
     }
+    lessonQuestionCompleteScreen: {
+        lesson_question_id: number
+        score: number
+        lesson_id: number
+        totalQuestions: number,
+        lessonTitle: string
+    }
 };
 
 export type PokemonDetailScreenProps = RouteProp<RootStackParamList, 'PokemonDetailScreen'>;
@@ -29,3 +36,5 @@ export type LessonsScreenProps = RouteProp<RootStackParamList, 'LessonsScreen'>;
 export type LessonDetailScreenProps = RouteProp<RootStackParamList, 'LessonDetailScreen'>;
 
 export type LessonQuestionScreenProps = RouteProp<RootStackParamList, 'LessonQuestionScreen'>;
+
+export type LessonQuestionCompleteScreenProps = RouteProp<RootStackParamList, 'lessonQuestionCompleteScreen'>;

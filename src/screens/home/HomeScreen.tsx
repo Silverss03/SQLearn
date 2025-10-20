@@ -21,9 +21,10 @@ import { ChapterType } from '@src/network/dataTypes/chapter-type';
 import FlatListComponent from '@src/components/FlatListComponent';
 import TouchableComponent from '@src/components/TouchableComponent';
 import { ChapterIcon } from '@src/assets/svg';
-import { ScrollView } from 'react-native-gesture-handler';
 import NavigationService from '@src/navigation/NavigationService';
 import { SCREENS } from '@src/navigation/config/screenName';
+import { getAverageScoreService } from '@src/network/services/homeServices';
+import * as Progress from 'react-native-progress';
 
 const HomeScreen = () => {
     const Dimens = useDimens();
@@ -35,6 +36,7 @@ const HomeScreen = () => {
     const userData = useAppSelector((state) => state.storageReducer.userData);
     const userFullName = userData?.user?.name;
     const [chapterList, setChapterList] = React.useState<ChapterType.Chapter[]>([]);
+    const [averageScore, setAverageScore] = React.useState<number>(0);
 
     const { callApi: fetchChapterList } = useCallAPI(
             getChapterListService,
@@ -44,9 +46,18 @@ const HomeScreen = () => {
             }, []),
     );
 
+    const { callApi: fetchAverageScore } = useCallAPI(
+            getAverageScoreService,
+            undefined,
+            useCallback((data: { average_score: number }) => {
+                setAverageScore(data.average_score);
+            }, []),
+    );
+
     useEffect(() => {
         fetchChapterList();
-    }, [fetchChapterList]);
+        fetchAverageScore({ user_id: userData?.user?.id || 0 });
+    }, [fetchAverageScore, fetchChapterList, userData?.user?.id]);
 
     const onChapterPress = useCallback(({ item } : { item: ChapterType.Chapter }) => {
         NavigationService.navigate(SCREENS.MENU_TAB_SCREEN, {
@@ -78,27 +89,55 @@ const HomeScreen = () => {
                 end={{ x: 0, y: 0 }}
                 style={styles.homeHeader}
             >
-                <HomeAvatarIcon
-                    width={130}
-                    height={150}
-                    style={{ marginLeft: 8 }}
-                />
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                    <HomeAvatarIcon
+                        width={130}
+                        height={150}
+                        style={{ marginLeft: 8 }}
+                    />
 
-                <View>
-                    <View style={styles.bellContainer} >
-                        <BellIcon/>
+                    <View>
+                        <View style={styles.bellContainer} >
+                            <BellIcon/>
+                        </View>
+                        <TextComponent
+                            style = {styles.nameText}
+                        >
+                            {(t('Xin chào, {{name}}!', { name: userFullName }))}
+                        </TextComponent>
+
+                        <TextComponent
+                            style = {styles.nameText}
+                        >
+                            Nhóm lớp 01
+                        </TextComponent>
                     </View>
-                    <TextComponent
-                        style = {styles.nameText}
-                    >
-                        {(t('Xin chào, {{name}}!', { name: userFullName }))}
-                    </TextComponent>
+                </View>
 
-                    <TextComponent
-                        style = {styles.nameText}
-                    >
-                        Nhóm lớp 01
-                    </TextComponent>
+                <View style={styles.homeInfoContainer}>
+                    <View style={styles.averageScoreContainer}>
+                        <View style={styles.averageScoreTextContainer}>
+                            <TextComponent
+                                style = {{ fontSize: Dimens.FONT_10, color: '#FFFFFF' }}
+                            >
+                                {t('Điểm trung bình')}
+                            </TextComponent>
+                        </View>
+                        <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingHorizontal: 8, alignItems: 'center' }}>
+                            <Progress.Circle
+                                size={55}
+                                progress={(averageScore / 10) * 100}
+                                thickness={10}
+                                color="#FF7F00"
+                                unfilledColor="#C0F0E8"
+                            />
+                            <TextComponent
+                                style = {styles.averageScoreText}
+                            >
+                                {averageScore.toFixed(2)}
+                            </TextComponent>
+                        </View>
+                    </View>
                 </View>
             </LinearGradient>
 
@@ -124,7 +163,6 @@ export default memo(HomeScreen);
 
 const stylesF = (Dimens: DimensType, themeColors: ReturnType<typeof useThemeColors>) => StyleSheet.create({
     homeHeader: {
-        flexDirection: 'row',
         paddingHorizontal: Dimens.W_16,
         paddingVertical: Dimens.H_48,
         justifyContent: 'space-between',
@@ -163,5 +201,37 @@ const stylesF = (Dimens: DimensType, themeColors: ReturnType<typeof useThemeColo
         marginLeft: Dimens.W_8,
         flexWrap: 'wrap',
         color: themeColors.color_text_2,
+    },
+    homeInfoContainer: {
+        backgroundColor: themeColors.color_home_info_background,
+        marginTop: Dimens.W_16,
+        padding: Dimens.W_12,
+        borderRadius: Dimens.RADIUS_8,
+        flexDirection: 'row',
+        justifyContent: 'space-between'
+    },
+    averageScoreContainer: {
+        backgroundColor: themeColors.color_home_average_score_background,
+        borderRadius: 8,
+        width: '45%',
+        paddingBottom: Dimens.H_8
+    },
+    averageScoreTextContainer: {
+        backgroundColor: '#22AC9C',
+        borderBottomRightRadius: Dimens.RADIUS_8,
+        borderTopLeftRadius: Dimens.RADIUS_8,
+        padding: Dimens.W_8,
+        alignSelf: 'flex-start',
+        marginBottom: 8
+    },
+    outOfTenText: {
+        fontSize: Dimens.FONT_18,
+        color: themeColors.color_text_3,
+        marginBottom: 4
+    },
+    averageScoreText: {
+        fontSize: Dimens.FONT_30,
+        color: themeColors.color_text_3,
+        fontWeight: 'bold'
     }
 });

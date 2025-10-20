@@ -1,13 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import {
     View,
     StyleSheet,
     Animated,
-    Dimensions,
     ScrollView,
     Alert
 } from 'react-native';
-import { useRoute, useNavigation } from '@react-navigation/native';
+import { useRoute } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
 import LinearGradient from 'react-native-linear-gradient';
 
@@ -22,8 +21,10 @@ import NavigationService from '@src/navigation/NavigationService';
 import { BackArrowIcon } from '@src/assets/svg';
 import CorrectIcon from '@src/assets/svg/CorrectIcon';
 import IncorrectIcon from '@src/assets/svg/IncorrectIcon';
-
-const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
+import useCallAPI from '@src/hooks/useCallAPI';
+import { submitExerciseService } from '@src/network/services/questionServices';
+import { useAppSelector } from '@src/hooks';
+import { LessonQuestionCompleteScreenProps } from '@src/navigation/NavigationRouteProps';
 
 interface RouteParams {
     score: number;
@@ -35,20 +36,15 @@ interface RouteParams {
 }
 
 const LessonQuestionScreenComplete = () => {
-    const route = useRoute();
+    const route = useRoute<LessonQuestionCompleteScreenProps>();
     const { t } = useTranslation();
     const Dimens = useDimens();
     const themeColors = useThemeColors();
     const styles = stylesF(Dimens, themeColors);
 
-    const {
-        score = 0,
-        totalQuestions = 0,
-        lessonTitle = '',
-        lessonId = 0,
-        completionTime = 0,
-        wrongAnswers = []
-    } = (route.params as RouteParams) || {};
+    const userProfile = useAppSelector((state) => state.storageReducer.userData?.user);
+
+    const { score, lessonId, lessonQuestionId, totalQuestions, lessonTitle } = route.params;
 
     // Animation values
     const [fadeAnim] = useState(new Animated.Value(0));
@@ -57,6 +53,8 @@ const LessonQuestionScreenComplete = () => {
     const [celebrationAnim] = useState(new Animated.Value(0));
 
     // Calculate performance metrics
+    const finalScoreNum = totalQuestions > 0 ? (score / totalQuestions) * 10 : 0;
+    const finalScore = Number(finalScoreNum.toFixed(2));
     const percentage = totalQuestions > 0 ? Math.round((score / totalQuestions) * 100) : 0;
     const isExcellent = percentage >= 90;
     const isGood = percentage >= 70;
@@ -144,14 +142,6 @@ const LessonQuestionScreenComplete = () => {
         ]).start();
     }, [fadeAnim, scaleAnim, progressAnim, celebrationAnim, percentage, isExcellent]);
 
-    // Format completion time
-    const formatTime = (seconds: number) => {
-        const mins = Math.floor(seconds / 60);
-        const secs = seconds % 60;
-        return `${mins}:${secs.toString().padStart(2, '0')}`;
-    };
-
-    // Handle retry lesson
     const handleRetry = () => {
         Alert.alert(
                 t('Làm lại bài học'),
@@ -171,25 +161,23 @@ const LessonQuestionScreenComplete = () => {
         );
     };
 
-    // Handle continue to next lesson
-    const handleContinue = () => {
-        // Navigate back to lesson list or next lesson
-        NavigationService.popToTop();
-    };
+    const { callApi: submitResult } = useCallAPI(
+            submitExerciseService,
+            undefined,
+            undefined
+    );
 
-    // Handle review wrong answers
-    const handleReviewWrongAnswers = () => {
-        if (wrongAnswers.length > 0) {
-            NavigationService.navigate('ReviewWrongAnswers', {
-                wrongAnswers,
-                lessonTitle
-            });
-        }
+    const handleContinue = () => {
+        submitResult({
+            user_id: userProfile.id,
+            lesson_exercise_id: lessonQuestionId,
+            score: finalScore
+        });
+        NavigationService.popToTop();
     };
 
     return (
         <View style={styles.container}>
-            {/* Header */}
             <LinearGradient
                 colors={performanceData.gradient}
                 start={{ x: 0, y: 0 }}
@@ -218,7 +206,6 @@ const LessonQuestionScreenComplete = () => {
                 showsVerticalScrollIndicator={false}
                 contentContainerStyle={styles.contentContainer}
             >
-                {/* Main Result Card */}
                 <Animated.View
                     style={[
                         styles.resultCard,
@@ -236,7 +223,6 @@ const LessonQuestionScreenComplete = () => {
                         }
                     ]}
                 >
-                    {/* Performance Icon and Title */}
                     <View style={styles.performanceSection}>
                         <TextComponent style={styles.emoji}>
                             {performanceData.emoji}
@@ -249,7 +235,6 @@ const LessonQuestionScreenComplete = () => {
                         </TextComponent>
                     </View>
 
-                    {/* Score Circle */}
                     <View style={styles.scoreSection}>
                         <View style={[styles.scoreCircle, { borderColor: performanceData.color }]}>
                             <TextComponent style={[styles.scoreText, { color: performanceData.color }]}>
@@ -261,7 +246,6 @@ const LessonQuestionScreenComplete = () => {
                         </View>
                     </View>
 
-                    {/* Progress Bar */}
                     <View style={styles.progressSection}>
                         <View style={styles.progressBarBackground}>
                             <Animated.View
@@ -283,7 +267,6 @@ const LessonQuestionScreenComplete = () => {
                     </View>
                 </Animated.View>
 
-                {/* Stats Cards */}
                 <View style={styles.statsContainer}>
                     <View style={styles.statCard}>
                         <CorrectIcon size={24} color="#28a745" />
@@ -297,30 +280,9 @@ const LessonQuestionScreenComplete = () => {
                         <TextComponent style={styles.statLabel}>{t('Sai')}</TextComponent>
                     </View>
 
-                    {completionTime > 0 && (
-                        <View style={styles.statCard}>
-                            <TextComponent style={styles.timeIcon}>⏱️</TextComponent>
-                            <TextComponent style={styles.statNumber}>{formatTime(completionTime)}</TextComponent>
-                            <TextComponent style={styles.statLabel}>{t('Thời gian')}</TextComponent>
-                        </View>
-                    )}
                 </View>
 
-                {/* Action Buttons */}
                 <View style={styles.actionButtons}>
-                    {/* Review Wrong Answers Button */}
-                    {wrongAnswers.length > 0 && (
-                        <TouchableComponent
-                            style={styles.reviewButton}
-                            onPress={handleReviewWrongAnswers}
-                        >
-                            <TextComponent style={styles.reviewButtonText}>
-                                {t('Xem lại câu sai ({{count}})', { count: wrongAnswers.length })}
-                            </TextComponent>
-                        </TouchableComponent>
-                    )}
-
-                    {/* Retry Button */}
                     <TouchableComponent
                         style={styles.retryButton}
                         onPress={handleRetry}
@@ -330,7 +292,6 @@ const LessonQuestionScreenComplete = () => {
                         </TextComponent>
                     </TouchableComponent>
 
-                    {/* Continue Button */}
                     <TouchableComponent
                         style={[styles.continueButton, { backgroundColor: performanceData.color }]}
                         onPress={handleContinue}
@@ -339,21 +300,6 @@ const LessonQuestionScreenComplete = () => {
                             {isPassed ? t('Tiếp tục') : t('Hoàn thành')}
                         </TextComponent>
                     </TouchableComponent>
-                </View>
-
-                {/* Lesson Info */}
-                <View style={styles.lessonInfo}>
-                    <TextComponent style={styles.lessonTitle}>
-                        {lessonTitle}
-                    </TextComponent>
-                    <TextComponent style={styles.completedText}>
-                        {t('Đã hoàn thành lúc {{time}}', {
-                            time: new Date().toLocaleTimeString('vi-VN', {
-                                hour: '2-digit',
-                                minute: '2-digit'
-                            })
-                        })}
-                    </TextComponent>
                 </View>
             </ScrollView>
         </View>
@@ -381,7 +327,7 @@ const stylesF = (Dimens: DimensType, themeColors: ReturnType<typeof useThemeColo
         color: Colors.COLOR_WHITE,
         flex: 1,
         textAlign: 'center',
-        marginRight: Dimens.W_40, // Compensate for back button
+        marginRight: Dimens.W_40,
     },
     content: {
         flex: 1,
