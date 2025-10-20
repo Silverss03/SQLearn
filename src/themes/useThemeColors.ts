@@ -41,6 +41,8 @@ const Colors = {
         color_question_background: '#F4F3FF',
         color_text_correct: '#32C670',
         color_text_incorrect: '#FF2E32',
+        color_home_info_background: '#DAF8FF',
+        color_home_average_score_background: '#1A9E8E',
 
         //template app
         workspace_home_button_text: '#FFFFFF',
@@ -90,6 +92,8 @@ const Colors = {
         color_question_background: '#F4F3FF',
         color_text_correct: '#32C670',
         color_text_incorrect: '#FF2E32',
+        color_home_info_background: '#DAF8FF',
+        color_home_average_score_background: '#1A9E8E',
 
         //template app
         workspace_home_button_text: '#B5B268',

@@ -1,4 +1,3 @@
-import { DuoDragDropRef } from '@jamsch/react-native-duo-drag-drop';
 import { QuestionType } from '@src/network/dataTypes/question-types';
 
 export const isMcQuestion = (question: any) : question is QuestionType.McqQuestion => 'answer_A' in question ;
@@ -21,13 +20,19 @@ export const validateSqlAnswer = ({ currentQuestion, dragDropAnswer, sqlAnswers 
     const data = getSqlQuestionData(currentQuestion);
     if (!data) return false;
 
-    const { solutionData } = data;
+    const { solutionData, questionData } = data;
 
     if (currentQuestion.interaction_type === 'drag_drop') {
-        const correctAnswer = solutionData.query;
-        console.log('Correct Answer:', correctAnswer);
-        console.log('User Answer:', dragDropAnswer);
-        return dragDropAnswer === correctAnswer;
+        const correctOrder = solutionData.order.map((id: number) =>
+            questionData.components.find((comp: any) => comp.id === id).text.trim()
+        );
+
+        const userAnswerComponents = dragDropAnswer.split(/\s+/).map((word: string) => word.trim());
+
+        console.log('Correct Order:', correctOrder);
+        console.log('User Answer Components:', userAnswerComponents);
+
+        return correctOrder.join(' ') === userAnswerComponents.join(' ');
     } else if (currentQuestion.interaction_type === 'fill_blanks') {
         const correctAnswers = solutionData.answers;
         return Object.keys(correctAnswers).every((key) => sqlAnswers[key] === correctAnswers[key]);

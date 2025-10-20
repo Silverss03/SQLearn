@@ -58,7 +58,7 @@ const stylesF = (Dimens: DimensType, themeColors: ReturnType<typeof useThemeColo
     answerZone: {
         backgroundColor: themeColors.color_dialog_background,
         borderRadius: Dimens.RADIUS_8,
-        padding: Dimens.W_16,
+        paddingTop: Dimens.W_16,
         marginBottom: Dimens.H_12,
         minHeight: Dimens.H_80,
     },
@@ -104,7 +104,6 @@ const stylesF = (Dimens: DimensType, themeColors: ReturnType<typeof useThemeColo
     questionDescription: {
         borderWidth: 1,
         borderColor: themeColors.color_question_border,
-        padding: Dimens.W_8,
         borderRadius: Dimens.RADIUS_4,
         backgroundColor: themeColors.color_question_background
     }

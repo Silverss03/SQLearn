@@ -36,12 +36,10 @@ const FillblankQuestion = ({ question, questionData, sqlAnswers, setSqlAnswers, 
                 </TextComponent>
             </View>
 
-            <View style={styles.queryContainer}>
-                <View style={styles.queryTemplateContainer}>
-                    <TextComponent style={styles.queryTemplateText}>
-                        {renderQueryTemplate()}
-                    </TextComponent>
-                </View>
+            <View style={styles.queryTemplateContainer}>
+                <TextComponent style={styles.queryTemplateText}>
+                    {renderQueryTemplate()}
+                </TextComponent>
             </View>
 
             <View style={styles.optionsContainer}>
@@ -104,7 +102,7 @@ const stylesF = (Dimens: DimensType, themeColors: ReturnType<typeof useThemeColo
         marginTop: Dimens.H_16,
     },
     queryTemplateText: {
-        fontSize: Dimens.FONT_16,
+        fontSize: Dimens.FONT_14,
         color: themeColors.color_text_2,
         fontFamily: 'monospace',
         lineHeight: Dimens.H_24,
@@ -131,10 +129,6 @@ const stylesF = (Dimens: DimensType, themeColors: ReturnType<typeof useThemeColo
         fontSize: Dimens.FONT_12,
         color: themeColors.color_text,
     },
-    queryContainer: {
-        marginBottom: Dimens.H_24,
-        marginTop: Dimens.H_16,
-    },
     queryLabel: {
         fontSize: Dimens.FONT_14,
         fontWeight: '600',
@@ -143,19 +137,19 @@ const stylesF = (Dimens: DimensType, themeColors: ReturnType<typeof useThemeColo
     },
     queryTemplateContainer: {
         backgroundColor: themeColors.color_dialog_background,
-        padding: Dimens.W_16,
+        padding: Dimens.W_8,
         borderRadius: Dimens.RADIUS_8,
         borderWidth: 1,
         borderColor: themeColors.color_text_3,
     },
     optionsContainer: {
-        marginTop: Dimens.H_16,
+        marginTop: Dimens.H_8,
     },
     optionsLabel: {
         fontSize: Dimens.FONT_16,
         fontWeight: '600',
         color: themeColors.color_text_2,
-        marginBottom: Dimens.H_16,
+        marginBottom: Dimens.H_8,
     },
     blankSection: {
         marginBottom: Dimens.H_20,

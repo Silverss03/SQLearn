@@ -21,9 +21,9 @@ export const POKEMON_DETAIL = 'pokemon-species';
 export const CHAPTER_LIST = 'topics';
 export const HOME_INFO = 'home';
 export const LESSONS_BY_TOPIC = (topicId: number) => `topics/${topicId}/lessons`;
-export const QUESTIONS_BY_LESSON = (lessonId: number) => `lessons/${lessonId}/questions`;
-export const MC_QUESTIONS_BY_LESSON = (lessonId: number) => `lessons/${lessonId}/multichoice-questions`;
-export const SQL_QUESTIONS_BY_LESSON = (lessonId: number) => `lessons/${lessonId}/questions/interactive-sql`;
+export const EXERCISE_BY_LESSON = (lessonId: number) => `lessons/${lessonId}/exercise`;
+export const SUBMIT_EXERCISE = 'exercise/submit';
+export const AVERAGE_SCORE = 'students/average-score';
 
 export const CHECK_TOKEN_EXPIRED_WHITE_LIST = [
     LOGIN,

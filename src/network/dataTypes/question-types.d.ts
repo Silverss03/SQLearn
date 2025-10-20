@@ -1,5 +1,17 @@
 
 export declare namespace QuestionType {
+    export interface Exercise {
+        lessonExercise: {
+            id: number;
+            lesson_id: number;
+            is_active: boolean;
+            created_by: number;
+        }
+        questions: {
+            multipleChoice: McqQuestion[];
+            sqlQuestions: SqlQuestion[];
+        }
+    }
     export interface Question {
         id: number;
         lesson_id: number;
