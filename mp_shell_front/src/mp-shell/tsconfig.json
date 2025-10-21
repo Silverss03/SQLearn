@@ -1,0 +1,4 @@
+{
+  "extends": "@sql/configs/src/typescript/tsconfig.json",
+  "include": ["src"]
+}
