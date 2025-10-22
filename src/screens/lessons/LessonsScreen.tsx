@@ -15,7 +15,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import { useTranslation } from 'react-i18next';
 import useCallAPI from '@src/hooks/useCallAPI';
 import TouchableComponent from '@src/components/TouchableComponent';
-import { BackArrowIcon, ChapterIcon } from '@src/assets/svg';
+import { ArrowRightIcon, BackArrowIcon, ChapterIcon } from '@src/assets/svg';
 import { useRoute } from '@react-navigation/native';
 import { LessonsScreenProps } from '@src/navigation/NavigationRouteProps';
 import { LessonType } from '@src/network/dataTypes/lesson-type';
@@ -27,6 +27,7 @@ import Accordion from 'react-native-collapsible/Accordion';
 import { ArrowDownIcon } from '@src/assets/svg';
 import ArrowUpIcon from '@src/assets/svg/ArrowUpIcon';
 import { SCREENS } from '@src/navigation/config/screenName';
+import { Slider } from '@miblanchard/react-native-slider';
 
 const LessonsScreen = () => {
     const Dimens = useDimens();
@@ -144,6 +145,35 @@ const LessonsScreen = () => {
                         height={Dimens.H_120}
                     />
                 </View>
+
+                <View style={{ backgroundColor: 'white', borderRadius: Dimens.RADIUS_8, padding: Dimens.W_16, marginTop: Dimens.H_16 }}>
+                    <View style={{ flexDirection: 'row' }}>
+                        <View style={{ flexDirection: 'row', alignItems: 'center', width: '30%', height: '100%' }}>
+                            <ChapterIcon/>
+                            <TextComponent style={{ fontSize: Dimens.FONT_12, color: 'rgba(0, 0, 0, 0.5)' }}>
+                                {lessonsList.length} {t('bài học')}
+                            </TextComponent>
+                        </View>
+
+                        <View style={styles.progressWrapper}>
+                            <TextComponent style={styles.percentageText}>
+                                {Math.round(10)}%
+                            </TextComponent>
+                            <Slider
+                                value={[10]}
+                                minimumValue={0}
+                                maximumValue={100}
+                                step={1}
+                                disabled
+                                containerStyle={styles.sliderContainer}
+                                trackStyle={styles.track}
+                                thumbStyle={styles.thumb}
+                                minimumTrackTintColor={themeColors.color_primary}
+                                maximumTrackTintColor={'#E0E0E0'}
+                            />
+                        </View>
+                    </View>
+                </View>
             </LinearGradient>
 
             <View style={styles.contentContainer}>
@@ -239,7 +269,6 @@ const stylesF = (Dimens: DimensType, themeColors: ReturnType<typeof useThemeColo
         shadowOpacity: 0.25,
         shadowRadius: 4,
 
-        // Shadow for Android
         elevation: 2,
     },
     accordionContentText: {
@@ -247,5 +276,31 @@ const stylesF = (Dimens: DimensType, themeColors: ReturnType<typeof useThemeColo
         color: 'rgba(0, 0, 0, 0.5)',
         marginRight: Dimens.W_12,
         textDecorationLine: 'underline',
-    }
+    },
+    progressWrapper: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: Dimens.W_4,
+        width: '70%',
+        height: '100%'
+    },
+    sliderContainer: {
+        flex: 1,
+        height: Dimens.H_6,
+    },
+    track: {
+        height: Dimens.H_6,
+        borderRadius: Dimens.RADIUS_4,
+    },
+    thumb: {
+        width: 0,
+        height: 0,
+        backgroundColor: 'transparent',
+        borderWidth: 0,
+    },
+    percentageText: {
+        fontSize: Dimens.FONT_12,
+        fontWeight: '600',
+        color: themeColors.color_text,
+    },
 });
