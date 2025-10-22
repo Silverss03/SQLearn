@@ -43,6 +43,7 @@ const Colors = {
         color_text_incorrect: '#FF2E32',
         color_home_info_background: '#DAF8FF',
         color_home_average_score_background: '#1A9E8E',
+        color_home_overall_progress_background: '#25DBD0',
 
         //template app
         workspace_home_button_text: '#FFFFFF',
@@ -94,6 +95,7 @@ const Colors = {
         color_text_incorrect: '#FF2E32',
         color_home_info_background: '#DAF8FF',
         color_home_average_score_background: '#1A9E8E',
+        color_home_overall_progress_background: '#25DBD0',
 
         //template app
         workspace_home_button_text: '#B5B268',

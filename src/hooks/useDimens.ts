@@ -263,6 +263,7 @@ export type DimensType = {
     H_999: number,
 
     FONT_40: number,
+    FONT_36: number,
     FONT_30: number,
     FONT_28: number,
     FONT_26: number,
@@ -582,6 +583,7 @@ const useDimens = (type = 'window'): DimensType => {
         H_999: verticalScale(999, height),
 
         FONT_40: fontScale(40, width, height),
+        FONT_36: fontScale(36, width, height),
         FONT_30: fontScale(30, width, height),
         FONT_28: fontScale(28, width, height),
         FONT_26: fontScale(26, width, height),

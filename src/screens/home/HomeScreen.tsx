@@ -19,12 +19,11 @@ import { getChapterListService } from '@src/network/services/chapterService';
 import useCallAPI from '@src/hooks/useCallAPI';
 import { ChapterType } from '@src/network/dataTypes/chapter-type';
 import FlatListComponent from '@src/components/FlatListComponent';
-import TouchableComponent from '@src/components/TouchableComponent';
-import { ChapterIcon } from '@src/assets/svg';
-import NavigationService from '@src/navigation/NavigationService';
-import { SCREENS } from '@src/navigation/config/screenName';
 import { getAverageScoreService } from '@src/network/services/homeServices';
 import * as Progress from 'react-native-progress';
+import { getAllTopicsProgressService, getOverallProgressService } from '@src/network/services/progresService';
+import { OverallProgress, TopicProgress } from '@src/network/dataTypes/progress-types';
+import ChapterComponent from './components/ChapterComponent';
 
 const HomeScreen = () => {
     const Dimens = useDimens();
@@ -37,6 +36,16 @@ const HomeScreen = () => {
     const userFullName = userData?.user?.name;
     const [chapterList, setChapterList] = React.useState<ChapterType.Chapter[]>([]);
     const [averageScore, setAverageScore] = React.useState<number>(0);
+    const [overallProgress, setOverallProgress] = React.useState<number>(0);
+    const [chaptersProgress, setChaptersProgress] = React.useState<TopicProgress[]>([]);
+
+    const { callApi: fetchAllChapterProgress } = useCallAPI(
+            getAllTopicsProgressService,
+            undefined,
+            useCallback((data: TopicProgress[]) => {
+                setChaptersProgress(data);
+            }, []),
+    );
 
     const { callApi: fetchChapterList } = useCallAPI(
             getChapterListService,
@@ -54,32 +63,28 @@ const HomeScreen = () => {
             }, []),
     );
 
+    const { callApi: fetchOverallProgress } = useCallAPI(
+            getOverallProgressService,
+            undefined,
+            useCallback((data: OverallProgress) => {
+                setOverallProgress(data.progress_percentage);
+            }, []),
+    );
+
     useEffect(() => {
         fetchChapterList();
         fetchAverageScore({ user_id: userData?.user?.id || 0 });
     }, [fetchAverageScore, fetchChapterList, userData?.user?.id]);
 
-    const onChapterPress = useCallback(({ item } : { item: ChapterType.Chapter }) => {
-        NavigationService.navigate(SCREENS.MENU_TAB_SCREEN, {
-            screen: SCREENS.LESSONS_SCREEN,
-            params: {
-                topicId: item.id,
-                topicName: item.topic_name,
-            }
-        });
+    useEffect(() => {
+        fetchOverallProgress({ user_id: userData?.user?.id || 0 });
+    }, [fetchOverallProgress, userData?.user?.id]);
+
+    useEffect(() => {
+        fetchAllChapterProgress({ user_id: userData?.user?.id });
     }, []);
 
-    const renderChapterItems = useCallback(({ item }: { item: ChapterType.Chapter }) => (
-        <TouchableComponent
-            style={styles.chapterContainer}
-            onPress={() => onChapterPress({ item })}
-        >
-            <ChapterIcon/>
-            <TextComponent style={styles.chapterItemText}>
-                {item.topic_name}
-            </TextComponent>
-        </TouchableComponent>
-    ), [onChapterPress, styles.chapterContainer, styles.chapterItemText]);
+    const getChapterProgress = (chapterId: number): TopicProgress | undefined => chaptersProgress.find((p) => p.topic_id === chapterId);
 
     return (
         <View style={{ flex: 1 }}>
@@ -115,6 +120,30 @@ const HomeScreen = () => {
                 </View>
 
                 <View style={styles.homeInfoContainer}>
+                    <View style={styles.progressContainer}>
+                        <View style={styles.progressTextContainer}>
+                            <TextComponent
+                                style = {{ fontSize: Dimens.FONT_10, color: '#FFFFFF' }}
+                            >
+                                {t('Tiến trình')}
+                            </TextComponent>
+                        </View>
+                        <View style={styles.averageScoreBar}>
+                            <Progress.Circle
+                                size={55}
+                                progress={(overallProgress / 100)}
+                                thickness={10}
+                                color="#FF7F00"
+                                unfilledColor="#C0F0E8"
+                            />
+                            <TextComponent
+                                style = {styles.averageScoreText}
+                            >
+                                {overallProgress}%
+                            </TextComponent>
+                        </View>
+                    </View>
+
                     <View style={styles.averageScoreContainer}>
                         <View style={styles.averageScoreTextContainer}>
                             <TextComponent
@@ -123,10 +152,10 @@ const HomeScreen = () => {
                                 {t('Điểm trung bình')}
                             </TextComponent>
                         </View>
-                        <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingHorizontal: 8, alignItems: 'center' }}>
+                        <View style={styles.averageScoreBar}>
                             <Progress.Circle
                                 size={55}
-                                progress={(averageScore / 10) * 100}
+                                progress={(averageScore / 10)}
                                 thickness={10}
                                 color="#FF7F00"
                                 unfilledColor="#C0F0E8"
@@ -145,7 +174,12 @@ const HomeScreen = () => {
 
                 <FlatListComponent
                     data={chapterList}
-                    renderItem={renderChapterItems}
+                    renderItem={({ item }) => (
+                        <ChapterComponent
+                            item={item}
+                            progress={getChapterProgress(item.id)}
+                        />
+                    )}
                     keyExtractor={(item) => item.id.toString()}
                     ListHeaderComponent={
                         <TextComponent style={styles.chapterText}>
@@ -216,8 +250,22 @@ const stylesF = (Dimens: DimensType, themeColors: ReturnType<typeof useThemeColo
         width: '45%',
         paddingBottom: Dimens.H_8
     },
+    progressContainer: {
+        backgroundColor: themeColors.color_home_overall_progress_background,
+        borderRadius: 8,
+        width: '45%',
+        paddingBottom: Dimens.H_8
+    },
     averageScoreTextContainer: {
         backgroundColor: '#22AC9C',
+        borderBottomRightRadius: Dimens.RADIUS_8,
+        borderTopLeftRadius: Dimens.RADIUS_8,
+        padding: Dimens.W_8,
+        alignSelf: 'flex-start',
+        marginBottom: 8
+    },
+    progressTextContainer: {
+        backgroundColor: '#1FBEB599',
         borderBottomRightRadius: Dimens.RADIUS_8,
         borderTopLeftRadius: Dimens.RADIUS_8,
         padding: Dimens.W_8,
@@ -230,8 +278,14 @@ const stylesF = (Dimens: DimensType, themeColors: ReturnType<typeof useThemeColo
         marginBottom: 4
     },
     averageScoreText: {
-        fontSize: Dimens.FONT_30,
+        fontSize: Dimens.FONT_36,
         color: themeColors.color_text_3,
         fontWeight: 'bold'
+    },
+    averageScoreBar: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        paddingHorizontal: 8,
+        alignItems: 'center'
     }
 });
