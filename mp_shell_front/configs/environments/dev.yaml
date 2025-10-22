@@ -1,0 +1,26 @@
+account:
+  account_id: "948862615142"
+pipeline:
+  source:
+    git_branch: develop
+  build:
+    environment_variables:
+      VITE_AUTHORITY_PATH: https://idp.dev.mkplacedev.jp
+      VITE_POST_REDIRECT_URL: https://www.dev.mkplacedev.jp/
+      VITE_REMOTE_APP_KERNEL: https://www.dev.mkplacedev.jp/mfe/kernel/assets/remoteEntry.js
+      VITE_REMOTE_APP_MP_BIZ01: https://www.dev.mkplacedev.jp/mfe/biz01/assets/remoteEntry.js
+      VITE_API_CONNECTION_TIMEOUT: "10000"
+      VITE_AWS_RUM_GUEST_ROLE_ARN: ""
+      VITE_AWS_RUM_IDENTITY_POOL_ID: ""
+      VITE_AWS_RUM_ENDPOINT: ""
+      VITE_AWS_RUM_APPLICATION_ID: ""
+      VITE_GTM_ID: ""
+      VITE_ENV_NAME: "dev"
+      BUILD_MODE: "dev"
+cdn:
+  route53:
+    exports:
+      public_hosted_zone: /MPShared/Route53/PublicHostedZone/Name
+  cloudfront:
+    distribution_id: E3Q6VKVHH2D3CD
+    bucket_name: mp-shared-dev-948862615142-us-east-1
