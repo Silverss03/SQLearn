@@ -15,7 +15,9 @@ import LinearGradient from 'react-native-linear-gradient';
 import { useTranslation } from 'react-i18next';
 import useCallAPI from '@src/hooks/useCallAPI';
 import TouchableComponent from '@src/components/TouchableComponent';
-import { ArrowRightIcon, BackArrowIcon, ChapterIcon } from '@src/assets/svg';
+import {
+    ArrowRightIcon, BackArrowIcon, ChapterIcon
+} from '@src/assets/svg';
 import { useRoute } from '@react-navigation/native';
 import { LessonsScreenProps } from '@src/navigation/NavigationRouteProps';
 import { LessonType } from '@src/network/dataTypes/lesson-type';
@@ -115,8 +117,8 @@ const LessonsScreen = () => {
         <View style={{ flex: 1 }}>
             <LinearGradient
                 colors={['#2689D1D3', '#2A9BD8C1']}
-                start={{ x: 1, y: 0 }}
-                end={{ x: 0, y: 0 }}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 0, y: 1 }}
                 style={styles.homeHeader}
             >
                 <TouchableComponent

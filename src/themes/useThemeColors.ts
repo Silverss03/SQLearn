@@ -44,6 +44,7 @@ const Colors = {
         color_home_info_background: '#DAF8FF',
         color_home_average_score_background: '#1A9E8E',
         color_home_overall_progress_background: '#25DBD0',
+        color_active_tab_bar: '#5A64EA',
 
         //template app
         workspace_home_button_text: '#FFFFFF',
@@ -96,6 +97,7 @@ const Colors = {
         color_home_info_background: '#DAF8FF',
         color_home_average_score_background: '#1A9E8E',
         color_home_overall_progress_background: '#25DBD0',
+        color_active_tab_bar: '#5A64EA',
 
         //template app
         workspace_home_button_text: '#B5B268',

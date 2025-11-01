@@ -1,4 +1,3 @@
-
 export declare namespace QuestionType {
     export interface Exercise {
         lessonExercise: {
@@ -42,5 +41,27 @@ export declare namespace QuestionType {
         answer_C: string;
         answer_D: string;
         correct_answer: string;
+    }
+
+    export interface ChapterExercise {
+        activated_at: string;
+        createad_at: string;
+        created_by: number;
+        description: string;
+        id: number;
+        is_active: boolean;
+        is_completed: boolean;
+        score: number;
+        topic_id: number;
+        updated_at: string;
+        is_completed: boolean;
+    }
+
+    export interface ChapterExerciseRecord {
+        chapter_exercise_id: number;
+        chapter_exercise_title: string;
+        is_completed: number;
+        score: number;
+        completed_at: string;
     }
 }
