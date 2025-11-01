@@ -4,7 +4,6 @@ import { SCREENS } from '@navigation/config/screenName';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { screenOptionsDefault } from '@src/navigation/config/screenOptionsDefault';
 import { RootStackParamList } from '@src/navigation/NavigationRouteProps';
-import PokemonListScreen from '@src/screens/example/PokemonListScreen';
 import useThemeColors from '@src/themes/useThemeColors';
 import HomeScreen from '@src/screens/home/HomeScreen';
 

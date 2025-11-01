@@ -14,6 +14,10 @@ export const SCREENS = {
     LESSON_DETAIL_SCREEN: 'LessonDetailScreen',
     LESSON_QUESTION_SCREEN: 'LessonQuestionScreen',
     LESSON_QUESTION_COMPLETE_SCREEN: 'LessonQuestionCompleteScreen',
+    CHAPTER_QUESTION_SCREEN: 'ChapterQuestionScreen',
+    CHAPTER_EXERCISE_SCREEN: 'ChapterExercisesScreen',
+    CHAPTER_EXERCISE_COMPLETE_SCREEN: 'ChapterExerciseCompleteScreen',
+    REVISION_TAB_SCREEN: 'REVISION_TAB_SCREEN',
 
     SPLASH_SCREEN: 'SplashScreen',
     POKEMON_LIST_SCREEN: 'PokemonListScreen',

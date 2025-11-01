@@ -12,11 +12,10 @@ import {
 import CustomTabBar from '@src/navigation/bottomTab/components/CustomTabBar';
 import { SCREENS } from '@src/navigation/config/screenName';
 
-import RewardStack from './RewardStack';
-import CartStack from './CartStack';
 import HomeStack from './HomeStack';
 import MenuStack from './MenuStack';
 import ProfileStack from './ProfileStack';
+import CartStack from './CartStack';
 
 const BottomTabNavigator = createBottomTabNavigator();
 
@@ -50,15 +49,15 @@ const BottomTab = () => {
                 name={SCREENS.MENU_TAB_SCREEN}
                 component={MenuStack}
             />
-            {/* <BottomTabNavigator.Screen
+            <BottomTabNavigator.Screen
                 options={{
-                    title: t('Cart'),
+                    title: t('Revision'),
                     lazy: false
                 }}
-                name={SCREENS.SHOPPING_CARD_TAB_SCREEN}
+                name={SCREENS.REVISION_TAB_SCREEN} // ← Use new name
                 component={CartStack}
             />
-            <BottomTabNavigator.Screen
+            {/* <BottomTabNavigator.Screen
                 options={{
                     title: t('Loyalty'),
                 }}
