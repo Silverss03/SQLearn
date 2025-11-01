@@ -27,6 +27,15 @@ export type RootStackParamList = {
         totalQuestions: number,
         lessonTitle: string
     }
+    chapterExercisesScreen: {
+        topicId: number
+        exerciseDescription: string
+    };
+    chapterExerciseCompleteScreen: {
+        score: number
+        chapterExerciseId: number
+        totalQuestions: number
+    };
 };
 
 export type PokemonDetailScreenProps = RouteProp<RootStackParamList, 'PokemonDetailScreen'>;
@@ -38,3 +47,5 @@ export type LessonDetailScreenProps = RouteProp<RootStackParamList, 'LessonDetai
 export type LessonQuestionScreenProps = RouteProp<RootStackParamList, 'LessonQuestionScreen'>;
 
 export type LessonQuestionCompleteScreenProps = RouteProp<RootStackParamList, 'lessonQuestionCompleteScreen'>;
+
+export type ChapterExercisesScreenProps = RouteProp<RootStackParamList, 'chapterExercisesScreen'>;

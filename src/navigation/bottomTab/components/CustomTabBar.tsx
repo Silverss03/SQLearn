@@ -20,6 +20,7 @@ import TouchableComponent from '@src/components/TouchableComponent';
 import { Colors } from '@src/configs';
 import useDimens, { DimensType } from '@src/hooks/useDimens';
 import useThemeColors from '@src/themes/useThemeColors';
+import TabRevisionIcon from '@src/assets/svg/TabRevisionIcon';
 
 const CustomTabBar = ({ state, descriptors, navigation }: BottomTabBarProps) => {
     const themeColors = useThemeColors();
@@ -53,7 +54,7 @@ const CustomTabBar = ({ state, descriptors, navigation }: BottomTabBarProps) => 
                     />
                 );
 
-            case 2:
+            case 3:
                 return (
                     <TabAccountIcon
                         width={iconSize}
@@ -62,14 +63,14 @@ const CustomTabBar = ({ state, descriptors, navigation }: BottomTabBarProps) => 
                     />
                 );
 
-                // case 3:
-                //     return (
-                //         <TabCustomerIcon
-                //             width={iconSize}
-                //             height={iconSize}
-                //             stroke={isFocused ? themeColors.color_primary : themeColors.color_tab_inactive}
-                //         />
-                //     );
+            case 2:
+                return (
+                    <TabRevisionIcon
+                        width={iconSize}
+                        height={iconSize}
+                        stroke={isFocused ? themeColors.color_primary : themeColors.color_tab_inactive}
+                    />
+                );
                 // case 4:
                 //     return (
                 //         <TabAccountIcon
