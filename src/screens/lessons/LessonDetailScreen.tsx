@@ -96,8 +96,8 @@ const LessonDetailScreen = () => {
         <View style={{ flex: 1 }}>
             <LinearGradient
                 colors={['#2689D1D3', '#2A9BD8C1']}
-                start={{ x: 1, y: 0 }}
-                end={{ x: 0, y: 0 }}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 0, y: 1 }}
                 style={styles.homeHeader}
             >
                 <TouchableComponent

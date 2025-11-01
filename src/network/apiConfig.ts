@@ -27,6 +27,10 @@ export const AVERAGE_SCORE = 'students/average-score';
 export const TOPIC_PROGRESS = (topicId: number) => `topics/${topicId}/progress`;
 export const OVERALL_PROGRESS = 'students/progress';
 export const ALL_TOPICS_PROGRESS = 'students/topics-progress';
+export const EXERCISE_BY_TOPIC = (topicId: number) => `topics/${topicId}/chapter-exercises`;
+export const CHAPTER_EXERCISE_DETAIL = 'chapter-exercises';
+export const SUBMIT_CHAPTER_EXERCISE = 'chapter-exercise/submit';
+export const CHAPTER_EXERCISE_HISTORY = 'students/chapter-exercise-history';
 
 export const CHECK_TOKEN_EXPIRED_WHITE_LIST = [
     LOGIN,

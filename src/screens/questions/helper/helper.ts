@@ -29,9 +29,6 @@ export const validateSqlAnswer = ({ currentQuestion, dragDropAnswer, sqlAnswers 
 
         const userAnswerComponents = dragDropAnswer.split(/\s+/).map((word: string) => word.trim());
 
-        console.log('Correct Order:', correctOrder);
-        console.log('User Answer Components:', userAnswerComponents);
-
         return correctOrder.join(' ') === userAnswerComponents.join(' ');
     } else if (currentQuestion.interaction_type === 'fill_blanks') {
         const correctAnswers = solutionData.answers;

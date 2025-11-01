@@ -2,7 +2,7 @@
     "loading": "Đang tải…",
     "Home": "Trang chủ",
     "Menu": "Thực đơn",
-    "Cart": "Giỏ hàng",
+    "Revision": "Ôn tập",
     "Loyalty": "Tích điểm",
     "Profile": "Hồ sơ",
     "Xin chào, {{name}}!": "Xin chào, {{name}}!",
@@ -27,4 +27,7 @@
     "Câu truy vấn đúng {{answer}}": "Câu truy vấn đúng {{answer}}",
     "Tiến trình": "Tiến trình",
     "bài học": "bài học",
+    "Danh sách bài tập": "Danh sách bài tập",
+    "Exercises": "Bài tập",
+    "History": "Lịch sử",
 }

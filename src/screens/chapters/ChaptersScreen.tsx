@@ -2,6 +2,7 @@ import React, {
     memo,
     useCallback,
     useEffect,
+    useState,
 } from 'react';
 
 import {
@@ -19,7 +20,7 @@ import { useTranslation } from 'react-i18next';
 import TouchableComponent from '@src/components/TouchableComponent';
 import FlatListComponent from '@src/components/FlatListComponent';
 import StudyGirlIcon from '@src/assets/svg/StudyGirlIcon';
-import { ArrowRightIcon, ChapterIcon } from '@src/assets/svg';
+import { ArrowRightIcon } from '@src/assets/svg';
 import NavigationService from '@src/navigation/NavigationService';
 import { SCREENS } from '@src/navigation/config/screenName';
 
@@ -29,7 +30,7 @@ const ChapterScreen = () => {
     const styles = stylesF(Dimens, themeColors);
     const { t } = useTranslation();
 
-    const [chapterList, setChapterList] = React.useState<ChapterType.Chapter[]>([]);
+    const [chapterList, setChapterList] = useState<ChapterType.Chapter[]>([]);
 
     const { callApi: fetchChapterList } = useCallAPI(
             getChapterListService,
@@ -70,8 +71,8 @@ const ChapterScreen = () => {
 
             <View style={styles.iconContainer}>
                 <StudyGirlIcon />
-                <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: Dimens.H_24 }}>
-                    <TextComponent style={{ marginRight: Dimens.W_4, fontSize: Dimens.FONT_12, color: themeColors.color_text_2 }}>
+                <View style={styles.detailTextContainer}>
+                    <TextComponent style={styles.detailText}>
                         {t('Chi tiết')}
                     </TextComponent>
                     <ArrowRightIcon
@@ -81,7 +82,7 @@ const ChapterScreen = () => {
                 </View>
             </View>
         </TouchableComponent>
-    ), [styles.chapterContainer, styles.textContainer, styles.chapterItemText, styles.line, styles.chapterDescription, styles.iconContainer, onChapterPress, Dimens.H_24, Dimens.W_4, Dimens.FONT_12, themeColors.color_text_2, t]);
+    ), [styles.chapterContainer, styles.textContainer, styles.chapterItemText, styles.line, styles.chapterDescription, styles.iconContainer, styles.detailTextContainer, styles.detailText, t, onChapterPress]);
 
     return (
         <View style={styles.contentContainer}>
@@ -150,4 +151,14 @@ const stylesF = (Dimens: DimensType, themeColors: ReturnType<typeof useThemeColo
         flex: 1,
         marginRight: Dimens.W_12
     },
+    detailTextContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginTop: Dimens.H_24
+    },
+    detailText: {
+        marginRight: Dimens.W_4,
+        fontSize: Dimens.FONT_12,
+        color: themeColors.color_text_2
+    }
 });

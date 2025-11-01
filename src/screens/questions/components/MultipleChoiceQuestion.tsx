@@ -6,7 +6,7 @@ import useThemeColors from '@src/themes/useThemeColors';
 import { useCallback } from 'react';
 import { StyleSheet, View } from 'react-native';
 
-const MultipleChoiceQuestion = ({ currentQuestion, isSubmitted, selectedAnswer, setSelectedAnswer } : {currentQuestion: QuestionType.McqQuestion, isSubmitted: boolean, selectedAnswer: string | null, setSelectedAnswer: (answer: string) => void}) => {
+const MultipleChoiceQuestion = ({ currentQuestion, isSubmitted, selectedAnswer, setSelectedAnswer, isChapterExercise = false } : {currentQuestion: QuestionType.McqQuestion, isSubmitted: boolean, selectedAnswer: string | null, setSelectedAnswer: (answer: string) => void, isChapterExercise?: boolean}) => {
     const Dimens = useDimens();
 
     const themeColors = useThemeColors();
@@ -25,15 +25,17 @@ const MultipleChoiceQuestion = ({ currentQuestion, isSubmitted, selectedAnswer, 
                 baseStyle.push(styles.selectedAnswer) ;
             }
         } else {
-            if (answer === currentQuestion?.correct_answer) {
-                baseStyle.push(styles.correctAnswer) ;
-            } else if (selectedAnswer === answer && answer !== currentQuestion?.correct_answer) {
-                baseStyle.push(styles.incorrectAnswer) ;
+            if (!isChapterExercise) {
+                if (answer === currentQuestion?.correct_answer) {
+                    baseStyle.push(styles.correctAnswer) ;
+                } else if (selectedAnswer === answer && answer !== currentQuestion?.correct_answer) {
+                    baseStyle.push(styles.incorrectAnswer) ;
+                }
             }
         }
 
         return baseStyle;
-    }, [currentQuestion?.correct_answer, isSubmitted, selectedAnswer, styles.answerOption, styles.correctAnswer, styles.incorrectAnswer, styles.selectedAnswer]);
+    }, [currentQuestion?.correct_answer, isChapterExercise, isSubmitted, selectedAnswer, styles.answerOption, styles.correctAnswer, styles.incorrectAnswer, styles.selectedAnswer]);
     return (
         <View>
             <View style={styles.questionDescription}>

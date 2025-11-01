@@ -20,8 +20,6 @@ const ChapterComponent = ({ item, progress }: ChapterComponentProps) => {
 
     const themeColors = useThemeColors();
     const styles = stylesF(Dimens, themeColors);
-    console.log('ChapterComponent progress:', progress);
-    console.log('ChapterComponent item:', item.topic_name);
 
     const onChapterPress = useCallback(({ item } : { item: ChapterType.Chapter }) => {
         NavigationService.navigate(SCREENS.MENU_TAB_SCREEN, {

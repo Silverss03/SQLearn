@@ -1,12 +1,9 @@
-import React, {
-    useCallback, useEffect, useState
-} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
     View,
     StyleSheet,
     Animated,
     ScrollView,
-    Alert
 } from 'react-native';
 import { useRoute } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
@@ -24,11 +21,12 @@ import { BackArrowIcon } from '@src/assets/svg';
 import CorrectIcon from '@src/assets/svg/CorrectIcon';
 import IncorrectIcon from '@src/assets/svg/IncorrectIcon';
 import useCallAPI from '@src/hooks/useCallAPI';
-import { submitExerciseService } from '@src/network/services/questionServices';
+import { submitChapterExerciseService, submitExerciseService } from '@src/network/services/questionServices';
 import { useAppSelector } from '@src/hooks';
 import { LessonQuestionCompleteScreenProps } from '@src/navigation/NavigationRouteProps';
+import { SCREENS } from '@src/navigation/config/screenName';
 
-const LessonQuestionScreenComplete = () => {
+const ChapterQuestionScreenComplete = () => {
     const route = useRoute<LessonQuestionCompleteScreenProps>();
     const { t } = useTranslation();
     const Dimens = useDimens();
@@ -37,7 +35,8 @@ const LessonQuestionScreenComplete = () => {
 
     const userProfile = useAppSelector((state) => state.storageReducer.userData?.user);
 
-    const { score, lessonId, lessonQuestionId, totalQuestions, lessonTitle } = route.params;
+    const { chapterExerciseId, score, totalQuestions } = route.params;
+    console.log('ChapterQuestionScreenComplete params:', route.params);
 
     // Animation values
     const [fadeAnim] = useState(new Animated.Value(0));
@@ -135,35 +134,17 @@ const LessonQuestionScreenComplete = () => {
         ]).start();
     }, [fadeAnim, scaleAnim, progressAnim, celebrationAnim, percentage, isExcellent]);
 
-    const handleRetry = () => {
-        Alert.alert(
-                t('Làm lại bài học'),
-                t('Bạn có muốn làm lại bài học này không?'),
-                [
-                    { text: t('Hủy'), style: 'cancel' },
-                    {
-                        text: t('Làm lại'),
-                        onPress: () => {
-                            NavigationService.navigate('LessonQuestionScreen', {
-                                lessonId,
-                                lessonTitle
-                            });
-                        }
-                    }
-                ]
-        );
-    };
-
     const { callApi: submitResult } = useCallAPI(
-            submitExerciseService,
+            submitChapterExerciseService,
             undefined,
             undefined
     );
 
     const handleContinue = () => {
+        console.log(userProfile.id, chapterExerciseId, finalScore);
         submitResult({
             user_id: userProfile.id,
-            lesson_exercise_id: lessonQuestionId,
+            chapter_exercise_id: chapterExerciseId,
             score: finalScore
         });
         NavigationService.popToTop();
@@ -282,15 +263,6 @@ const LessonQuestionScreenComplete = () => {
                 </View>
 
                 <View style={styles.actionButtons}>
-                    <TouchableComponent
-                        style={styles.retryButton}
-                        onPress={handleRetry}
-                    >
-                        <TextComponent style={styles.retryButtonText}>
-                            {t('Làm lại bài học')}
-                        </TextComponent>
-                    </TouchableComponent>
-
                     <TouchableComponent
                         style={[styles.continueButton, { backgroundColor: performanceData.color }]}
                         onPress={handleContinue}
@@ -494,4 +466,4 @@ const stylesF = (Dimens: DimensType, themeColors: ReturnType<typeof useThemeColo
     },
 });
 
-export default LessonQuestionScreenComplete;
+export default ChapterQuestionScreenComplete;
