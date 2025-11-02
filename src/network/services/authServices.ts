@@ -63,3 +63,26 @@ export const forgotPasswordService = (params: { email: string }) =>
     );
 
 export const refreshTokenService = () => AXIOS.post(ApiConfigs.REFRESH_TOKEN);
+
+export const updateAvatarService = (_params?: { image: string; } | undefined) => {
+    const formData = new FormData();
+
+    const originalFilename = _params?.image.split('/').pop();
+    const jpgFilename = originalFilename?.split('.')[0] + '.jpg';
+
+    formData.append('avatar', {
+        uri: _params?.image,
+        name: jpgFilename,
+        type: 'image/jpeg',
+    } as any);
+
+    return AXIOS.post<APIResponseCommon.ResponseCommon<AuthType.User>>(
+            ApiConfigs.UPDATE_AVATAR,
+            formData,
+            {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            }
+    );
+};

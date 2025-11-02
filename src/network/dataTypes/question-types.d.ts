@@ -49,7 +49,7 @@ export declare namespace QuestionType {
         created_by: number;
         description: string;
         id: number;
-        is_active: boolean;
+        is_active: number;
         is_completed: boolean;
         score: number;
         topic_id: number;
