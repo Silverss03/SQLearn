@@ -253,7 +253,7 @@ const stylesF = (Dimens: DimensType, themeColors: ReturnType<typeof useThemeColo
     progressContainer: {
         backgroundColor: themeColors.color_home_overall_progress_background,
         borderRadius: 8,
-        width: '45%',
+        width: '50%',
         paddingBottom: Dimens.H_8
     },
     averageScoreTextContainer: {
@@ -280,11 +280,11 @@ const stylesF = (Dimens: DimensType, themeColors: ReturnType<typeof useThemeColo
     averageScoreText: {
         fontSize: Dimens.FONT_24,
         color: themeColors.color_text_3,
-        fontWeight: 'bold'
+        fontWeight: 'bold',
+        marginLeft: Dimens.W_8
     },
     averageScoreBar: {
         flexDirection: 'row',
-        justifyContent: 'space-between',
         paddingHorizontal: 8,
         alignItems: 'center'
     }

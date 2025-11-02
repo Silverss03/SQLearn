@@ -17,6 +17,8 @@ import TouchableComponent from '@src/components/TouchableComponent';
 import { ArrowRightIcon } from '@src/assets/svg';
 import NavigationService from '@src/navigation/NavigationService';
 import { SCREENS } from '@src/navigation/config/screenName';
+import { useAppDispatch, useAppSelector } from '@src/hooks';
+import { ExerciseActions } from '@src/redux/toolkit/actions/exercisesActions';
 
 interface ExercisesComponentProps {
     chapterId: number;
@@ -28,6 +30,9 @@ const Exercise = ({ item }: { item: QuestionType.ChapterExercise }) => {
     const themeColors = useThemeColors();
     const { t } = useTranslation();
     const styles = stylesF(Dimens, themeColors);
+
+    const completedExercises = useAppSelector((state) => state.exerciseReducer.completedExercises);
+    const isCompleted = completedExercises.includes(item.id);
 
     const onExercisePress = useCallback(() => {
         NavigationService.navigate(SCREENS.CHAPTER_EXERCISE_SCREEN, {
@@ -42,7 +47,7 @@ const Exercise = ({ item }: { item: QuestionType.ChapterExercise }) => {
         >
             <TextComponent style={styles.descriptionText}>{item.description}</TextComponent>
 
-            {!item.is_completed && (
+            {!isCompleted && item.is_active === 1 && (
                 <TouchableComponent
                     style={styles.detailTextContainer}
                     onPress={onExercisePress}
@@ -66,6 +71,7 @@ const ExercisesComponent = ({ chapterId }: ExercisesComponentProps) => {
 
     const themeColors = useThemeColors();
     const styles = stylesF(Dimens, themeColors);
+    const dispatch = useAppDispatch();
 
     const [exercises, setExercises] = useState<QuestionType.ChapterExercise[]>([]);
 
@@ -74,7 +80,12 @@ const ExercisesComponent = ({ chapterId }: ExercisesComponentProps) => {
             undefined,
             useCallback((data: QuestionType.ChapterExercise[]) => {
                 setExercises(data);
-            }, []),
+                data.forEach((exercise) => {
+                    if (exercise.is_completed) {
+                        dispatch(ExerciseActions.addCompletedExercise(exercise.id));
+                    }
+                });
+            }, [dispatch]),
     );
 
     useEffect(() => {
