@@ -31,6 +31,7 @@ export const EXERCISE_BY_TOPIC = (topicId: number) => `topics/${topicId}/chapter
 export const CHAPTER_EXERCISE_DETAIL = 'chapter-exercises';
 export const SUBMIT_CHAPTER_EXERCISE = 'chapter-exercise/submit';
 export const CHAPTER_EXERCISE_HISTORY = 'students/chapter-exercise-history';
+export const UPDATE_AVATAR = 'user/avatar';
 
 export const CHECK_TOKEN_EXPIRED_WHITE_LIST = [
     LOGIN,

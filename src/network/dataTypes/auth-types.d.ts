@@ -12,5 +12,6 @@ declare namespace AuthType {
         name: string;
         image_url: string;
         role: string;
+        class: string;
     }
 }
