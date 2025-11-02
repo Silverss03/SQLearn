@@ -30,6 +30,7 @@ import { ArrowDownIcon } from '@src/assets/svg';
 import ArrowUpIcon from '@src/assets/svg/ArrowUpIcon';
 import { SCREENS } from '@src/navigation/config/screenName';
 import { Slider } from '@miblanchard/react-native-slider';
+import { ScrollView } from 'react-native-gesture-handler';
 
 const LessonsScreen = () => {
     const Dimens = useDimens();
@@ -178,7 +179,7 @@ const LessonsScreen = () => {
                 </View>
             </LinearGradient>
 
-            <View style={styles.contentContainer}>
+            <ScrollView style={styles.contentContainer}>
 
                 <Accordion
                     sections={lessonsList}
@@ -189,7 +190,9 @@ const LessonsScreen = () => {
                     renderHeader={renderHeader}
                     renderContent={renderContent}
                 />
-            </View>
+
+                <View style={{ height: Dimens.H_48 }}/>
+            </ScrollView>
         </View>
     );
 };

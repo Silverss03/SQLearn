@@ -22,9 +22,10 @@ import CorrectIcon from '@src/assets/svg/CorrectIcon';
 import IncorrectIcon from '@src/assets/svg/IncorrectIcon';
 import useCallAPI from '@src/hooks/useCallAPI';
 import { submitChapterExerciseService, submitExerciseService } from '@src/network/services/questionServices';
-import { useAppSelector } from '@src/hooks';
+import { useAppDispatch, useAppSelector } from '@src/hooks';
 import { LessonQuestionCompleteScreenProps } from '@src/navigation/NavigationRouteProps';
 import { SCREENS } from '@src/navigation/config/screenName';
+import { ExerciseActions } from '@src/redux/toolkit/actions/exercisesActions';
 
 const ChapterQuestionScreenComplete = () => {
     const route = useRoute<LessonQuestionCompleteScreenProps>();
@@ -36,7 +37,8 @@ const ChapterQuestionScreenComplete = () => {
     const userProfile = useAppSelector((state) => state.storageReducer.userData?.user);
 
     const { chapterExerciseId, score, totalQuestions } = route.params;
-    console.log('ChapterQuestionScreenComplete params:', route.params);
+
+    const dispatch = useAppDispatch();
 
     // Animation values
     const [fadeAnim] = useState(new Animated.Value(0));
@@ -141,12 +143,13 @@ const ChapterQuestionScreenComplete = () => {
     );
 
     const handleContinue = () => {
-        console.log(userProfile.id, chapterExerciseId, finalScore);
         submitResult({
             user_id: userProfile.id,
             chapter_exercise_id: chapterExerciseId,
             score: finalScore
         });
+
+        dispatch(ExerciseActions.addCompletedExercise(chapterExerciseId));
         NavigationService.popToTop();
     };
 
