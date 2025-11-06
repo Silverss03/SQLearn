@@ -1,5 +1,6 @@
 import React, { memo, useCallback } from 'react';
 import {
+    ScrollView,
     StyleSheet,
     View,
 } from 'react-native';
@@ -15,7 +16,7 @@ import { LessonDetailScreenProps } from '@src/navigation/NavigationRouteProps';
 import NavigationService from '@src/navigation/NavigationService';
 import { Colors } from '@src/configs';
 import StudyGirlIcon from '@src/assets/svg/StudyGirlIcon';
-import WebView from 'react-native-webview';
+import RenderHTML from 'react-native-render-html';
 import { SCREENS } from '@src/navigation/config/screenName';
 
 const LessonDetailScreen = () => {
@@ -33,46 +34,6 @@ const LessonDetailScreen = () => {
             .replace(/\\x3E/g, '>')
             .replace(/\\"/g, '"');
     let chapter, content;
-    const enhancedHtml = React.useMemo(() => {
-        const exerciseButton = `
-            <div style="
-                margin-top: 40px; 
-                padding: 20px; 
-                text-align: center; 
-                border-top: 2px solid #e0e0e0;
-                background-color: #f8f9fa;
-            ">
-                <button 
-                    onclick="window.ReactNativeWebView.postMessage('exercise_pressed')"
-                    style="
-                        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-                        color: white;
-                        border: none;
-                        padding: 15px 30px;
-                        border-radius: 8px;
-                        font-size: 16px;
-                        font-weight: 600;
-                        cursor: pointer;
-                        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
-                        transition: transform 0.2s ease;
-                    "
-                    onmouseover="this.style.transform='translateY(-2px)'"
-                    onmouseout="this.style.transform='translateY(0)'"
-                >
-                    📝 Làm bài tập về chương này
-                </button>
-                <p style="
-                    margin-top: 15px; 
-                    color: #666; 
-                    font-size: 14px;
-                ">
-                    Kiểm tra hiểu biết của bạn với các câu hỏi thực hành
-                </p>
-            </div>
-        `;
-
-        return decodedHtml + exerciseButton;
-    }, [decodedHtml]);
 
     const match = topicName.match(/^(Chương\s*\d+)\s*:\s*(.+)$/);
 
@@ -81,19 +42,36 @@ const LessonDetailScreen = () => {
         content = match[2];
     }
 
-    const onMessage = useCallback((event : any) => {
-        const message = event.nativeEvent.data;
-        if (message === 'exercise_pressed') {
-            NavigationService.navigate(SCREENS.LESSON_QUESTION_SCREEN, {
-                lessonId: lesson?.id,
-                lessonTitle: lesson?.lesson_title,
-                topicName: topicName,
-            });
-        }
-    }, [lesson?.id, lesson?.lesson_title, topicName]);
+    const tagsStyles = {
+        h1: { fontSize: Dimens.FONT_24, fontWeight: 'bold', textAlign: 'center', color: '#722ED1', marginBottom: Dimens.H_10 },
+        h2: { fontSize: Dimens.FONT_20, fontWeight: 'bold', marginBottom: Dimens.H_8 },
+        h3: { fontSize: Dimens.FONT_18, fontWeight: 'bold', marginBottom: Dimens.H_6 },
+        h4: { fontSize: Dimens.FONT_16, fontWeight: 'bold', marginBottom: Dimens.H_4 },
+        p: { fontSize: Dimens.FONT_14, lineHeight: Dimens.H_20, marginBottom: Dimens.H_10 },
+        blockquote: { backgroundColor: '#f0f0f0', padding: Dimens.H_10, borderLeftWidth: 4, borderLeftColor: '#9254DE', marginBottom: Dimens.H_10 },
+        ul: { marginBottom: Dimens.H_10 },
+        li: { fontSize: Dimens.FONT_14, lineHeight: Dimens.H_20 },
+        table: { borderWidth: 1, borderColor: '#000', width: '100%', marginBottom: Dimens.H_10 },
+        th: { borderWidth: 1, borderColor: '#000', padding: Dimens.H_8, backgroundColor: '#e0e0e0', fontWeight: 'bold' },
+        td: { borderWidth: 1, borderColor: '#000', padding: Dimens.H_8 },
+        pre: { backgroundColor: '#f5f5f5', padding: Dimens.H_10, borderRadius: 4, marginBottom: Dimens.H_10 },
+        code: { fontFamily: 'monospace', fontSize: Dimens.FONT_12 },
+    };
+
+    const classesStyles = {
+        blockquote: { backgroundColor: '#f0f0f0', padding: Dimens.H_10, borderLeftWidth: 4, borderLeftColor: '#9254DE', marginBottom: Dimens.H_10 },
+    };
+
+    const onPressExerciseButton = useCallback(() => {
+        NavigationService.navigate(SCREENS.LESSON_QUESTION_SCREEN, {
+            lessonId: lesson?.id,
+            lessonTitle: lesson?.lesson_title,
+            topicName: topicName,
+        });
+    }, [lesson, topicName]);
 
     return (
-        <View style={{ flex: 1 }}>
+        <View style={{ flex: 1, backgroundColor: themeColors.color_dialog_background }}>
             <LinearGradient
                 colors={['#2689D1D3', '#2A9BD8C1']}
                 start={{ x: 0, y: 0 }}
@@ -126,26 +104,34 @@ const LessonDetailScreen = () => {
                         height={Dimens.H_120}
                     />
                 </View>
-
-                <View style={[styles.chapterContainer]}>
-                    <ChapterIcon/>
-                    <TextComponent style={styles.chapterItemText}>
-                        {lesson?.lesson_title}
-                    </TextComponent>
-                </View>
             </LinearGradient>
 
             <View style={styles.contentContainer}>
+                <ScrollView style={{ flex: 1 }}>
+                    <RenderHTML
+                        source={{ html: decodedHtml }}
+                        tagsStyles={tagsStyles}
+                        classesStyles={classesStyles}
+                    />
+                </ScrollView>
 
-                <WebView
-                    originWhitelist={['*']}
-                    source={{ html: enhancedHtml }}
-                    javaScriptEnabled
-                    domStorageEnabled
-                    style={{ flex: 1 }}
-                    onMessage={onMessage}
-                />
-
+            </View>
+            <View style={styles.exerciseButtonContainer}>
+                <LinearGradient
+                    colors={['#667eea', '#764ba2']}
+                    start={{ x: 0, y: 0 }}
+                    end={{ x: 1, y: 1 }}
+                    style={styles.exerciseButtonGradient}
+                >
+                    <TouchableComponent
+                        onPress={onPressExerciseButton}
+                        style={styles.exerciseButton}
+                    >
+                        <TextComponent style={styles.exerciseButtonText}>
+                            📝 Làm bài tập về chương này
+                        </TextComponent>
+                    </TouchableComponent>
+                </LinearGradient>
             </View>
         </View>
     );
@@ -156,7 +142,7 @@ export default memo(LessonDetailScreen);
 const stylesF = (Dimens: DimensType, themeColors: ReturnType<typeof useThemeColors>) => StyleSheet.create({
     homeHeader: {
         paddingHorizontal: Dimens.W_16,
-        paddingVertical: Dimens.H_48,
+        paddingVertical: Dimens.H_36,
         justifyContent: 'space-between',
     },
     scrollViewWrapper: {
@@ -166,8 +152,11 @@ const stylesF = (Dimens: DimensType, themeColors: ReturnType<typeof useThemeColo
         marginVertical: Dimens.H_16,
     },
     contentContainer: {
-        backgroundColor: themeColors.color_app_background,
+        backgroundColor: themeColors.color_dialog_background,
         flex: 1,
+        width: '90%',
+        alignSelf: 'center',
+        marginTop: Dimens.H_16,
     },
     introductionText: {
         fontSize: Dimens.FONT_12,
@@ -181,7 +170,7 @@ const stylesF = (Dimens: DimensType, themeColors: ReturnType<typeof useThemeColo
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
-        height: Dimens.H_100,
+        height: Dimens.H_68,
         marginTop: Dimens.H_16
     },
     topicNameContainer: {
@@ -206,5 +195,31 @@ const stylesF = (Dimens: DimensType, themeColors: ReturnType<typeof useThemeColo
         flex: 1,
         backgroundColor: '#ffffff',
         borderRadius: Dimens.RADIUS_12,
+    },
+    exerciseButtonContainer: {
+        padding: Dimens.H_12,
+        alignItems: 'center',
+        borderTopWidth: 2,
+        borderTopColor: '#e0e0e0',
+        backgroundColor: '#f8f9fa',
+    },
+    exerciseButtonGradient: {
+        borderRadius: Dimens.RADIUS_8,
+        padding: Dimens.H_15,
+        alignItems: 'center',
+    },
+    exerciseButton: {
+        alignItems: 'center',
+    },
+    exerciseButtonText: {
+        color: 'white',
+        fontSize: Dimens.FONT_16,
+        fontWeight: '600',
+    },
+    exerciseButtonSubtext: {
+        marginTop: Dimens.H_15,
+        color: '#666',
+        fontSize: Dimens.FONT_14,
+        textAlign: 'center',
     },
 });
