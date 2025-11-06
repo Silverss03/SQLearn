@@ -5,8 +5,21 @@ export const isSqlQuestion = (question: any) : question is QuestionType.SqlQuest
 
 export const getSqlQuestionData = (question: QuestionType.SqlQuestion) => {
     try {
-        const questionData = JSON.parse(question.question_data);
-        const solutionData = JSON.parse(question.solution_data);
+        let questionData;
+        let solutionData;
+
+        if (typeof question.question_data === 'string') {
+            questionData = JSON.parse(question.question_data);
+        } else {
+            questionData = question.question_data; // Already an object
+        }
+
+        if (typeof question.solution_data === 'string') {
+            solutionData = JSON.parse(question.solution_data);
+        } else {
+            solutionData = question.solution_data; // Already an object
+        }
+
         return { questionData, solutionData };
     } catch (error) {
         console.error('Error parsing SQL question data:', error);
