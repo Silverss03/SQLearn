@@ -10,3 +10,19 @@ export const getExerciseByTopicService = (topicId: number) => AXIOS.get<APIRespo
 export const getChapterExerciseDetailService = (exerciseId?: number) => AXIOS.get<APIResponseCommon.ResponseCommon<QuestionType.Exercise>>(`${ApiConfigs.CHAPTER_EXERCISE_DETAIL}/${exerciseId}`);
 export const submitChapterExerciseService = (_params?: { user_id: number; chapter_exercise_id: number; score: number; } | undefined) => AXIOS.post<APIResponseCommon.ResponseCommon<null>>(`${ApiConfigs.SUBMIT_CHAPTER_EXERCISE}`, _params);
 export const getChapterExerciseHistoryService = () => AXIOS.get<APIResponseCommon.ResponseCommon<QuestionType.ChapterExerciseRecord[]>>(`${ApiConfigs.CHAPTER_EXERCISE_HISTORY}`);
+export const getUpcomingExamsService = () => AXIOS.get<APIResponseCommon.ResponseCommon<QuestionType.UpcomingExam[]>>(`${ApiConfigs.UPCOMING_EXERCISES}`);
+export const startExamService = (_params?: {exam_id: number, device_fingerprint: string}) =>
+    AXIOS.post<APIResponseCommon.ResponseCommon<QuestionType.StartExamResponse>>(
+            `${ApiConfigs.START_EXAM}`,
+            _params
+    );
+export const submitExamService = (_params?: {
+    exam_id: number,
+    session_token: string,
+    score: number,
+    device_fingerprint: string
+} | undefined) =>
+    AXIOS.post<APIResponseCommon.ResponseCommon<null>>(
+            `${ApiConfigs.SUBMIT_EXAM}`,
+            _params
+    );

@@ -14,7 +14,6 @@ import LinearGradient from 'react-native-linear-gradient';
 import { useAppSelector } from '@src/hooks';
 import HomeAvatarIcon from '@src/assets/svg/HomeAvatarIcon';
 import { useTranslation } from 'react-i18next';
-import BellIcon from '@src/assets/svg/BellIcon';
 import { getChapterListService } from '@src/network/services/chapterService';
 import useCallAPI from '@src/hooks/useCallAPI';
 import { ChapterType } from '@src/network/dataTypes/chapter-type';
@@ -24,6 +23,9 @@ import * as Progress from 'react-native-progress';
 import { getAllTopicsProgressService, getOverallProgressService } from '@src/network/services/progresService';
 import { OverallProgress, TopicProgress } from '@src/network/dataTypes/progress-types';
 import ChapterComponent from './components/ChapterComponent';
+import { QuestionType } from '@src/network/dataTypes/question-types';
+import { getUpcomingExamsService } from '@src/network/services/questionServices';
+import ExamComponent from './components/ExamComponent';
 
 const HomeScreen = () => {
     const Dimens = useDimens();
@@ -38,6 +40,7 @@ const HomeScreen = () => {
     const [averageScore, setAverageScore] = React.useState<number>(0);
     const [overallProgress, setOverallProgress] = React.useState<number>(0);
     const [chaptersProgress, setChaptersProgress] = React.useState<TopicProgress[]>([]);
+    const [upcomingExams, setUpcomingExams] = React.useState<QuestionType.UpcomingExam[]>([]);
 
     const { callApi: fetchAllChapterProgress } = useCallAPI(
             getAllTopicsProgressService,
@@ -71,6 +74,14 @@ const HomeScreen = () => {
             }, []),
     );
 
+    const { callApi: fetchUpcomingExams } = useCallAPI(
+            getUpcomingExamsService,
+            undefined,
+            useCallback((data: QuestionType.UpcomingExam[]) => {
+                setUpcomingExams(data);
+            }, []),
+    );
+
     useEffect(() => {
         fetchChapterList();
         fetchAverageScore({ user_id: userData?.user?.id || 0 });
@@ -82,7 +93,11 @@ const HomeScreen = () => {
 
     useEffect(() => {
         fetchAllChapterProgress({ user_id: userData?.user?.id });
-    }, []);
+    }, [fetchAllChapterProgress, userData?.user?.id]);
+
+    useEffect(() => {
+        fetchUpcomingExams();
+    }, [fetchUpcomingExams, userData?.user?.id]);
 
     const getChapterProgress = (chapterId: number): TopicProgress | undefined => chaptersProgress.find((p) => p.topic_id === chapterId);
 
@@ -96,25 +111,16 @@ const HomeScreen = () => {
             >
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                     <HomeAvatarIcon
-                        width={130}
-                        height={150}
+                        width={Dimens.W_100}
+                        height={Dimens.H_100}
                         style={{ marginLeft: 8 }}
                     />
 
                     <View>
-                        <View style={styles.bellContainer} >
-                            <BellIcon/>
-                        </View>
                         <TextComponent
                             style = {styles.nameText}
                         >
                             {(t('Xin chào, {{name}}!', { name: userFullName }))}
-                        </TextComponent>
-
-                        <TextComponent
-                            style = {styles.nameText}
-                        >
-                            Nhóm lớp 01
                         </TextComponent>
                     </View>
                 </View>
@@ -130,7 +136,7 @@ const HomeScreen = () => {
                         </View>
                         <View style={styles.averageScoreBar}>
                             <Progress.Circle
-                                size={55}
+                                size={Dimens.W_48}
                                 progress={(overallProgress / 100)}
                                 thickness={10}
                                 color="#FF7F00"
@@ -154,7 +160,7 @@ const HomeScreen = () => {
                         </View>
                         <View style={styles.averageScoreBar}>
                             <Progress.Circle
-                                size={55}
+                                size={Dimens.W_48}
                                 progress={(averageScore / 10)}
                                 thickness={10}
                                 color="#FF7F00"
@@ -171,6 +177,22 @@ const HomeScreen = () => {
             </LinearGradient>
 
             <View style={styles.contentContainer}>
+
+                {upcomingExams.length > 0 && (
+                    <View style={styles.upcomingExamsContainer}>
+                        <TextComponent style={styles.chapterText}>
+                            {t('Bài kiểm tra sắp tới')}
+                        </TextComponent>
+                        <FlatListComponent
+                            horizontal
+                            data={upcomingExams}
+                            renderItem={({ item }) => <ExamComponent item={item} />}
+                            keyExtractor={(item) => item.id.toString()}
+                            showsHorizontalScrollIndicator={false}
+                            contentContainerStyle={styles.upcomingExamsList}
+                        />
+                    </View>
+                )}
 
                 <FlatListComponent
                     data={chapterList}
@@ -198,7 +220,7 @@ export default memo(HomeScreen);
 const stylesF = (Dimens: DimensType, themeColors: ReturnType<typeof useThemeColors>) => StyleSheet.create({
     homeHeader: {
         paddingHorizontal: Dimens.W_16,
-        paddingVertical: Dimens.H_48,
+        paddingVertical: Dimens.H_24,
         justifyContent: 'space-between',
         borderBottomLeftRadius: Dimens.RADIUS_12,
         borderBottomRightRadius: Dimens.RADIUS_12,
@@ -206,7 +228,8 @@ const stylesF = (Dimens: DimensType, themeColors: ReturnType<typeof useThemeColo
     nameText: {
         fontSize: Dimens.FONT_21,
         color: themeColors.color_text_3,
-        marginBottom: Dimens.H_16
+        marginBottom: Dimens.H_16,
+        marginLeft: Dimens.W_8
     },
     bellContainer: {
         alignSelf: 'flex-end',
@@ -287,5 +310,12 @@ const stylesF = (Dimens: DimensType, themeColors: ReturnType<typeof useThemeColo
         flexDirection: 'row',
         paddingHorizontal: 8,
         alignItems: 'center'
-    }
+    },
+    upcomingExamsContainer: {
+        marginBottom: Dimens.H_16,
+    },
+    upcomingExamsList: {
+        paddingVertical: Dimens.H_8,
+        paddingHorizontal: Dimens.W_4
+    },
 });

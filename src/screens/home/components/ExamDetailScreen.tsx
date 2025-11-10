@@ -17,18 +17,14 @@ import useThemeColors from '@src/themes/useThemeColors';
 import LinearGradient from 'react-native-linear-gradient';
 import { useTranslation } from 'react-i18next';
 import TouchableComponent from '@src/components/TouchableComponent';
-import { BackArrowIcon } from '@src/assets/svg';
 import NavigationService from '@src/navigation/NavigationService';
-import { Colors } from '@src/configs';
 import { QuestionType } from '@src/network/dataTypes/question-types';
-import { ChapterExercisesScreenProps } from '@src/navigation/NavigationRouteProps';
+import { ExamDetailScreenProps } from '@src/navigation/NavigationRouteProps';
 import { useRoute } from '@react-navigation/native';
 import useCallAPI from '@src/hooks/useCallAPI';
-import { getChapterExerciseDetailService } from '@src/network/services/questionServices';
+import { startExamService } from '@src/network/services/questionServices';
 import {
     canSubmit,
-    getButtonText,
-    getCorrectAnswerText,
     getSqlQuestionData,
     isMcQuestion,
     isSqlQuestion,
@@ -41,20 +37,17 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SCREENS } from '@src/navigation/config/screenName';
 import { DuoDragDropRef } from '@jamsch/react-native-duo-drag-drop';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import CorrectIcon from '@src/assets/svg/CorrectIcon';
-import IncorrectIcon from '@src/assets/svg/IncorrectIcon';
+import { ArrowRightIcon } from '@src/assets/svg';
 
-type QuestionResult = 'correct' | 'incorrect' | null;
-
-const ChapterExercisesScreen = () => {
+const ExamDetailScreen = () => {
     const Dimens = useDimens();
 
     const themeColors = useThemeColors();
     const styles = stylesF(Dimens, themeColors);
     const { t } = useTranslation();
-    const route = useRoute<ChapterExercisesScreenProps>();
+    const route = useRoute<ExamDetailScreenProps>();
 
-    const { chapterExerciseId, exerciseDescription } = route.params;
+    const { examId, examTitle, examDuration } = route.params;
 
     const [allQuestions, setAllQuestions] = useState<(QuestionType.McqQuestion | QuestionType.SqlQuestion)[]>([]);
     const [sqlAnswers, setSqlAnswers] = useState<{ [key: string]: string }>({});
@@ -63,31 +56,69 @@ const ChapterExercisesScreen = () => {
     const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
     const [score, setScore] = useState(0);
     const [isSubmitted, setIsSubmitted] = useState(false);
-    const [questionResult, setQuestionResult] = useState<QuestionResult>(null);
     const [progressAnim] = useState(new Animated.Value(0));
+    const [session_token, setSessionToken] = useState<string>('');
+    const [timeLeft, setTimeLeft] = useState<number>(examDuration * 60);
 
+    const timerRef = useRef<NodeJS.Timeout>();
     const currentQuestion = allQuestions[currentQuestionIndex];
     const isLastQuestion = currentQuestionIndex === allQuestions.length - 1;
     const totalQuestions = allQuestions.length;
     const ref = useRef<DuoDragDropRef>(null);
 
     const { callApi: fetchExerciseDetail } = useCallAPI(
-            getChapterExerciseDetailService,
+            startExamService,
             undefined,
-            useCallback((data: QuestionType.Exercise) => {
+            useCallback((data: QuestionType.StartExamResponse) => {
                 const questions = data.questions;
                 const sqlQuestionsArray = Object.values(questions.sqlQuestions || {});
                 const combined = [...questions.multipleChoice, ...sqlQuestionsArray];
                 const shuffled = combined.sort(() => Math.random() - 0.5);
                 setAllQuestions(shuffled);
+                setSessionToken(data.session_token);
             }, [])
     );
 
     useEffect(() => {
-        if (chapterExerciseId) {
-            fetchExerciseDetail(chapterExerciseId);
+        if (examId) {
+            fetchExerciseDetail({
+                exam_id: examId,
+                device_fingerprint: 'fake-device-id-for-demo'
+            });
         }
-    }, [chapterExerciseId]);
+    }, [examId]);
+
+    useEffect(() => {
+        timerRef.current = setInterval(() => {
+            setTimeLeft((prevTime) => {
+                if (prevTime <= 1) {
+                    // Time's up - clear interval and navigate to complete screen
+                    clearInterval(timerRef.current);
+                    NavigationService.replace(SCREENS.EXAM_COMPLETE_SCREEN, {
+                        examId,
+                        score,
+                        totalQuestions,
+                        session_token,
+                    });
+                    return 0;
+                }
+                return prevTime - 1;
+            });
+        }, 1000);
+
+        // Cleanup on component unmount
+        return () => {
+            if (timerRef.current) {
+                clearInterval(timerRef.current);
+            }
+        };
+    }, [examDuration, examId, score, totalQuestions, session_token]);
+
+    const formatTime = (seconds: number): string => {
+        const minutes = Math.floor(seconds / 60);
+        const remainingSeconds = seconds % 60;
+        return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
+    };
 
     useEffect(() => {
         if (currentQuestion && isSqlQuestion(currentQuestion)) {
@@ -112,47 +143,43 @@ const ChapterExercisesScreen = () => {
     }, [currentQuestionIndex, progressAnim, totalQuestions]);
 
     const handleSubmitOrContinue = useCallback(() => {
-        if (!isSubmitted) {
-            let isCorrect = false;
+        let isCorrect = false;
 
-            if (currentQuestion && isMcQuestion(currentQuestion)) {
-                if (!selectedAnswer) {
-                    Alert.alert(t('Thông báo'), t('Vui lòng chọn đáp án trước khi nộp bài.'));
-                    return;
-                }
-                isCorrect = selectedAnswer === currentQuestion.correct_answer;
-            } else if (currentQuestion && isSqlQuestion(currentQuestion)) {
-                let answer ;
-                if (currentQuestion.interaction_type === 'drag_drop' && ref.current) {
-                    const answeredWords = ref.current.getAnsweredWords();
-                    answer = answeredWords.join(' ');
-                }
-                isCorrect = validateSqlAnswer({ currentQuestion, dragDropAnswer: answer, sqlAnswers });
+        if (currentQuestion && isMcQuestion(currentQuestion)) {
+            if (!selectedAnswer) {
+                Alert.alert(t('Thông báo'), t('Vui lòng chọn đáp án trước khi nộp bài.'));
+                return;
             }
-
-            setQuestionResult(isCorrect ? 'correct' : 'incorrect');
-            setIsSubmitted(true);
-
-            if (isCorrect) {
-                setScore((prevScore) => prevScore + 1);
+            isCorrect = selectedAnswer === currentQuestion.correct_answer;
+        } else if (currentQuestion && isSqlQuestion(currentQuestion)) {
+            let answer ;
+            if (currentQuestion.interaction_type === 'drag_drop' && ref.current) {
+                const answeredWords = ref.current.getAnsweredWords();
+                answer = answeredWords.join(' ');
             }
-        } else {
-            if (isLastQuestion) {
-                NavigationService.navigate(SCREENS.CHAPTER_EXERCISE_COMPLETE_SCREEN, {
-                    chapterExerciseId,
-                    score: score,
-                    totalQuestions,
-                });
-            } else {
-                setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
-                setSelectedAnswer(null);
-                setQuestionResult(null);
-                setIsSubmitted(false);
-                setSqlAnswers({});
-                setDragDropAnswer([]);
-            }
+            isCorrect = validateSqlAnswer({ currentQuestion, dragDropAnswer: answer, sqlAnswers });
         }
-    }, [chapterExerciseId, currentQuestion, isLastQuestion, isSubmitted, score, selectedAnswer, sqlAnswers, t, totalQuestions]);
+
+        setIsSubmitted(true);
+
+        if (isCorrect) {
+            setScore((prevScore) => prevScore + 1);
+        }
+        if (isLastQuestion) {
+            NavigationService.navigate(SCREENS.EXAM_COMPLETE_SCREEN, {
+                examId,
+                score: score,
+                totalQuestions,
+                session_token: session_token,
+            });
+        } else {
+            setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
+            setSelectedAnswer(null);
+            setIsSubmitted(false);
+            setSqlAnswers({});
+            setDragDropAnswer([]);
+        }
+    }, [currentQuestion, isLastQuestion, selectedAnswer, t, sqlAnswers, score, examId, totalQuestions, session_token]);
 
     const renderDragDropQuestion = useCallback((question: QuestionType.SqlQuestion) => {
         const data = getSqlQuestionData(question);
@@ -211,20 +238,13 @@ const ChapterExercisesScreen = () => {
                     end={{ x: 0, y: 0 }}
                     style={styles.homeHeader}
                 >
-                    <TouchableComponent
-                        onPress={() => NavigationService.goBack()}
-                        hitSlop={Dimens.DEFAULT_HIT_SLOP}
-                    >
-                        <BackArrowIcon
-                            width={Dimens.H_24}
-                            height={Dimens.H_24}
-                            fill={Colors.COLOR_WHITE}
-                        />
-                    </TouchableComponent>
-
                     <View style={styles.headerContent}>
                         <TextComponent style={styles.headerTitle}>
-                            {exerciseDescription}
+                            {examTitle}
+                        </TextComponent>
+
+                        <TextComponent style={styles.timerText}>
+                            ⏱️ {formatTime(timeLeft)}
                         </TextComponent>
 
                         <View style={styles.progressContainer}>
@@ -256,6 +276,7 @@ const ChapterExercisesScreen = () => {
                                 isSubmitted={isSubmitted}
                                 selectedAnswer={selectedAnswer}
                                 setSelectedAnswer={setSelectedAnswer}
+                                isChapterExercise
                             />
                         )}
 
@@ -268,55 +289,27 @@ const ChapterExercisesScreen = () => {
                         renderFillBlanksQuestion(currentQuestion)}
                     </View>
 
-                    <View
+                    <TouchableComponent
                         style={[
-                            styles.bottomContainer,
-                            questionResult && styles.bottomContainerExpanded,
+                            styles.floatingButton,
+                            !canSubmit({ currentQuestion, selectedAnswer, sqlAnswers }) && 
+                            styles.disabledButton
                         ]}
+                        onPress={handleSubmitOrContinue}
+                        disabled={!canSubmit({ currentQuestion, selectedAnswer, sqlAnswers })}
                     >
-                        {questionResult && (
-                            <View style={[
-                                styles.resultContainer,
-                            ]}
-                            >
-                                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                    {questionResult === 'correct' ? (
-                                        <CorrectIcon size={12}/>
-                                    ) : (
-                                        <IncorrectIcon size={12}/>
-                                    )}
-                                    <TextComponent style={[
-                                        styles.resultText,
-                                        questionResult === 'incorrect' && styles.incorrectText
-                                    ]}
-                                    >
-                                        {questionResult === 'correct' ? t('Đáp án chính xác') : t('Trả lời sai')}
-                                    </TextComponent>
-                                </View>
-
-                                {questionResult === 'incorrect' && currentQuestion && (
-                                    <TextComponent style={styles.correctAnswerText}>
-                                        {getCorrectAnswerText({ currentQuestion, t })}
-                                    </TextComponent>
-                                )}
-                            </View>
-                        )}
-
-                        <View style={{ flex: 1 }} />
-                        <TouchableComponent
-                            style={[
-                                styles.submitButton,
-                                isSubmitted && questionResult === 'correct' && styles.continueButton,
-                                isSubmitted && questionResult === 'incorrect' && styles.incorrectContinueButton
-                            ]}
-                            onPress={handleSubmitOrContinue}
-                            disabled={!canSubmit({ currentQuestion, selectedAnswer, sqlAnswers }) }
-                        >
-                            <TextComponent style={styles.submitButtonText}>
-                                {getButtonText({ isSubmitted, isLastQuestion, t })}
+                        {isLastQuestion ? (
+                            <TextComponent style={styles.submitText}>
+                                {t('Nộp bài')}
                             </TextComponent>
-                        </TouchableComponent>
-                    </View>
+                        ) : (
+                            <ArrowRightIcon
+                                width={24}
+                                height={24}
+                                fill={themeColors.color_text_3}
+                            />
+                        )}
+                    </TouchableComponent>
                 </View>
             </SafeAreaView>
 
@@ -324,7 +317,7 @@ const ChapterExercisesScreen = () => {
     );
 };
 
-export default memo(ChapterExercisesScreen);
+export default memo(ExamDetailScreen);
 
 const stylesF = (Dimens: DimensType, themeColors: ReturnType<typeof useThemeColors>) => StyleSheet.create({
     homeHeader: {
@@ -342,12 +335,12 @@ const stylesF = (Dimens: DimensType, themeColors: ReturnType<typeof useThemeColo
     headerTitle: {
         fontSize: Dimens.FONT_18,
         fontWeight: 'bold',
-        color: Colors.COLOR_WHITE,
+        color: themeColors.color_text_3,
         textAlign: 'center',
     },
     progressText: {
         fontSize: Dimens.FONT_12,
-        color: Colors.COLOR_WHITE,
+        color: themeColors.color_text_3,
         fontWeight: '600',
     },
     contentContainer: {
@@ -416,7 +409,7 @@ const stylesF = (Dimens: DimensType, themeColors: ReturnType<typeof useThemeColo
     submitButtonText: {
         fontSize: Dimens.FONT_18,
         fontWeight: 'bold',
-        color: Colors.COLOR_WHITE,
+        color: themeColors.color_text_3,
     },
     progressContainer: {
         marginTop: Dimens.H_8,
@@ -432,7 +425,40 @@ const stylesF = (Dimens: DimensType, themeColors: ReturnType<typeof useThemeColo
     },
     progressBarFill: {
         height: '100%',
-        backgroundColor: Colors.COLOR_WHITE,
+        backgroundColor: themeColors.color_text_3,
         borderRadius: Dimens.H_3,
+    },
+    timerText: {
+        fontSize: Dimens.FONT_16,
+        color: themeColors.color_text_3,
+        fontWeight: '600',
+        marginTop: Dimens.H_4,
+    },
+    floatingButton: {
+        position: 'absolute',
+        bottom: Dimens.H_24,
+        right: Dimens.W_24,
+        width: Dimens.W_56,
+        height: Dimens.W_56,
+        borderRadius: Dimens.W_28,
+        backgroundColor: themeColors.color_primary,
+        justifyContent: 'center',
+        alignItems: 'center',
+        elevation: 4,
+        shadowColor: '#000',
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+    },
+    disabledButton: {
+        opacity: 0.5,
+    },
+    submitText: {
+        color: themeColors.color_text_3,
+        fontSize: Dimens.FONT_14,
+        fontWeight: '600',
     },
 });

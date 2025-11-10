@@ -36,6 +36,17 @@ export type RootStackParamList = {
         chapterExerciseId: number
         totalQuestions: number
     };
+    examDetailScreen: {
+        examId: number;
+        examTitle: string;
+        examDuration: number;
+    };
+    examCompleteScreen: {
+        examId: number;
+        score: number;
+        totalQuestions: number;
+        sessionId: string;
+    };
 };
 
 export type PokemonDetailScreenProps = RouteProp<RootStackParamList, 'PokemonDetailScreen'>;
@@ -49,3 +60,7 @@ export type LessonQuestionScreenProps = RouteProp<RootStackParamList, 'LessonQue
 export type LessonQuestionCompleteScreenProps = RouteProp<RootStackParamList, 'lessonQuestionCompleteScreen'>;
 
 export type ChapterExercisesScreenProps = RouteProp<RootStackParamList, 'chapterExercisesScreen'>;
+
+export type ExamCompleteScreenProps = RouteProp<RootStackParamList, 'examCompleteScreen'>;
+
+export type ExamDetailScreenProps = RouteProp<RootStackParamList, 'examDetailScreen'>;

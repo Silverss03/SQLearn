@@ -64,4 +64,24 @@ export declare namespace QuestionType {
         score: number;
         completed_at: string;
     }
+
+    export interface UpcomingExam{
+        id: number;
+        topic_id: number;
+        title: string;
+        description: string;
+        duration_minutes: number;
+        start_time: string;
+        ended_at: string;
+        is_active: number;
+    }
+
+    export interface StartExamResponse{
+        session_token: string;
+        exam: UpcomingExam;
+        questions: {
+            multipleChoice: McqQuestion[];
+            sqlQuestions: SqlQuestion[];
+        }
+    }
 }
