@@ -6,6 +6,8 @@ import { screenOptionsDefault } from '@src/navigation/config/screenOptionsDefaul
 import { RootStackParamList } from '@src/navigation/NavigationRouteProps';
 import useThemeColors from '@src/themes/useThemeColors';
 import HomeScreen from '@src/screens/home/HomeScreen';
+import ExamDetailScreen from '@src/screens/home/components/ExamDetailScreen';
+import ExamCompleteScreen from '@src/screens/home/components/ExamCompleteScreen';
 
 const StackNavigator = createNativeStackNavigator<RootStackParamList>();
 
@@ -28,10 +30,14 @@ const ProfileStack = () => {
                 name={SCREENS.HOME_SCREEN}
                 component={HomeScreen}
             />
-            {/* <StackNavigator.Screen
-                name={SCREENS.POKEMON_LIST_SCREEN}
-                component={PokemonListScreen}
-            /> */}
+            <StackNavigator.Screen
+                name={SCREENS.EXAM_DETAIL_SCREEN}
+                component={ExamDetailScreen}
+            />
+            <StackNavigator.Screen
+                name={SCREENS.EXAM_COMPLETE_SCREEN}
+                component={ExamCompleteScreen}
+            />
         </StackNavigator.Navigator>
     );
 };

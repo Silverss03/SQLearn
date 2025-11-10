@@ -31,8 +31,6 @@ const HistoryComponent = () => {
 
     useEffect(() => {
         fetchHistory();
-        console.log('fetchHistory called');
-        console.log(historyData);
     }, [fetchHistory]);
 
     const renderHistoryItem = ({ item }: { item: QuestionType.ChapterExerciseRecord }) => (

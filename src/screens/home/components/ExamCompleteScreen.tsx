@@ -17,26 +17,23 @@ import { Colors } from '@src/configs';
 import NavigationService from '@src/navigation/NavigationService';
 
 // Import your icons
-import { BackArrowIcon } from '@src/assets/svg';
 import CorrectIcon from '@src/assets/svg/CorrectIcon';
 import IncorrectIcon from '@src/assets/svg/IncorrectIcon';
 import useCallAPI from '@src/hooks/useCallAPI';
-import { submitChapterExerciseService, submitExerciseService } from '@src/network/services/questionServices';
-import { useAppDispatch, useAppSelector } from '@src/hooks';
-import { LessonQuestionCompleteScreenProps } from '@src/navigation/NavigationRouteProps';
+import { submitExamService, } from '@src/network/services/questionServices';
+import { useAppDispatch } from '@src/hooks';
+import { ExamCompleteScreenProps } from '@src/navigation/NavigationRouteProps';
 import { SCREENS } from '@src/navigation/config/screenName';
 import { ExerciseActions } from '@src/redux/toolkit/actions/exercisesActions';
 
-const ChapterQuestionScreenComplete = () => {
-    const route = useRoute<LessonQuestionCompleteScreenProps>();
+const ExamCompleteScreen = () => {
+    const route = useRoute<ExamCompleteScreenProps>();
     const { t } = useTranslation();
     const Dimens = useDimens();
     const themeColors = useThemeColors();
     const styles = stylesF(Dimens, themeColors);
 
-    const userProfile = useAppSelector((state) => state.storageReducer.userData?.user);
-
-    const { chapterExerciseId, score, totalQuestions } = route.params;
+    const { examId, score, totalQuestions, session_token } = route.params;
 
     const dispatch = useAppDispatch();
 
@@ -137,19 +134,21 @@ const ChapterQuestionScreenComplete = () => {
     }, [fadeAnim, scaleAnim, progressAnim, celebrationAnim, percentage, isExcellent]);
 
     const { callApi: submitResult } = useCallAPI(
-            submitChapterExerciseService,
+            submitExamService,
             undefined,
             undefined
     );
 
     const handleContinue = () => {
         submitResult({
-            user_id: userProfile.id,
-            chapter_exercise_id: chapterExerciseId,
-            score: finalScore
+            exam_id: examId,
+            score: finalScore,
+            session_token: session_token,
+            device_fingerprint: 'fake-device-id-for-demo' // Replace with actual device fingerprint logic
         });
 
-        NavigationService.popToTop();
+        dispatch(ExerciseActions.addCompletedExercise(examId));
+        NavigationService.replace(SCREENS.HOME_SCREEN);
     };
 
     return (
@@ -160,17 +159,6 @@ const ChapterQuestionScreenComplete = () => {
                 end={{ x: 1, y: 1 }}
                 style={styles.header}
             >
-                <TouchableComponent
-                    onPress={() => NavigationService.popToTop()}
-                    hitSlop={Dimens.DEFAULT_HIT_SLOP}
-                    style={styles.backButton}
-                >
-                    <BackArrowIcon
-                        width={Dimens.H_24}
-                        height={Dimens.H_24}
-                        fill={Colors.COLOR_WHITE}
-                    />
-                </TouchableComponent>
 
                 <TextComponent style={styles.headerTitle}>
                     {t('Kết quả bài học')}
@@ -468,4 +456,4 @@ const stylesF = (Dimens: DimensType, themeColors: ReturnType<typeof useThemeColo
     },
 });
 
-export default ChapterQuestionScreenComplete;
+export default ExamCompleteScreen;

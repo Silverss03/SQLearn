@@ -18,6 +18,8 @@ export const SCREENS = {
     CHAPTER_EXERCISE_SCREEN: 'ChapterExercisesScreen',
     CHAPTER_EXERCISE_COMPLETE_SCREEN: 'ChapterExerciseCompleteScreen',
     REVISION_TAB_SCREEN: 'REVISION_TAB_SCREEN',
+    EXAM_DETAIL_SCREEN: 'ExamDetailScreen',
+    EXAM_COMPLETE_SCREEN: 'ExamCompleteScreen',
 
     SPLASH_SCREEN: 'SplashScreen',
     POKEMON_LIST_SCREEN: 'PokemonListScreen',

@@ -17,7 +17,7 @@ import TouchableComponent from '@src/components/TouchableComponent';
 import { ArrowRightIcon } from '@src/assets/svg';
 import NavigationService from '@src/navigation/NavigationService';
 import { SCREENS } from '@src/navigation/config/screenName';
-import { useAppDispatch, useAppSelector } from '@src/hooks';
+import { useAppDispatch } from '@src/hooks';
 import { ExerciseActions } from '@src/redux/toolkit/actions/exercisesActions';
 
 interface ExercisesComponentProps {
@@ -30,9 +30,6 @@ const Exercise = ({ item }: { item: QuestionType.ChapterExercise }) => {
     const themeColors = useThemeColors();
     const { t } = useTranslation();
     const styles = stylesF(Dimens, themeColors);
-
-    const completedExercises = useAppSelector((state) => state.exerciseReducer.completedExercises);
-    const isCompleted = completedExercises.includes(item.id);
 
     const onExercisePress = useCallback(() => {
         NavigationService.navigate(SCREENS.CHAPTER_EXERCISE_SCREEN, {
@@ -47,7 +44,7 @@ const Exercise = ({ item }: { item: QuestionType.ChapterExercise }) => {
         >
             <TextComponent style={styles.descriptionText}>{item.description}</TextComponent>
 
-            {!isCompleted && item.is_active === 1 && (
+            {item.is_active === 1 && (
                 <TouchableComponent
                     style={styles.detailTextContainer}
                     onPress={onExercisePress}
