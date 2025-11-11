@@ -1,0 +1,87 @@
+{
+  "BIZ01": {
+    "DIALOG": {
+      "ERROR": {
+        "TITLE": {
+          "CREATE": "Lưu thất bại",
+          "UPDATE": "Cập nhật thất bại",
+          "DELETE": "Xoá thất bại"
+        }
+      },
+      "OVERLAY_LOADING_SUBMIT": "Đang lưu..."
+    },
+    "COMMON": {
+      "EMAIL": "Email",
+      "NAME": "Họ và tên",
+      "USER_ID": "Mã cán bộ",
+      "CHAPTER_NAME": [
+        "Chapter 1",
+        "Chapter 2",
+        "Chapter 3",
+        "Chapter 4",
+        "Chapter 5"
+      ],
+      "BUTTON": {
+        "CANCEL": "Cancel",
+        "CONFIRM": "Xác nhận",
+        "CREATE": "Tạo mới",
+        "DELETE": "Xoá",
+        "EXECUTE_DELETE": "Xác nhận xoá",
+        "EDIT": "Chỉnh sửa",
+        "SAVE": "Lưu",
+        "UPDATE": "Cập nhật",
+        "IMPORT": "Import",
+        "IMPORT_CSV": "Import CSV",
+        "ADD_TEACHER": "Thêm giáo viên",
+        "IMPORT_SCV": "Nhập từ File"
+      },
+      "PLACEHOLDER": {
+        "SELECT": "Vui lòng chọn một giá trị.",
+        "TEXT_FIELD": "Vui lòng nhập giá trị."
+      },
+      "RECORD": "Giá trị phù hợp",
+      "TAG": {
+        "EDITABLE": "Có thể chỉnh sửa",
+        "REQUIRED": "Bắt buộc"
+      }
+    },
+    "CLASS_MANAGEMENT": {
+      "TITLE": "Quản lý lớp học phần",
+      "CLASS_CODE": "Mã lớp",
+      "CLASS_NAME": "Tên lớp",
+      "TEACHER_NAME": "Tên giáo viên",
+      "STATUS": "Trạng thái",
+      "CLASS_DETAIL": "Chi tiết lớp học phần",
+      "CLASS_EDIT": "Chỉnh sửa lớp học phần",
+      "EMPTY_STUDENT_MESSAGE": "Không có học viên nào trong lớp học phần này."
+    },
+    "LESSONS_MANAGEMENT": {
+      "TITLE": "Quản lý bài học",
+      "LESSON_NAME": "Tên bài học",
+      "LESSON_CHAPTER": "Tên chương",
+      "STATUS": "Trạng thái",
+      "CHAPTER": "Chương",
+      "CHAPTER_TYPE": {
+        "DESC": "作成日時（降順)",
+        "ASC": "作成日時（昇順)"
+      }
+    },
+    "TEACHER_MANAGEMENT": {
+      "PAGE_DESCRIPTION": "Danh sách giáo viên"
+    },
+    "IMPORT_TEACHER": {
+      "PAGE_DESCRIPTION": "Thêm mới giáo viên",
+      "IMPORT_SUCCESS": "Giáo viên đã được thêm thành công"
+    },
+    "LESSONS_DETAIL": {
+      "HEADING": "Chi tiết bài học"
+    },
+    "LESSONS_CREATE": {
+      "PAGE_DESCRIPTION": "Thêm mới bài học",
+      "ADD_BUTTON": "Thêm mới",
+      "SELECT_CHAPTER": "Chọn chương",
+      "LESSON_NAME": "Tên bài học",
+      "STATUS": "Trạng thái"
+    }
+  }
+}
