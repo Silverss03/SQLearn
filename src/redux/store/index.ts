@@ -12,6 +12,7 @@ import { reducer as loadingReducer } from '@src/redux/toolkit/actions/loadingAct
 import { reducer as storageReducer } from '@src/redux/toolkit/actions/storageActions';
 import { reducer as pokemonReducer } from '@src/redux/toolkit/actions/pokemonActions';
 import { reducer as exerciseReducer } from '@src/redux/toolkit/actions/exercisesActions';
+import { reducer as progressReducer } from '@src/redux/toolkit/actions/progressActions';
 import { MMKVReduxStorage } from '@src/storage';
 
 const rootReducer = combineReducers({
@@ -19,6 +20,7 @@ const rootReducer = combineReducers({
     loadingReducer: loadingReducer,
     pokemonReducer: pokemonReducer,
     exerciseReducer: exerciseReducer,
+    progressReducer: progressReducer,
 });
 
 const persistConfig = {
