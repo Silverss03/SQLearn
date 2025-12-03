@@ -26,6 +26,8 @@ import ChapterComponent from './components/ChapterComponent';
 import { QuestionType } from '@src/network/dataTypes/question-types';
 import { getUpcomingExamsService } from '@src/network/services/questionServices';
 import ExamComponent from './components/ExamComponent';
+import { useAppDispatch } from '@src/hooks';
+import { ProgressActions } from '@src/redux/toolkit/actions/progressActions';
 
 const HomeScreen = () => {
     const Dimens = useDimens();
@@ -36,18 +38,19 @@ const HomeScreen = () => {
 
     const userData = useAppSelector((state) => state.storageReducer.userData);
     const userFullName = userData?.user?.name;
+    const dispatch = useAppDispatch();
     const [chapterList, setChapterList] = React.useState<ChapterType.Chapter[]>([]);
     const [averageScore, setAverageScore] = React.useState<number>(0);
-    const [overallProgress, setOverallProgress] = React.useState<number>(0);
-    const [chaptersProgress, setChaptersProgress] = React.useState<TopicProgress[]>([]);
+    const overallProgress = useAppSelector((state) => state.progressReducer.overallProgress);
+    const chaptersProgress = useAppSelector((state) => state.progressReducer.topicsProgress);
     const [upcomingExams, setUpcomingExams] = React.useState<QuestionType.UpcomingExam[]>([]);
 
     const { callApi: fetchAllChapterProgress } = useCallAPI(
             getAllTopicsProgressService,
             undefined,
             useCallback((data: TopicProgress[]) => {
-                setChaptersProgress(data);
-            }, []),
+                dispatch(ProgressActions.setTopicsProgress(data));
+            }, [dispatch]),
     );
 
     const { callApi: fetchChapterList } = useCallAPI(
@@ -70,8 +73,8 @@ const HomeScreen = () => {
             getOverallProgressService,
             undefined,
             useCallback((data: OverallProgress) => {
-                setOverallProgress(data.progress_percentage);
-            }, []),
+                dispatch(ProgressActions.setOverallProgress(data));
+            }, [dispatch]),
     );
 
     const { callApi: fetchUpcomingExams } = useCallAPI(
@@ -113,14 +116,13 @@ const HomeScreen = () => {
                     <HomeAvatarIcon
                         width={Dimens.W_100}
                         height={Dimens.H_100}
-                        style={{ marginLeft: 8 }}
                     />
 
                     <View>
                         <TextComponent
                             style = {styles.nameText}
                         >
-                            {(t('Xin chào, {{name}}!', { name: userFullName }))}
+                            {(t('Xin chào, {{name}}', { name: userFullName }))}
                         </TextComponent>
                     </View>
                 </View>
@@ -129,7 +131,7 @@ const HomeScreen = () => {
                     <View style={styles.progressContainer}>
                         <View style={styles.progressTextContainer}>
                             <TextComponent
-                                style = {{ fontSize: Dimens.FONT_10, color: '#FFFFFF' }}
+                                style = {{ fontSize: Dimens.FONT_12, color: '#FFFFFF' }}
                             >
                                 {t('Tiến trình')}
                             </TextComponent>
@@ -137,7 +139,7 @@ const HomeScreen = () => {
                         <View style={styles.averageScoreBar}>
                             <Progress.Circle
                                 size={Dimens.W_48}
-                                progress={(overallProgress / 100)}
+                                progress={((overallProgress?.progress_percentage || 0) / 100)}
                                 thickness={10}
                                 color="#FF7F00"
                                 unfilledColor="#C0F0E8"
@@ -145,7 +147,7 @@ const HomeScreen = () => {
                             <TextComponent
                                 style = {styles.averageScoreText}
                             >
-                                {overallProgress}%
+                                {overallProgress?.progress_percentage || 0}%
                             </TextComponent>
                         </View>
                     </View>
@@ -153,7 +155,7 @@ const HomeScreen = () => {
                     <View style={styles.averageScoreContainer}>
                         <View style={styles.averageScoreTextContainer}>
                             <TextComponent
-                                style = {{ fontSize: Dimens.FONT_10, color: '#FFFFFF' }}
+                                style = {{ fontSize: Dimens.FONT_12, color: '#FFFFFF' }}
                             >
                                 {t('Điểm trung bình')}
                             </TextComponent>

@@ -31,6 +31,7 @@ import ArrowUpIcon from '@src/assets/svg/ArrowUpIcon';
 import { SCREENS } from '@src/navigation/config/screenName';
 import { Slider } from '@miblanchard/react-native-slider';
 import { ScrollView } from 'react-native-gesture-handler';
+import { useAppSelector } from '@src/hooks';
 
 const LessonsScreen = () => {
     const Dimens = useDimens();
@@ -41,6 +42,9 @@ const LessonsScreen = () => {
     const route = useRoute<LessonsScreenProps>();
     const { topicId, topicName } = route.params;
     const [activeSections, setActiveSections] = useState<number[]>([]);
+    const topicProgress = useAppSelector((state) =>
+        state.progressReducer.topicsProgress.find((p) => p.topic_id === topicId)
+    );
     let chapter, content;
 
     const match = topicName.match(/^(Chương\s*\d+)\s*:\s*(.+)$/);
@@ -160,10 +164,10 @@ const LessonsScreen = () => {
 
                         <View style={styles.progressWrapper}>
                             <TextComponent style={styles.percentageText}>
-                                {Math.round(10)}%
+                                {Math.round(topicProgress?.progress_percentage || 0)}%
                             </TextComponent>
                             <Slider
-                                value={[10]}
+                                value={[topicProgress?.progress_percentage || 0]}
                                 minimumValue={0}
                                 maximumValue={100}
                                 step={1}
@@ -202,7 +206,7 @@ export default memo(LessonsScreen);
 const stylesF = (Dimens: DimensType, themeColors: ReturnType<typeof useThemeColors>) => StyleSheet.create({
     homeHeader: {
         paddingHorizontal: Dimens.W_16,
-        paddingVertical: Dimens.H_48,
+        paddingVertical: Dimens.H_24,
         justifyContent: 'space-between',
         borderBottomLeftRadius: Dimens.RADIUS_12,
         borderBottomRightRadius: Dimens.RADIUS_12,
