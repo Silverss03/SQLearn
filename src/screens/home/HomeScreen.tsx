@@ -2,12 +2,15 @@ import React, {
     memo,
     useCallback,
     useEffect,
+    useState,
 } from 'react';
 import {
     StyleSheet,
     View,
 } from 'react-native';
 import TextComponent from '@src/components/TextComponent';
+import DialogComponent from '@src/components/DialogComponent';
+import TouchableComponent from '@src/components/TouchableComponent';
 import useDimens, { DimensType } from '@src/hooks/useDimens';
 import useThemeColors from '@src/themes/useThemeColors';
 import LinearGradient from 'react-native-linear-gradient';
@@ -44,6 +47,7 @@ const HomeScreen = () => {
     const overallProgress = useAppSelector((state) => state.progressReducer.overallProgress);
     const chaptersProgress = useAppSelector((state) => state.progressReducer.topicsProgress);
     const [upcomingExams, setUpcomingExams] = React.useState<QuestionType.UpcomingExam[]>([]);
+    const [isConcurrentLoginDialogVisible, setIsConcurrentLoginDialogVisible] = useState(false);
 
     const { callApi: fetchAllChapterProgress } = useCallAPI(
             getAllTopicsProgressService,
@@ -188,7 +192,12 @@ const HomeScreen = () => {
                         <FlatListComponent
                             horizontal
                             data={upcomingExams}
-                            renderItem={({ item }) => <ExamComponent item={item} />}
+                            renderItem={({ item }) => (
+                                <ExamComponent 
+                                    item={item} 
+                                    onShow403={() => setIsConcurrentLoginDialogVisible(true)}
+                                />
+                            )}
                             keyExtractor={(item) => item.id.toString()}
                             showsHorizontalScrollIndicator={false}
                             contentContainerStyle={styles.upcomingExamsList}
@@ -211,6 +220,55 @@ const HomeScreen = () => {
                         </TextComponent>
                     }
                 />
+
+                <DialogComponent
+                    isVisible={isConcurrentLoginDialogVisible}
+                    hideModal={() => setIsConcurrentLoginDialogVisible(false)}
+                    containerStyle={{ backgroundColor: themeColors.color_dialog_background }}
+                >
+                    <View style={{ alignItems: 'center' }}>
+                         <TextComponent
+                            style={{
+                                fontSize: Dimens.FONT_18,
+                                fontWeight: 'bold',
+                                color: themeColors.color_text_3,
+                                marginBottom: Dimens.H_16,
+                                textAlign: 'center'
+                            }}
+                        >
+                            {t('Thông báo')}
+                        </TextComponent>
+                        <TextComponent
+                            style={{
+                                fontSize: Dimens.FONT_16,
+                                color: themeColors.color_text_2,
+                                marginBottom: Dimens.H_24,
+                                textAlign: 'center'
+                            }}
+                        >
+                            {t('Tài khoản của bạn đang làm bài thi trên thiết bị khác. Vui lòng kiểm tra lại.')}
+                        </TextComponent>
+                        <TouchableComponent
+                            onPress={() => setIsConcurrentLoginDialogVisible(false)}
+                            style={{
+                                backgroundColor: themeColors.color_primary,
+                                paddingVertical: Dimens.H_12,
+                                paddingHorizontal: Dimens.W_24,
+                                borderRadius: Dimens.RADIUS_8,
+                            }}
+                        >
+                            <TextComponent
+                                style={{
+                                    fontSize: Dimens.FONT_16,
+                                    color: '#FFFFFF',
+                                    fontWeight: '600'
+                                }}
+                            >
+                                {t('Đóng')}
+                            </TextComponent>
+                        </TouchableComponent>
+                    </View>
+                </DialogComponent>
 
             </View>
         </View>

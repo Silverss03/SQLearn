@@ -47,7 +47,7 @@ const ExamDetailScreen = () => {
     const { t } = useTranslation();
     const route = useRoute<ExamDetailScreenProps>();
 
-    const { examId, examTitle, examDuration } = route.params;
+    const { examId, examTitle, examDuration, initialData } = route.params;
 
     const [allQuestions, setAllQuestions] = useState<(QuestionType.McqQuestion | QuestionType.SqlQuestion)[]>([]);
     const [sqlAnswers, setSqlAnswers] = useState<{ [key: string]: string }>({});
@@ -66,27 +66,31 @@ const ExamDetailScreen = () => {
     const totalQuestions = allQuestions.length;
     const ref = useRef<DuoDragDropRef>(null);
 
+    const handleExamData = useCallback((data: QuestionType.StartExamResponse) => {
+        const questions = data.questions;
+        const sqlQuestionsArray = Object.values(questions.sqlQuestions || {});
+        const combined = [...questions.multipleChoice, ...sqlQuestionsArray];
+        const shuffled = combined.sort(() => Math.random() - 0.5);
+        setAllQuestions(shuffled);
+        setSessionToken(data.session_token);
+    }, []);
+
     const { callApi: fetchExerciseDetail } = useCallAPI(
             startExamService,
             undefined,
-            useCallback((data: QuestionType.StartExamResponse) => {
-                const questions = data.questions;
-                const sqlQuestionsArray = Object.values(questions.sqlQuestions || {});
-                const combined = [...questions.multipleChoice, ...sqlQuestionsArray];
-                const shuffled = combined.sort(() => Math.random() - 0.5);
-                setAllQuestions(shuffled);
-                setSessionToken(data.session_token);
-            }, [])
+            handleExamData
     );
 
     useEffect(() => {
-        if (examId) {
+        if (initialData) {
+            handleExamData(initialData);
+        } else if (examId) {
             fetchExerciseDetail({
                 exam_id: examId,
                 device_fingerprint: 'fake-device-id-for-demo'
             });
         }
-    }, [examId]);
+    }, [examId, initialData, handleExamData, fetchExerciseDetail]);
 
     useEffect(() => {
         timerRef.current = setInterval(() => {

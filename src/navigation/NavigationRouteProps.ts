@@ -1,6 +1,7 @@
 import type { RouteProp } from '@react-navigation/native';
 import { ChapterType } from '@src/network/dataTypes/chapter-type';
 import { LessonType } from '@src/network/dataTypes/lesson-type';
+import { QuestionType } from '@src/network/dataTypes/question-types';
 
 export type RootStackParamList = {
     [key: string]: any;
@@ -40,6 +41,7 @@ export type RootStackParamList = {
         examId: number;
         examTitle: string;
         examDuration: number;
+        initialData?: QuestionType.StartExamResponse;
     };
     examCompleteScreen: {
         examId: number;
