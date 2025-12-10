@@ -10,11 +10,15 @@ import { QuestionType } from '@src/network/dataTypes/question-types';
 import { calculateTimeLeft } from '@src/utils/dateTimeUtil';
 import { useTranslation } from 'react-i18next';
 import { useAppSelector } from '@src/hooks';
+import dayjs from 'dayjs';
+import useCallAPI from '@src/hooks/useCallAPI';
+import { startExamService } from '@src/network/services/questionServices';
 
 interface ExamComponentProps {
     item: QuestionType.UpcomingExam;
+    onShow403?: () => void;
 }
-const ExamComponent = ({ item }: ExamComponentProps) => {
+const ExamComponent = ({ item, onShow403 }: ExamComponentProps) => {
     const Dimens = useDimens();
     const [timeLeft, setTimeLeft] = useState<string>('');
     const { t } = useTranslation();
@@ -35,13 +39,30 @@ const ExamComponent = ({ item }: ExamComponentProps) => {
         return () => clearInterval(timer);
     }, [item.start_time]);
 
+    const { callApi: startExam } = useCallAPI(
+            startExamService,
+            undefined,
+            useCallback((data: QuestionType.StartExamResponse) => {
+                NavigationService.replace(SCREENS.EXAM_DETAIL_SCREEN, {
+                    examId: item.id,
+                    examTitle: item.title,
+                    examDuration: item.duration_minutes,
+                    initialData: data
+                });
+            }, [item.id, item.title, item.duration_minutes]),
+            (status, message) => {
+                if (status === 403 && onShow403) {
+                    onShow403();
+                }
+            }
+    );
+
     const handleExamPress = useCallback(() => {
-        NavigationService.replace(SCREENS.EXAM_DETAIL_SCREEN, {
-            examId: item.id,
-            examTitle: item.title,
-            examDuration: item.duration_minutes,
+        startExam({
+            exam_id: item.id,
+            device_fingerprint: 'fake-device-id-for-demo'
         });
-    }, [item.duration_minutes, item.id, item.title]);
+    }, [item.id, startExam]);
 
     return (
         <TouchableComponent
@@ -50,7 +71,7 @@ const ExamComponent = ({ item }: ExamComponentProps) => {
                 !item.is_active && styles.inactiveCard
             ]}
             onPress={handleExamPress}
-            disabled={!item.is_active || isCompleted}
+            disabled={!item.is_active || isCompleted || item.start_time > dayjs().toISOString()}
         >
             <View>
                 <TextComponent style={styles.upcomingExamTitle} numberOfLines={2}>
@@ -64,14 +85,13 @@ const ExamComponent = ({ item }: ExamComponentProps) => {
                 </TextComponent>
 
                 {item.is_active && !isCompleted && (
-                    <TouchableComponent
+                    <View   
                         style={styles.startButton}
-                        onPress={handleExamPress}
                     >
                         <TextComponent style={styles.startButtonText}>
                             {t('Bắt đầu làm bài')}
                         </TextComponent>
-                    </TouchableComponent>
+                    </View  >
                 )}
             </View>
         </TouchableComponent>

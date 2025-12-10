@@ -33,4 +33,10 @@
     "Bài kiểm tra sắp tới": "Bài kiểm tra sắp tới",
     "Bắt đầu làm bài": "Bắt đầu làm bài",
     "Nộp bài": "Nộp bài",
+    "empty_email": "Vui lòng nhập địa chỉ emai",
+    "empty_password": "Vui lòng nhập mật khẩu",
+    "password_holder": "Vui lòng nhập mật khẩu",
+    "invalid_email": "Định dạng email không hợp lệ",
+    "Invalid credentials": "Email hoặc mật khẩu không đúng",
+    "Các bài học vẫn đang trong quá trình biên soạn...": "Các bài học vẫn đang trong quá trình biên soạn..."
 }
