@@ -42,6 +42,7 @@ const LessonsScreen = () => {
     const route = useRoute<LessonsScreenProps>();
     const { topicId, topicName } = route.params;
     const [activeSections, setActiveSections] = useState<number[]>([]);
+    const [loading, setLoading] = useState(false);
     const topicProgress = useAppSelector((state) =>
         state.progressReducer.topicsProgress.find((p) => p.topic_id === topicId)
     );
@@ -61,11 +62,13 @@ const LessonsScreen = () => {
             undefined,
             useCallback((data: LessonType.Lesson[]) => {
                 setLessonsList(data);
+                setLoading(false);
             }, []),
     );
 
     useEffect(() => {
         if (topicId) {
+            setLoading(true);
             fetchLessonsList();
         }
     }, [fetchLessonsList, topicId]);
@@ -182,6 +185,14 @@ const LessonsScreen = () => {
                     </View>
                 </View>
             </LinearGradient>
+
+            {lessonsList.length === 0 && !loading && (
+                <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+                    <TextComponent style={{ color: themeColors.color_text_2 }}>
+                        {t('Các bài học vẫn đang trong quá trình biên soạn...')}
+                    </TextComponent>
+                </View>
+            )}
 
             <ScrollView style={styles.contentContainer}>
 
