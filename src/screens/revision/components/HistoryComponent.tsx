@@ -63,7 +63,7 @@ const HistoryComponent = () => {
             <FlatListComponent
                 data={historyData}
                 renderItem={renderHistoryItem}
-                keyExtractor={(item) => item.chapter_exercise_id.toString()}
+                keyExtractor={(item) => item.id.toString()}
                 ListHeaderComponent={<View style={{ height: Dimens.H_24 }}/>}
             />
         </View>
