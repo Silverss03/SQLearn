@@ -128,7 +128,7 @@ const LessonDetailScreen = () => {
                         style={styles.exerciseButton}
                     >
                         <TextComponent style={styles.exerciseButtonText}>
-                            📝 Làm bài tập về chương này
+                            📝 Làm bài tập
                         </TextComponent>
                     </TouchableComponent>
                 </LinearGradient>
@@ -142,7 +142,7 @@ export default memo(LessonDetailScreen);
 const stylesF = (Dimens: DimensType, themeColors: ReturnType<typeof useThemeColors>) => StyleSheet.create({
     homeHeader: {
         paddingHorizontal: Dimens.W_16,
-        paddingVertical: Dimens.H_36,
+        paddingVertical: Dimens.H_24,
         justifyContent: 'space-between',
     },
     scrollViewWrapper: {
@@ -205,7 +205,7 @@ const stylesF = (Dimens: DimensType, themeColors: ReturnType<typeof useThemeColo
     },
     exerciseButtonGradient: {
         borderRadius: Dimens.RADIUS_8,
-        padding: Dimens.H_15,
+        padding: Dimens.H_12,
         alignItems: 'center',
     },
     exerciseButton: {

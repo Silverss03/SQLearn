@@ -5,6 +5,7 @@ export const SCREENS = {
     MENU_TAB_SCREEN: 'MENU_TAB_SCREEN',
     ACCOUNT_TAB_SCREEN: 'ACCOUNT_TAB_SCREEN',
     LOGIN_SCREEN: 'LoginScreen',
+    FORGOT_PASSWORD_SCREEN: 'ForgotPasswordScreen',
 
     HOME_SCREEN: 'HomeScreen',
     MENU_SCREEN: 'MenuScreen',

@@ -26,6 +26,7 @@ import SplashScreen from '@src/screens/splash/SplashScreen';
 import useThemeColors from '@src/themes/useThemeColors';
 import { log } from '@src/utils/logger';
 import LoginScreen from '@src/screens/login/LoginScreen';
+import ForgotPasswordScreen from '@src/screens/login/ForgotPasswordScreen';
 
 const StackNavigator = createStackNavigator<RootStackParamList>();
 
@@ -102,13 +103,23 @@ const AppNavigation = () => {
 
         if (!isUserLoggedIn) {
             return (
-                <StackNavigator.Screen
-                    name={SCREENS.LOGIN_SCREEN}
-                    component={LoginScreen}
-                    options={{
-                        ...TransitionPresets.ModalFadeTransition,
-                    }}
-                />
+                <>
+                    <StackNavigator.Screen
+                        name={SCREENS.LOGIN_SCREEN}
+                        component={LoginScreen}
+                        options={{
+                            ...TransitionPresets.ModalFadeTransition,
+                        }}
+                    />
+                    <StackNavigator.Screen
+                        name={SCREENS.FORGOT_PASSWORD_SCREEN}
+                        component={ForgotPasswordScreen}
+                        options={{
+                            ...TransitionPresets.ModalFadeTransition,
+                        }}
+                    />
+                </>
+
             );
         }
 
