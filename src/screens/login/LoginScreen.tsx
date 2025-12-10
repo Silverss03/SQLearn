@@ -26,6 +26,8 @@ import { validateEmail } from '@src/utils';
 import { useAppDispatch } from '@src/hooks';
 import { StorageActions } from '@src/redux/toolkit/actions/storageActions';
 import { AuthType } from '@src/network/dataTypes/auth-types';
+import NavigationService from '@src/navigation/NavigationService';
+import { SCREENS } from '@src/navigation/config/screenName';
 
 const LoginScreen = () => {
     const Dimens = useDimens();
@@ -34,8 +36,8 @@ const LoginScreen = () => {
     const styles = stylesF(Dimens, themeColors);
     const dispatch = useAppDispatch();
 
-    const [email, setEmail] = useState(__DEV__ ? 'john2@example.com' : '');
-    const [password, setPassword] = useState(__DEV__ ? '123@12345' : '');
+    const [email, setEmail] = useState(__DEV__ ? 'student3@gmail.com' : '');
+    const [password, setPassword] = useState(__DEV__ ? '123@12347' : '');
     const [emailErrorMessage, setEmailErrorMessage] = useState('');
     const [passwordErrorMessage, setPasswordErrorMessage] = useState('');
     const [submitAttempted, setSubmitAttempted] = useState(false);
@@ -75,6 +77,7 @@ const LoginScreen = () => {
                 dispatch(StorageActions.setStorageUserData(data));
             }, [dispatch]),
             undefined,
+            false
     );
 
     const handleLogin = useCallback(async () => {
@@ -120,9 +123,9 @@ const LoginScreen = () => {
         handleLogin();
     }, [email, handleLogin, password, t, validatePassword]);
 
-    // const handleForgetPasswordPress = () => {
-    //     NavigationService.navigate(SCREENS.FILL_EMAIL_SCREEN);
-    // };
+    const handleForgetPasswordPress = useCallback(() => {
+        NavigationService.navigate(SCREENS.FORGOT_PASSWORD_SCREEN);
+    }, []);
 
     return (
         <View style={styles.loginContainer}>
@@ -157,8 +160,7 @@ const LoginScreen = () => {
             />
 
             <TouchableComponent
-                onPress={() => { }}
-                // disabled={loading}
+                onPress={handleForgetPasswordPress}
                 style={styles.forgetPasswordContainer}
             >
                 <TextComponent style={styles.forgetPasswordText} >Quên mật khẩu</TextComponent>
