@@ -10,6 +10,7 @@ import {
     Animated,
     StyleSheet,
     View,
+    Vibration,
 } from 'react-native';
 import TextComponent from '@src/components/TextComponent';
 import useDimens, { DimensType } from '@src/hooks/useDimens';
@@ -43,6 +44,7 @@ import { DuoDragDropRef } from '@jamsch/react-native-duo-drag-drop';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import CorrectIcon from '@src/assets/svg/CorrectIcon';
 import IncorrectIcon from '@src/assets/svg/IncorrectIcon';
+import { playSound } from '@src/utils/soundUtils';
 
 type QuestionResult = 'correct' | 'incorrect' | null;
 
@@ -135,6 +137,19 @@ const ChapterExercisesScreen = () => {
 
             if (isCorrect) {
                 setScore((prevScore) => prevScore + 1);
+                // Trigger physical feedback (vibration)
+                Vibration.vibrate(500);
+
+                // Play success sound
+                // TODO: User needs to add 'correct_answer.mp3' to android/app/src/main/res/raw/ and iOS project
+                playSound('correct_answer.mp3');
+            } else {
+                 // Trigger physical feedback (vibration) for wrong answer
+                 Vibration.vibrate(500);
+                 
+                 // Play incorrect sound
+                 // TODO: User needs to add 'wrong_answer.mp3'
+                 playSound('wrong_answer.mp3');
             }
         } else {
             if (isLastQuestion) {
