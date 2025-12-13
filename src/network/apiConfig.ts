@@ -35,6 +35,8 @@ export const UPDATE_AVATAR = 'user/avatar';
 export const UPCOMING_EXERCISES = 'exams';
 export const START_EXAM = 'exams/start';
 export const SUBMIT_EXAM = 'exams/submit';
+export const EXAM_HISTORY = 'exams/history';
+export const AUDIT_LOGS = 'audit-logs';
 
 export const CHECK_TOKEN_EXPIRED_WHITE_LIST = [
     LOGIN,

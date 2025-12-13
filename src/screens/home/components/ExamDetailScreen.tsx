@@ -10,6 +10,8 @@ import {
     Animated,
     StyleSheet,
     View,
+    AppState,
+    AppStateStatus,
 } from 'react-native';
 import TextComponent from '@src/components/TextComponent';
 import useDimens, { DimensType } from '@src/hooks/useDimens';
@@ -22,7 +24,7 @@ import { QuestionType } from '@src/network/dataTypes/question-types';
 import { ExamDetailScreenProps } from '@src/navigation/NavigationRouteProps';
 import { useRoute } from '@react-navigation/native';
 import useCallAPI from '@src/hooks/useCallAPI';
-import { startExamService } from '@src/network/services/questionServices';
+import { startExamService, submitExamService, sendAuditLogService } from '@src/network/services/questionServices';
 import {
     canSubmit,
     getSqlQuestionData,
@@ -38,6 +40,11 @@ import { SCREENS } from '@src/navigation/config/screenName';
 import { DuoDragDropRef } from '@jamsch/react-native-duo-drag-drop';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { ArrowRightIcon } from '@src/assets/svg';
+import ScreenshotAware from 'react-native-screenshot-aware';
+import DialogComponent from '@src/components/DialogComponent';
+import { ExerciseActions } from '@src/redux/toolkit/actions/exercisesActions';
+import { useAppDispatch } from '@src/hooks';
+import { ExamSecurityService } from '@src/services/ExamSecurityServices';
 
 const ExamDetailScreen = () => {
     const Dimens = useDimens();
@@ -60,6 +67,12 @@ const ExamDetailScreen = () => {
     const [session_token, setSessionToken] = useState<string>('');
     const [timeLeft, setTimeLeft] = useState<number>(examDuration * 60);
 
+    const [warningsCount, setWarningsCount] = useState(0);
+    const [isCheatingDialogVisible, setIsCheatingDialogVisible] = useState(false);
+    const appState = useRef(AppState.currentState);
+
+    const dispatch = useAppDispatch();
+
     const timerRef = useRef<NodeJS.Timeout>();
     const currentQuestion = allQuestions[currentQuestionIndex];
     const isLastQuestion = currentQuestionIndex === allQuestions.length - 1;
@@ -76,18 +89,107 @@ const ExamDetailScreen = () => {
     }, []);
 
     const { callApi: fetchExerciseDetail } = useCallAPI(
-            startExamService,
-            undefined,
-            handleExamData
+        startExamService,
+        undefined,
+        handleExamData
     );
+
+    const { callApi: submitResult } = useCallAPI(
+        submitExamService,
+        undefined,
+        undefined
+    );
+
+    const { callApi: sendAuditLog } = useCallAPI(
+        sendAuditLogService,
+        undefined,
+        undefined,
+        undefined,
+        false
+    );
+
+    const handleSubmission = useCallback(async (finalScore: number) => {
+        const deviceFingerprint = await ExamSecurityService.getDeviceFingerprint();
+        submitResult({
+            exam_id: examId,
+            score: finalScore,
+            session_token: session_token,
+            device_fingerprint: deviceFingerprint
+        });
+
+        dispatch(ExerciseActions.addCompletedExercise(examId));
+        NavigationService.replace(SCREENS.EXAM_COMPLETE_SCREEN, {
+            examId,
+            score: finalScore,
+            totalQuestions,
+            session_token,
+        });
+    }, [dispatch, examId, session_token, submitResult, totalQuestions]);
+
+    const handleCheatingDetection = useCallback((type: 'tab_switch' | 'screen_capture_detected' | 'app_minimized') => {
+        if (isSubmitted) return;
+
+        sendAuditLog({
+            exam_id: examId,
+            session_token: session_token,
+            event_type: type
+        });
+
+        setWarningsCount(prev => {
+            const newCount = prev + 1;
+            if (newCount >= 3) {
+                // Auto submit
+                Alert.alert(t('Thông báo'), t('Bạn đã vi phạm quy chế thi quá số lần cho phép. Bài thi sẽ tự động nộp.'));
+                handleSubmission(score);
+            } else {
+                setIsCheatingDialogVisible(true);
+            }
+            return newCount;
+        });
+    }, [examId, handleSubmission, isSubmitted, score, sendAuditLog, session_token, t]);
+
+    useEffect(() => {
+        const subscription = AppState.addEventListener('change', nextAppState => {
+            if (
+                appState.current.match(/active/) &&
+                (nextAppState === 'background' || nextAppState === 'inactive')
+            ) {
+                handleCheatingDetection('app_minimized');
+            }
+
+            appState.current = nextAppState;
+            if (nextAppState === 'active') {
+                sendAuditLog({
+                    exam_id: examId,
+                    session_token: session_token,
+                    event_type: 'app_resumed'
+                });
+            }
+        });
+
+        return () => {
+            subscription.remove();
+        };
+    }, [examId, handleCheatingDetection, sendAuditLog, session_token]);
+
+    useEffect(() => {
+        const subscription = ScreenshotAware.addListener(() => {
+            handleCheatingDetection('screen_capture_detected');
+        });
+        return () => {
+            subscription.remove();
+        };
+    }, [handleCheatingDetection]);
 
     useEffect(() => {
         if (initialData) {
             handleExamData(initialData);
         } else if (examId) {
-            fetchExerciseDetail({
-                exam_id: examId,
-                device_fingerprint: 'fake-device-id-for-demo'
+            ExamSecurityService.getDeviceFingerprint().then(deviceFingerprint => {
+                fetchExerciseDetail({
+                    exam_id: examId,
+                    device_fingerprint: deviceFingerprint
+                });
             });
         }
     }, [examId, initialData, handleExamData, fetchExerciseDetail]);
@@ -96,27 +198,20 @@ const ExamDetailScreen = () => {
         timerRef.current = setInterval(() => {
             setTimeLeft((prevTime) => {
                 if (prevTime <= 1) {
-                    // Time's up - clear interval and navigate to complete screen
-                    clearInterval(timerRef.current);
-                    NavigationService.replace(SCREENS.EXAM_COMPLETE_SCREEN, {
-                        examId,
-                        score,
-                        totalQuestions,
-                        session_token,
-                    });
+                    if (timerRef.current) clearInterval(timerRef.current);
+                    handleSubmission(score);
                     return 0;
                 }
                 return prevTime - 1;
             });
         }, 1000);
 
-        // Cleanup on component unmount
         return () => {
             if (timerRef.current) {
                 clearInterval(timerRef.current);
             }
         };
-    }, [examDuration, examId, score, totalQuestions, session_token]);
+    }, [examDuration, examId, score, totalQuestions, session_token, handleSubmission]);
 
     const formatTime = (seconds: number): string => {
         const minutes = Math.floor(seconds / 60);
@@ -129,9 +224,9 @@ const ExamDetailScreen = () => {
             const data = getSqlQuestionData(currentQuestion);
             if (data) {
                 if (currentQuestion.interaction_type === 'drag_drop') {
-                    setDragDropAnswer([]) ;
+                    setDragDropAnswer([]);
                 } else if (currentQuestion.interaction_type === 'fill_blanks') {
-                    setSqlAnswers({}) ;
+                    setSqlAnswers({});
                 }
             }
         }
@@ -156,7 +251,7 @@ const ExamDetailScreen = () => {
             }
             isCorrect = selectedAnswer === currentQuestion.correct_answer;
         } else if (currentQuestion && isSqlQuestion(currentQuestion)) {
-            let answer ;
+            let answer;
             if (currentQuestion.interaction_type === 'drag_drop' && ref.current) {
                 const answeredWords = ref.current.getAnsweredWords();
                 answer = answeredWords.join(' ');
@@ -166,24 +261,22 @@ const ExamDetailScreen = () => {
 
         setIsSubmitted(true);
 
+        const newScore = score + (isCorrect ? 1 : 0);
         if (isCorrect) {
-            setScore((prevScore) => prevScore + 1);
+            setScore(newScore);
         }
+
         if (isLastQuestion) {
-            NavigationService.navigate(SCREENS.EXAM_COMPLETE_SCREEN, {
-                examId,
-                score: score,
-                totalQuestions,
-                session_token: session_token,
-            });
+            handleSubmission(newScore);
         } else {
+            // Delay slightly to show visual feedback if needed, currently instant
             setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
             setSelectedAnswer(null);
             setIsSubmitted(false);
             setSqlAnswers({});
             setDragDropAnswer([]);
         }
-    }, [currentQuestion, isLastQuestion, selectedAnswer, t, sqlAnswers, score, examId, totalQuestions, session_token]);
+    }, [currentQuestion, isLastQuestion, selectedAnswer, t, sqlAnswers, score, handleSubmission]);
 
     const renderDragDropQuestion = useCallback((question: QuestionType.SqlQuestion) => {
         const data = getSqlQuestionData(question);
@@ -191,7 +284,7 @@ const ExamDetailScreen = () => {
 
         const { questionData } = data;
         const availableComponents = questionData.components.filter(
-                (comp: any) => !dragDropAnswer.find((ans) => ans.id === comp.id)
+            (comp: any) => !dragDropAnswer.find((ans) => ans.id === comp.id)
         );
 
         return (
@@ -285,18 +378,18 @@ const ExamDetailScreen = () => {
                         )}
 
                         {currentQuestion && isSqlQuestion(currentQuestion) &&
-                        currentQuestion.interaction_type === 'drag_drop' &&
-                        renderDragDropQuestion(currentQuestion)}
+                            currentQuestion.interaction_type === 'drag_drop' &&
+                            renderDragDropQuestion(currentQuestion)}
 
                         {currentQuestion && isSqlQuestion(currentQuestion) &&
-                        currentQuestion.interaction_type === 'fill_blanks' &&
-                        renderFillBlanksQuestion(currentQuestion)}
+                            currentQuestion.interaction_type === 'fill_blanks' &&
+                            renderFillBlanksQuestion(currentQuestion)}
                     </View>
 
                     <TouchableComponent
                         style={[
                             styles.floatingButton,
-                            !canSubmit({ currentQuestion, selectedAnswer, sqlAnswers }) && 
+                            !canSubmit({ currentQuestion, selectedAnswer, sqlAnswers }) &&
                             styles.disabledButton
                         ]}
                         onPress={handleSubmitOrContinue}
@@ -315,6 +408,58 @@ const ExamDetailScreen = () => {
                         )}
                     </TouchableComponent>
                 </View>
+
+                <DialogComponent
+                    isVisible={isCheatingDialogVisible}
+                    hideModal={() => setIsCheatingDialogVisible(false)}
+                    containerStyle={{ backgroundColor: themeColors.color_dialog_background }}
+                >
+                    <View style={{ alignItems: 'center' }}>
+                        <TextComponent
+                            style={{
+                                fontSize: Dimens.FONT_18,
+                                fontWeight: 'bold',
+                                color: themeColors.color_text_3,
+                                marginBottom: Dimens.H_16,
+                                textAlign: 'center'
+                            }}
+                        >
+                            {t('Cảnh báo')}
+                        </TextComponent>
+                        <TextComponent
+                            style={{
+                                fontSize: Dimens.FONT_16,
+                                color: themeColors.color_text_2,
+                                marginBottom: Dimens.H_24,
+                                textAlign: 'center'
+                            }}
+                        >
+                            {t('Bạn đã rời khỏi ứng dụng hoặc thực hiện hành động bị cấm. Nếu vi phạm 3 lần, bài thi sẽ tự động nộp.')}
+                            {'\n'}
+                            {t('Vi phạm: {{count}}/3', { count: warningsCount })}
+                        </TextComponent>
+                        <TouchableComponent
+                            onPress={() => setIsCheatingDialogVisible(false)}
+                            style={{
+                                backgroundColor: themeColors.color_primary,
+                                paddingVertical: Dimens.H_12,
+                                paddingHorizontal: Dimens.W_24,
+                                borderRadius: Dimens.RADIUS_8,
+                            }}
+                        >
+                            <TextComponent
+                                style={{
+                                    fontSize: Dimens.FONT_16,
+                                    color: '#FFFFFF',
+                                    fontWeight: '600'
+                                }}
+                            >
+                                {t('Đã hiểu')}
+                            </TextComponent>
+                        </TouchableComponent>
+                    </View>
+                </DialogComponent>
+
             </SafeAreaView>
 
         </GestureHandlerRootView>

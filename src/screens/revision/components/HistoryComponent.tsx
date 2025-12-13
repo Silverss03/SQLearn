@@ -6,7 +6,7 @@ import {
 } from 'react-native';
 import { QuestionType } from '@src/network/dataTypes/question-types';
 import useCallAPI from '@src/hooks/useCallAPI';
-import { getChapterExerciseHistoryService } from '@src/network/services/questionServices';
+import { getChapterExerciseHistoryService, getExamHistoryService } from '@src/network/services/questionServices';
 import TextComponent from '@src/components/TextComponent';
 import useDimens, { DimensType } from '@src/hooks/useDimens';
 import useThemeColors from '@src/themes/useThemeColors';
@@ -15,47 +15,71 @@ import dayjs from '@src/utils/dayjs';
 import FlatListComponent from '@src/components/FlatListComponent';
 
 const HistoryComponent = () => {
-    const [historyData, setHistoryData] = useState<QuestionType.ChapterExerciseRecord[]>([]);
+    const [historyData, setHistoryData] = useState<(QuestionType.ChapterExerciseRecord | QuestionType.ExamRecord)[]>([]);
     const Dimens = useDimens();
     const themeColors = useThemeColors();
     const styles = stylesF(Dimens, themeColors);
     const { t } = useTranslation();
 
-    const { callApi: fetchHistory } = useCallAPI(
-            getChapterExerciseHistoryService,
-            undefined,
-            useCallback((data: QuestionType.ChapterExerciseRecord[]) => {
-                setHistoryData(data);
-            }, [])
-    );
+    const fetchHistory = useCallback(async () => {
+        try {
+            const [chapterHistory, examHistory] = await Promise.all([
+                getChapterExerciseHistoryService(),
+                getExamHistoryService()
+            ]);
+
+            const chapterData = chapterHistory.data?.data || [];
+            const examData = examHistory.data?.data || [];
+
+            const combinedData = [
+                ...chapterData,
+                ...examData
+            ].sort((a, b) => {
+                const dateA = 'completed_at' in a ? a.completed_at : a.submitted_at;
+                const dateB = 'completed_at' in b ? b.completed_at : b.submitted_at;
+                return dayjs(dateB).diff(dayjs(dateA));
+            });
+
+            setHistoryData(combinedData);
+        } catch (error) {
+            console.error('Error fetching history:', error);
+        }
+    }, []);
 
     useEffect(() => {
         fetchHistory();
     }, [fetchHistory]);
 
-    const renderHistoryItem = ({ item }: { item: QuestionType.ChapterExerciseRecord }) => (
-        <View style={styles.historyItem}>
-            <View style={styles.itemHeader}>
-                <TextComponent style={styles.exerciseTitle}>
-                    {item.chapter_exercise_title}
-                </TextComponent>
-                <View style={[
-                    styles.scoreContainer,
-                    { backgroundColor: item.score >= 80 ? themeColors.color_text_correct : themeColors.color_text_incorrect }
-                ]}
-                >
-                    <TextComponent style={styles.scoreText}>
-                        {item.score}
+    const renderHistoryItem = ({ item }: { item: QuestionType.ChapterExerciseRecord | QuestionType.ExamRecord }) => {
+        const isExam = 'exam_id' in item;
+        const title = isExam ? item.title : item.chapter_exercise_title;
+        const score = parseFloat(item.score.toString());
+        const date = isExam ? item.submitted_at : item.completed_at;
+
+        return (
+            <View style={styles.historyItem}>
+                <View style={styles.itemHeader}>
+                    <TextComponent style={styles.exerciseTitle}>
+                        {isExam ? `[${t('Bài kiểm tra')}] ${title}` : title}
+                    </TextComponent>
+                    <View style={[
+                        styles.scoreContainer,
+                        { backgroundColor: score >= 80 ? themeColors.color_text_correct : themeColors.color_text_incorrect }
+                    ]}
+                    >
+                        <TextComponent style={styles.scoreText}>
+                            {score}
+                        </TextComponent>
+                    </View>
+                </View>
+                <View style={styles.itemFooter}>
+                    <TextComponent style={styles.dateText}>
+                        {dayjs(date).format('DD/MM/YYYY HH:mm')}
                     </TextComponent>
                 </View>
             </View>
-            <View style={styles.itemFooter}>
-                <TextComponent style={styles.dateText}>
-                    {dayjs(item.completed_at).format('DD/MM/YYYY HH:mm')}
-                </TextComponent>
-            </View>
-        </View>
-    );
+        );
+    };
 
     return (
         <View style={styles.container}>
@@ -63,8 +87,15 @@ const HistoryComponent = () => {
             <FlatListComponent
                 data={historyData}
                 renderItem={renderHistoryItem}
-                keyExtractor={(item) => item.id.toString()}
+                keyExtractor={(item, index) => index.toString()}
                 ListHeaderComponent={<View style={{ height: Dimens.H_24 }}/>}
+                ListEmptyComponent={
+                    <View style={styles.emptyContainer}>
+                        <TextComponent style={styles.emptyText}>
+                            {t('Chưa có lịch sử bài làm')}
+                        </TextComponent>
+                    </View>
+                }
             />
         </View>
     );
