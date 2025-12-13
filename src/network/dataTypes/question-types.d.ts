@@ -84,4 +84,22 @@ export declare namespace QuestionType {
             sqlQuestions: SqlQuestion[];
         }
     }
+
+    export interface ExamRecord {
+        exam_id: number;
+        title: string;
+        description: string | null;
+        duration_minutes: number;
+        start_time: string;
+        end_time: string | null;
+        score: string;
+        submitted_at: string;
+    }
+
+    export interface ExamHistoryResponse {
+        data: ExamRecord[];
+        message: string;
+        success: boolean;
+        remark: string;
+    }
 }

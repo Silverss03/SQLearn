@@ -20,11 +20,8 @@ import NavigationService from '@src/navigation/NavigationService';
 import CorrectIcon from '@src/assets/svg/CorrectIcon';
 import IncorrectIcon from '@src/assets/svg/IncorrectIcon';
 import useCallAPI from '@src/hooks/useCallAPI';
-import { submitExamService, } from '@src/network/services/questionServices';
-import { useAppDispatch } from '@src/hooks';
 import { ExamCompleteScreenProps } from '@src/navigation/NavigationRouteProps';
 import { SCREENS } from '@src/navigation/config/screenName';
-import { ExerciseActions } from '@src/redux/toolkit/actions/exercisesActions';
 
 const ExamCompleteScreen = () => {
     const route = useRoute<ExamCompleteScreenProps>();
@@ -35,7 +32,7 @@ const ExamCompleteScreen = () => {
 
     const { examId, score, totalQuestions, session_token } = route.params;
 
-    const dispatch = useAppDispatch();
+
 
     // Animation values
     const [fadeAnim] = useState(new Animated.Value(0));
@@ -133,21 +130,7 @@ const ExamCompleteScreen = () => {
         ]).start();
     }, [fadeAnim, scaleAnim, progressAnim, celebrationAnim, percentage, isExcellent]);
 
-    const { callApi: submitResult } = useCallAPI(
-            submitExamService,
-            undefined,
-            undefined
-    );
-
     const handleContinue = () => {
-        submitResult({
-            exam_id: examId,
-            score: finalScore,
-            session_token: session_token,
-            device_fingerprint: 'fake-device-id-for-demo' // Replace with actual device fingerprint logic
-        });
-
-        dispatch(ExerciseActions.addCompletedExercise(examId));
         NavigationService.replace(SCREENS.HOME_SCREEN);
     };
 

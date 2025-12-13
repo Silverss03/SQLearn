@@ -13,6 +13,7 @@ import { useAppSelector } from '@src/hooks';
 import dayjs from 'dayjs';
 import useCallAPI from '@src/hooks/useCallAPI';
 import { startExamService } from '@src/network/services/questionServices';
+import { ExamSecurityService } from '@src/services/ExamSecurityServices';
 
 interface ExamComponentProps {
     item: QuestionType.UpcomingExam;
@@ -57,10 +58,11 @@ const ExamComponent = ({ item, onShow403 }: ExamComponentProps) => {
             }
     );
 
-    const handleExamPress = useCallback(() => {
+    const handleExamPress = useCallback(async () => {
+        const deviceFingerprint = await ExamSecurityService.getDeviceFingerprint();
         startExam({
             exam_id: item.id,
-            device_fingerprint: 'fake-device-id-for-demo'
+            device_fingerprint: deviceFingerprint
         });
     }, [item.id, startExam]);
 

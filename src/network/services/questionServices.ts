@@ -26,3 +26,11 @@ export const submitExamService = (_params?: {
             `${ApiConfigs.SUBMIT_EXAM}`,
             _params
     );
+
+export const sendAuditLogService = (_params: {
+    exam_id: number;
+    session_token: string;
+    event_type: 'tab_switch' | 'screen_capture_detected' | 'app_minimized' | 'app_resumed';
+}) => AXIOS.post<APIResponseCommon.ResponseCommon<null>>(`${ApiConfigs.AUDIT_LOGS}`, _params);
+
+export const getExamHistoryService = () => AXIOS.get<APIResponseCommon.ResponseCommon<QuestionType.ExamRecord[]>>(`${ApiConfigs.EXAM_HISTORY}`);
