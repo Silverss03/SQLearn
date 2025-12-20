@@ -1,4 +1,4 @@
-NK Podcast App
+SQLearn APP
 
 -   run app:
     -   ANDROID: yarn run:android_dev
