@@ -134,15 +134,15 @@ const ForgotPasswordScreen = () => {
                 
                 <View style={styles.successContainer}>
                     <TextComponent style={styles.successTitle}>
-                        Thành công!
+                        {t('Thành công!')}
                     </TextComponent>
                     <TextComponent style={styles.successMessage}>
-                        Mật khẩu của bạn đã được đặt lại thành công. Vui lòng đăng nhập lại với mật khẩu mới.
+                        {t('Mật khẩu của bạn đã được đặt lại thành công. Vui lòng đăng nhập lại với mật khẩu mới.')}
                     </TextComponent>
                 </View>
 
                 <ButtonComponent
-                    title='Quay lại đăng nhập'
+                    title={t('Quay lại đăng nhập')}
                     onPress={handleBackToLogin}
                     style={styles.button}
                 />
@@ -159,10 +159,10 @@ const ForgotPasswordScreen = () => {
 
             <View style={styles.headerContainer}>
                 <TextComponent style={styles.title}>
-                    Quên mật khẩu?
+                    {t('Quên mật khẩu?')}
                 </TextComponent>
                 <TextComponent style={styles.description}>
-                    Nhập email của bạn để nhận liên kết đặt lại mật khẩu
+                    {t('Nhập email của bạn để nhận liên kết đặt lại mật khẩu')}
                 </TextComponent>
             </View>
 
@@ -181,7 +181,7 @@ const ForgotPasswordScreen = () => {
                     />
 
                     <ButtonComponent
-                        title='Gửi mã'
+                        title={t('Gửi mã')}
                         onPress={handleSendResetLink}
                         style={styles.button}
                         loading={isLoading}
@@ -194,7 +194,7 @@ const ForgotPasswordScreen = () => {
                         value={token}
                         onChangeText={setToken}
                         inputBorderRadius={Dimens.RADIUS_32}
-                        placeholder='Mã xác nhận'
+                        placeholder={t('Mã xác nhận')}
                         autoCapitalize='none'
                     />
                     <InputComponent
@@ -202,7 +202,7 @@ const ForgotPasswordScreen = () => {
                         value={password}
                         onChangeText={setPassword}
                         inputBorderRadius={Dimens.RADIUS_32}
-                        placeholder='Mật khẩu mới'
+                        placeholder={t('Mật khẩu mới')}
                         secureTextEntry
                         autoCapitalize='none'
                     />
@@ -211,14 +211,14 @@ const ForgotPasswordScreen = () => {
                         value={confirmPassword}
                         onChangeText={setConfirmPassword}
                         inputBorderRadius={Dimens.RADIUS_32}
-                        placeholder='Xác nhận mật khẩu'
+                        placeholder={t('Xác nhận mật khẩu')}
                         secureTextEntry
                         autoCapitalize='none'
                         error={passwordError}
                     />
                     
                     <ButtonComponent
-                        title='Đặt lại mật khẩu'
+                        title={t('Đặt lại mật khẩu')}
                         onPress={handleResetPassword}
                         style={styles.button}
                         loading={isLoading}
@@ -231,7 +231,7 @@ const ForgotPasswordScreen = () => {
                 style={styles.backToLoginContainer}
             >
                 <TextComponent style={styles.backToLoginText}>
-                    Quay lại đăng nhập
+                    {t('Quay lại đăng nhập')}
                 </TextComponent>
             </TouchableComponent>
         </View>
