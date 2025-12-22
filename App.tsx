@@ -54,6 +54,20 @@ setCustomTextInput({
     underlineColorAndroid: 'transparent',
 });
 
+import useMessaging from '@hooks/useMessaging';
+
+const AppContent = () => {
+    useMessaging();
+
+    return (
+        <SafeAreaProvider>
+            <GestureHandlerRootView style={styles.container}>
+                <NavigationWrapper />
+            </GestureHandlerRootView>
+        </SafeAreaProvider>
+    );
+};
+
 const App = () => {
     if (IS_ANDROID) {
         StatusBar.setBackgroundColor('transparent');
@@ -76,11 +90,7 @@ const App = () => {
                 onBeforeLift={onBeforeLift}
                 persistor={persistor}
             >
-                <SafeAreaProvider>
-                    <GestureHandlerRootView style={styles.container}>
-                        <NavigationWrapper />
-                    </GestureHandlerRootView>
-                </SafeAreaProvider>
+                <AppContent />
             </PersistGate>
         </Provider>
     );

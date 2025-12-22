@@ -8,6 +8,7 @@ import useThemeColors from '@src/themes/useThemeColors';
 import HomeScreen from '@src/screens/home/HomeScreen';
 import ExamDetailScreen from '@src/screens/home/components/ExamDetailScreen';
 import ExamCompleteScreen from '@src/screens/home/components/ExamCompleteScreen';
+import NotificationScreen from '@src/screens/notification/NotificationScreen';
 
 const StackNavigator = createNativeStackNavigator<RootStackParamList>();
 
@@ -37,6 +38,10 @@ const ProfileStack = () => {
             <StackNavigator.Screen
                 name={SCREENS.EXAM_COMPLETE_SCREEN}
                 component={ExamCompleteScreen}
+            />
+            <StackNavigator.Screen
+                name={SCREENS.NOTIFICATION_SCREEN}
+                component={NotificationScreen}
             />
         </StackNavigator.Navigator>
     );

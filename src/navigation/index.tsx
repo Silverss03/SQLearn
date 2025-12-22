@@ -27,12 +27,14 @@ import useThemeColors from '@src/themes/useThemeColors';
 import { log } from '@src/utils/logger';
 import LoginScreen from '@src/screens/login/LoginScreen';
 import ForgotPasswordScreen from '@src/screens/login/ForgotPasswordScreen';
+import useMessaging from '@src/hooks/useMessaging';
+import ChangePasswordScreen from '@src/screens/profile/ChangePasswordScreen';
 
 const StackNavigator = createStackNavigator<RootStackParamList>();
 
 const AppNavigation = () => {
     const themeColors = useThemeColors();
-    // useMessaging();
+    useMessaging();
     // useDeepLinkHandle();
 
     const navigationRef = useRef<NavigationContainerRef<{}>>();
@@ -135,6 +137,10 @@ const AppNavigation = () => {
                 <StackNavigator.Screen
                     name={SCREENS.POKEMON_DETAIL_SCREEN}
                     component={PokemonDetailScreen}
+                />
+                <StackNavigator.Screen
+                    name={SCREENS.CHANGE_PASSWORD_SCREEN}
+                    component={ChangePasswordScreen}
                 />
             </>
         );

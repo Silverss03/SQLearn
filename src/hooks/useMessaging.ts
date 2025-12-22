@@ -1,193 +1,204 @@
-// import {
-//     useCallback,
-//     useEffect,
-// } from 'react';
+import {
+    useCallback,
+    useEffect,
+} from 'react';
 
-// import omit from 'lodash/omit';
-// import { getUniqueId } from 'react-native-device-info';
-// import { useDispatch } from 'react-redux';
-// import {
-//     useDeepCompareEffect,
-//     useEffectOnce,
-// } from 'react-use';
+import omit from 'lodash/omit';
+import {
+    PermissionsAndroid,
+    Platform,
+} from 'react-native';
+import { getDeviceName } from 'react-native-device-info';
+import {
+    useDeepCompareEffect,
+    useEffectOnce,
+} from 'react-use';
 
-// import notifee, { EventType } from '@notifee/react-native';
-// import FireBaseMessaging from '@react-native-firebase/messaging';
-// import { IS_ANDROID } from '@src/configs/constants';
-// import { registerNotificationToken, } from '@src/network/services/notificationServices';
-// import {
-//     getNotificationDetailAction,
-//     markNotificationAction,
-//     NotificationActions,
-// } from '@src/redux/toolkit/actions/notificationActions';
-// import { updateAppBadge } from '@src/utils/appBadgeUtil';
-// import { log } from '@src/utils/logger';
+import notifee, { EventType } from '@notifee/react-native';
+import { useAppState } from '@react-native-community/hooks';
+import FireBaseMessaging from '@react-native-firebase/messaging';
+import { IS_ANDROID } from '@src/configs/constants';
+import { registerNotificationTokenService } from '@src/network/services/authServices';
+import { getUnreadNotificationCountThunk } from '@src/redux/toolkit/thunks/notificationThunks';
+// import { handleClickNotification } from '@src/screens/notification/helpers/clickNotificationHelper';
+import {
+    log,
+    logError,
+} from '@src/utils/logger';
 
-// import { useAppSelector } from './';
-// import useIsUserLoggedIn from './useIsUserLoggedIn';
+import { useAppDispatch } from './';
+import useIsUserLoggedIn from './useIsUserLoggedIn';
+import useCallAPI from './useCallAPI';
 
-// const useMessaging = () => {
-//     const isUserLoggedIn = useIsUserLoggedIn();
-//     // const isEmptyCart = useCheckEmptyCart();
+const useMessaging = () => {
+    const appState = useAppState();
 
-//     const notificationNumber = useAppSelector((state) => state.notificationReducer.notificationBadge);
-//     // const workspaceDetail = useAppSelector((state) => state.storageReducer.templateWorkspaceDetail);
-//     const dispatch = useDispatch();
+    const isUserLoggedIn = useIsUserLoggedIn();
+    const dispatch = useAppDispatch();
 
-//     // const { callApi: getRestaurantDetailById } = useCallAPI(
-//     //         getRestaurantDetailService
-//     // );
+    const handleNotification = useCallback((notificationData: any, isFromCloseState: boolean) => {
+        try {
+            if (isUserLoggedIn && !!notificationData) {
+                log('handleNotification_parse', JSON.parse(notificationData));
+                // handleClickNotification(JSON.parse(notificationData), isFromCloseState);
+            }
+        } catch (error) {
+            logError('handleNotification_Error', error);
+        }
 
-//     // const { callApi: getWorkspaceSettingById } = useCallAPI(
-//     //         getWorkspaceSettingByIdService
-//     // );
+    }, [isUserLoggedIn]);
 
-//     // const getWorkspaceData = useCallback((workspaceId: number) => {
-//     //     const promise = [
-//     //         getRestaurantDetailById({ restaurant_id: workspaceId }),
-//     //         getWorkspaceSettingById({ restaurant_id: workspaceId }),
-//     //     ];
+    const { callApi: registerToken } = useCallAPI(
+        registerNotificationTokenService,
+        undefined,
+        undefined,
+        undefined,
+        false,
+        false,
+        false
+    );
 
-//     //     Promise.all(promise).then((result) => {
-//     //         const detailRes = result[0];
-//     //         const settingRes = result[1];
-//     //         if (detailRes.success) {
-//     //             dispatch(StorageActions.setStorageWorkspaceDetail(detailRes.data));
-//     //             dispatch(RestaurantActions.updateRestaurantDetail(detailRes.data));
-//     //         }
+    const onRegisterToken = useCallback(async () => {
+        const [deviceName, fcmToken] = await Promise.all([
+            getDeviceName(),
+            FireBaseMessaging().getToken(),
+        ]);
 
-//     //         if (settingRes.success) {
-//     //             dispatch(StorageActions.setStorageWorkspaceSetting(settingRes.data));
-//     //         }
-//     //     });
-//     // }, [dispatch, getRestaurantDetailById, getWorkspaceSettingById]);
+        log('__________fcmToken', fcmToken);
+        log('__________deviceName', deviceName);
 
-//     const markNotification = useCallback((notificationId: number) => {
-//         const callback = () => {
-//             dispatch(NotificationActions.updateNotificationBadge(notificationNumber - 1));
-//         };
+        registerToken({
+            device_type: Platform.OS,
+            device_name: deviceName,
+            device_token: fcmToken
+        });
+    }, []);
 
-//         dispatch(markNotificationAction({ id: notificationId }, callback));
-//     }, [dispatch, notificationNumber]);
+    const requestPermission = useCallback(async () => {
+        if (IS_ANDROID) {
+            const res = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS); // if react-native >= 0.70.7 => PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS
+            if (res === PermissionsAndroid.RESULTS.GRANTED) {
+                onRegisterToken();
+            }
+        } else {
+            // await FireBaseMessaging().registerDeviceForRemoteMessages();
+            FireBaseMessaging()
+                    .requestPermission()
+                    .then(() => {
+                        onRegisterToken();
+                    })
+                    .catch((error) => {
+                        logError('requestPermission_Error', error);
+                    });
+        }
 
-//     const getNotificationDetail = useCallback((notificationId: number) => {
-//         dispatch(getNotificationDetailAction({ notification_id: notificationId }, () => markNotification(notificationId)));
-//     }, [dispatch, markNotification]);
+    }, [onRegisterToken]);
 
-//     const handleNotification = useCallback((notification: any) => {
-//         log('handleNotification', notification);
+    const checkPermission = useCallback(async () => {
+        const authStatus = await FireBaseMessaging().hasPermission();
+        if (authStatus === FireBaseMessaging.AuthorizationStatus.AUTHORIZED || authStatus === FireBaseMessaging.AuthorizationStatus.PROVISIONAL) {
+            onRegisterToken();
+        } else {
+            requestPermission();
+        }
+    }, [onRegisterToken, requestPermission]);
 
-//         if (isUserLoggedIn) {
-//             const notification_id = JSON.parse(notification.data.notification).id;
+    // auto ask for notification permission and register token if user turn on notification setting
+    useEffect(() => {
+        if (appState === 'active' && isUserLoggedIn) {
+            setTimeout(() => {
+                checkPermission();
+            }, 1000);
+        }
+    }, [appState, checkPermission, isUserLoggedIn]);
 
-//             if (notification_id) {
-//                 getNotificationDetail(notification_id);
+    // create notification channel
+    useEffectOnce(() => {
+        notifee.createChannels([{ id: 'notifee_default', name: 'Default channel notification' }]);
+    });
 
-//                 // if (isGroupApp() && workspace_id !== workspaceDetail?.id) {
-//                 //     // clear cart product
-//                 //     if (!isEmptyCart) {
-//                 //         dispatch(StorageActions.clearStorageProductsCart());
-//                 //     }
-//                 //     getWorkspaceData(workspace_id);
-//                 // }
-//             }
-//         }
-//     }, [getNotificationDetail, isUserLoggedIn]);
+    useDeepCompareEffect(() => {
+        // notification come when app in FOREGROUND & click notification when app in BACKGROUND
+        notifee.onBackgroundEvent(async ({ type, detail }) => {
+            log('__________notifee.onBackgroundEvent', detail);
+            if (type === EventType.PRESS) {
+                handleNotification(detail.notification?.data?.notification, false);
+            }
+        });
 
-//     // handle app icon badge
-//     useEffect(() => {
-//         if (isUserLoggedIn) {
-//             // update badge
-//             updateAppBadge(notificationNumber);
-//         } else {
-//             // remove badge
-//             updateAppBadge(0);
-//             notifee.cancelAllNotifications();
-//         }
-//     }, [isUserLoggedIn, notificationNumber]);
+        // notification come when app in FOREGROUND & click notification when app in FOREGROUND
+        const unsubscribeForegroundEvent = notifee.onForegroundEvent(({ detail, type }) => {
+            log('__________notifee.onForegroundEvent', detail);
 
-//     // register firebase token
-//     useEffect(() => {
-//         if (isUserLoggedIn) {
-//             const regToken = async () => {
-//                 const authStatus = await FireBaseMessaging().hasPermission();
-//                 if (authStatus === FireBaseMessaging.AuthorizationStatus.AUTHORIZED || authStatus === FireBaseMessaging.AuthorizationStatus.PROVISIONAL) {
-//                     const [deviceId, fcmToken] = await Promise.all([
-//                         getUniqueId(),
-//                         FireBaseMessaging().getToken(),
-//                     ]);
+            if (type === EventType.PRESS) {
+                handleNotification(detail.notification?.data?.notification, false);
+            }
+        });
 
-//                     registerNotificationToken({
-//                         type: IS_ANDROID ? 3 : 2,
-//                         device_id: deviceId,
-//                         token: fcmToken
-//                     });
-//                 }
-//             };
-//             setTimeout(() => {
-//                 regToken();
-//             }, 1000);
-//         }
-//     }, [isUserLoggedIn]);
+        // notification come when app in FOREGROUND & click notification when the application is in CLOSE
+        notifee.getInitialNotification().then((initialNotification) => {
+            log('__________notifee.getInitialNotification', initialNotification);
 
-//     // handle click notification when app in foreground
-//     useDeepCompareEffect(() => {
-//         const unsubscribe = notifee.onForegroundEvent(({ detail, type }) => {
-//             log('__________onForegroundEvent', detail);
+            if (initialNotification) {
+                handleNotification(initialNotification.notification?.data?.notification, true);
+            }
+        });
 
-//             if (type === EventType.PRESS) {
-//                 handleNotification(detail.notification);
-//             }
-//         });
+        // notification come when app in BACKGROUND or CLOSE & click notification when the application is in CLOSE
+        FireBaseMessaging()
+                .getInitialNotification()
+                .then((initialNotification) => {
+                    log('__________getInitialNotification', initialNotification);
 
-//         return unsubscribe;
-//     }, [handleNotification]);
+                    if (initialNotification) {
+                        handleNotification(initialNotification?.data?.notification || '{}', true);
+                    }
+                });
 
-//     useEffectOnce(() => {
-//         notifee.createChannels([{ id: 'notifee_default', name: 'Default channel notification' }]);
-//     });
+        // notification come when app in BACKGROUND or CLOSE & click notification when the application is in BACKGROUND or FOREGROUND
+        const unsubscribeNotificationOpenedApp = FireBaseMessaging().onNotificationOpenedApp((remoteMessage) => {
+            log('__________onNotificationOpenedApp', remoteMessage);
 
-//     // handle incoming notification when app in foreground
-//     useDeepCompareEffect(() => {
-//         const unsubscribe = FireBaseMessaging().onMessage(async (remoteMessage) => {
-//             const { notification, data, messageId } = remoteMessage;
-//             log('__________onMessage', remoteMessage);
+            if (remoteMessage) {
+                handleNotification(remoteMessage?.data?.notification, false);
+            }
+        });
 
-//             dispatch(NotificationActions.updateNotificationBadge(notificationNumber + 1));
+        // receiver notification when app in BACKGROUND or CLOSED
+        FireBaseMessaging().setBackgroundMessageHandler(async (remoteMessage) => {
+            log('__________setBackgroundMessageHandler', remoteMessage);
+        });
 
-//             await notifee.displayNotification({
-//                 id: messageId,
-//                 title: notification?.title,
-//                 body: notification?.body,
-//                 android: { channelId: 'notifee_default', smallIcon: 'ic_notification' },
-//                 data: omit(data || {}, ['fcm_options']),
-//             });
-//         });
+        //receiver notification when app in FOREGROUND
+        const unsubscribeForegroundMessage = FireBaseMessaging().onMessage((remoteMessage) => {
+            log('__________onMessage', remoteMessage);
+            dispatch(getUnreadNotificationCountThunk());
 
-//         return unsubscribe;
-//     }, [dispatch, notificationNumber]);
+            const { notification, data, messageId } = remoteMessage;
 
-//     useEffectOnce(() => {
-//         // handle notification open app from closed state
-//         FireBaseMessaging()
-//                 .getInitialNotification()
-//                 .then((remoteMessage) => {
-//                     log('__________getInitialNotification', remoteMessage);
+            notifee.displayNotification({
+                id: messageId,
+                title: notification?.title,
+                body: notification?.body,
+                android: {
+                    channelId: 'notifee_default',
+                    smallIcon: 'ic_notification',
+                    color: '#FFD435',
+                    pressAction: {
+                        id: 'default', // This will open the app on press
+                    },
+                },
+                data: omit(data || {}, ['fcm_options']),
+            });
+        });
 
-//                     if (remoteMessage) {
-//                         handleNotification(remoteMessage);
-//                     }
-//                 });
+        return () => {
+            unsubscribeForegroundEvent();
+            unsubscribeNotificationOpenedApp();
+            unsubscribeForegroundMessage();
+        };
+    }, [handleNotification]);
+};
 
-//         // handle notification open app from background state
-//         FireBaseMessaging().onNotificationOpenedApp((remoteMessage) => {
-//             log('__________onNotificationOpenedApp', remoteMessage);
+export default useMessaging;
 
-//             if (remoteMessage) {
-//                 handleNotification(remoteMessage);
-//             }
-//         });
-//     });
-// };
-
-// export default useMessaging;

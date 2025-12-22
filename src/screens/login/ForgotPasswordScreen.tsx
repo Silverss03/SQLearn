@@ -20,6 +20,7 @@ import { useTranslation } from 'react-i18next';
 import { validateEmail } from '@src/utils';
 import { LoginImage } from '@src/assets/images';
 import NavigationService from '@src/navigation/NavigationService';
+import { forgotPasswordService, resetPasswordService } from '@src/network/services/authServices';
 
 const ForgotPasswordScreen = () => {
     const Dimens = useDimens();
@@ -31,7 +32,15 @@ const ForgotPasswordScreen = () => {
     const [emailErrorMessage, setEmailErrorMessage] = useState('');
     const [submitAttempted, setSubmitAttempted] = useState(false);
     const [forceErrorStyle, setForceErrorStyle] = useState(false);
-    const [isEmailSent, setIsEmailSent] = useState(false);
+    
+    // Step 2 states
+    const [step, setStep] = useState<1 | 2>(1);
+    const [token, setToken] = useState('');
+    const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
+    const [passwordError, setPasswordError] = useState('');
+    const [isSuccess, setIsSuccess] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
 
     const handleEmailChange = useCallback((text: string) => {
         setEmail(text);
@@ -59,29 +68,63 @@ const ForgotPasswordScreen = () => {
 
         setEmailErrorMessage('');
         setForceErrorStyle(false);
+        setIsLoading(true);
 
-        // TODO: Implement API call to send reset password email
-        // try {
-        //     const response = await forgotPasswordService({ email });
-        //     if (response.success) {
-        //         setIsEmailSent(true);
-        //     } else {
-        //         setEmailErrorMessage(response.message);
-        //         setForceErrorStyle(true);
-        //     }
-        // } catch (error) {
-        //     console.error('Forgot password error:', error);
-        // }
-
-        // For now, just show success state
-        setIsEmailSent(true);
+        try {
+            const response = await forgotPasswordService({ email });
+            if (response?.data?.success) {
+                setStep(2);
+                setSubmitAttempted(false);
+            } else {
+                setEmailErrorMessage(response?.data?.message || 'Có lỗi xảy ra');
+                setForceErrorStyle(true);
+            }
+        } catch (error: any) {
+            setEmailErrorMessage(error?.response?.data?.message || 'Có lỗi xảy ra');
+            setForceErrorStyle(true);
+        } finally {
+            setIsLoading(false);
+        }
     }, [email, t]);
+
+    const handleResetPassword = useCallback(async () => {
+        if (!token || !password || !confirmPassword) {
+            setPasswordError('Vui lòng điền đầy đủ thông tin');
+            return;
+        }
+
+        if (password !== confirmPassword) {
+            setPasswordError('Mật khẩu không khớp');
+            return;
+        }
+        
+        setIsLoading(true);
+        try {
+            const response = await resetPasswordService({ 
+                email,
+                token, 
+                password,
+                password_confirmation: confirmPassword
+            });
+            
+            if (response?.data?.success) {
+                setIsSuccess(true);
+            } else {
+                setPasswordError(response?.data?.message || 'Có lỗi xảy ra');
+            }
+        } catch (error: any) {
+             setPasswordError(error?.response?.data?.message || 'Có lỗi xảy ra');
+        } finally {
+            setIsLoading(false);
+        }
+
+    }, [email, token, password, confirmPassword]);
 
     const handleBackToLogin = useCallback(() => {
         NavigationService.goBack();
     }, []);
 
-    if (isEmailSent) {
+    if (isSuccess) {
         return (
             <View style={styles.container}>
                 <Image
@@ -91,10 +134,10 @@ const ForgotPasswordScreen = () => {
                 
                 <View style={styles.successContainer}>
                     <TextComponent style={styles.successTitle}>
-                        Email đã được gửi!
+                        Thành công!
                     </TextComponent>
                     <TextComponent style={styles.successMessage}>
-                        Chúng tôi đã gửi hướng dẫn đặt lại mật khẩu đến email của bạn. Vui lòng kiểm tra hộp thư đến.
+                        Mật khẩu của bạn đã được đặt lại thành công. Vui lòng đăng nhập lại với mật khẩu mới.
                     </TextComponent>
                 </View>
 
@@ -123,23 +166,65 @@ const ForgotPasswordScreen = () => {
                 </TextComponent>
             </View>
 
-            <InputComponent
-                error={emailErrorMessage}
-                containerStyle={styles.input}
-                value={email}
-                onChangeText={handleEmailChange}
-                inputBorderRadius={Dimens.RADIUS_32}
-                placeholder='Email'
-                keyboardType='email-address'
-                autoCapitalize='none'
-                forceErrorStyle={forceErrorStyle}
-            />
+            {step === 1 ? (
+                <>
+                    <InputComponent
+                        error={emailErrorMessage}
+                        containerStyle={styles.input}
+                        value={email}
+                        onChangeText={handleEmailChange}
+                        inputBorderRadius={Dimens.RADIUS_32}
+                        placeholder='Email'
+                        keyboardType='email-address'
+                        autoCapitalize='none'
+                        forceErrorStyle={forceErrorStyle}
+                    />
 
-            <ButtonComponent
-                title='Gửi liên kết'
-                onPress={handleSendResetLink}
-                style={styles.button}
-            />
+                    <ButtonComponent
+                        title='Gửi mã'
+                        onPress={handleSendResetLink}
+                        style={styles.button}
+                        loading={isLoading}
+                    />
+                </>
+            ) : (
+                <>
+                    <InputComponent
+                        containerStyle={styles.input}
+                        value={token}
+                        onChangeText={setToken}
+                        inputBorderRadius={Dimens.RADIUS_32}
+                        placeholder='Mã xác nhận'
+                        autoCapitalize='none'
+                    />
+                    <InputComponent
+                        containerStyle={styles.input}
+                        value={password}
+                        onChangeText={setPassword}
+                        inputBorderRadius={Dimens.RADIUS_32}
+                        placeholder='Mật khẩu mới'
+                        secureTextEntry
+                        autoCapitalize='none'
+                    />
+                    <InputComponent
+                        containerStyle={styles.input}
+                        value={confirmPassword}
+                        onChangeText={setConfirmPassword}
+                        inputBorderRadius={Dimens.RADIUS_32}
+                        placeholder='Xác nhận mật khẩu'
+                        secureTextEntry
+                        autoCapitalize='none'
+                        error={passwordError}
+                    />
+                    
+                    <ButtonComponent
+                        title='Đặt lại mật khẩu'
+                        onPress={handleResetPassword}
+                        style={styles.button}
+                        loading={isLoading}
+                    />
+                </>
+            )}
 
             <TouchableComponent
                 onPress={handleBackToLogin}

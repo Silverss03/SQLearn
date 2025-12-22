@@ -9,6 +9,7 @@ import {
     View,
 } from 'react-native';
 import TextComponent from '@src/components/TextComponent';
+import { SCREENS } from '@src/navigation/config/screenName';
 import DialogComponent from '@src/components/DialogComponent';
 import TouchableComponent from '@src/components/TouchableComponent';
 import useDimens, { DimensType } from '@src/hooks/useDimens';
@@ -31,6 +32,9 @@ import { getUpcomingExamsService } from '@src/network/services/questionServices'
 import ExamComponent from './components/ExamComponent';
 import { useAppDispatch } from '@src/hooks';
 import { ProgressActions } from '@src/redux/toolkit/actions/progressActions';
+import { getUnreadNotificationCountThunk } from '@src/redux/toolkit/thunks/notificationThunks';
+import BellIcon from '@src/assets/svg/BellIcon';
+import NavigationService from '@src/navigation/NavigationService';
 
 const HomeScreen = () => {
     const Dimens = useDimens();
@@ -46,6 +50,7 @@ const HomeScreen = () => {
     const [averageScore, setAverageScore] = React.useState<number>(0);
     const overallProgress = useAppSelector((state) => state.progressReducer.overallProgress);
     const chaptersProgress = useAppSelector((state) => state.progressReducer.topicsProgress);
+    const showGlobalNotification = useAppSelector((state) => state.notificationReducer.showGlobalNotification);
     const [upcomingExams, setUpcomingExams] = React.useState<QuestionType.UpcomingExam[]>([]);
     const [isConcurrentLoginDialogVisible, setIsConcurrentLoginDialogVisible] = useState(false);
 
@@ -92,7 +97,8 @@ const HomeScreen = () => {
     useEffect(() => {
         fetchChapterList();
         fetchAverageScore({ user_id: userData?.user?.id || 0 });
-    }, [fetchAverageScore, fetchChapterList, userData?.user?.id]);
+        dispatch(getUnreadNotificationCountThunk());
+    }, [fetchAverageScore, fetchChapterList, userData?.user?.id, dispatch]);
 
     useEffect(() => {
         fetchOverallProgress({ user_id: userData?.user?.id || 0 });
@@ -106,7 +112,7 @@ const HomeScreen = () => {
         fetchUpcomingExams();
     }, [fetchUpcomingExams, userData?.user?.id]);
 
-    const getChapterProgress = (chapterId: number): TopicProgress | undefined => chaptersProgress.find((p) => p.topic_id === chapterId);
+    const getChapterProgress = (chapterId: number): TopicProgress | undefined => chaptersProgress.find((p: TopicProgress) => p.topic_id === chapterId);
 
     return (
         <View style={{ flex: 1 }}>
@@ -122,12 +128,31 @@ const HomeScreen = () => {
                         height={Dimens.H_100}
                     />
 
-                    <View>
+                    <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
                         <TextComponent
                             style = {styles.nameText}
                         >
                             {(t('Xin chào, {{name}}', { name: userFullName }))}
                         </TextComponent>
+
+                        <TouchableComponent onPress={() => NavigationService.navigate(SCREENS.NOTIFICATION_SCREEN)}>
+                            <View>
+                                <BellIcon />
+                                {showGlobalNotification && (
+                                    <View
+                                        style={{
+                                            position: 'absolute',
+                                            top: 0,
+                                            right: 0,
+                                            width: 10,
+                                            height: 10,
+                                            borderRadius: 5,
+                                            backgroundColor: '#FFFFFF',
+                                        }}
+                                    />
+                                )}
+                            </View>
+                        </TouchableComponent>
                     </View>
                 </View>
 
@@ -289,7 +314,8 @@ const stylesF = (Dimens: DimensType, themeColors: ReturnType<typeof useThemeColo
         fontSize: Dimens.FONT_21,
         color: themeColors.color_text_3,
         marginBottom: Dimens.H_16,
-        marginLeft: Dimens.W_8
+        marginLeft: Dimens.W_8,
+        flexWrap: 'wrap',
     },
     bellContainer: {
         alignSelf: 'flex-end',
