@@ -11,7 +11,9 @@ export const LOGIN_SOCIAL = 'auth/social';
 export const REFRESH_TOKEN = 'auth/token/refresh';
 
 export const PROFILE = 'profile';
-export const FORGOT_PASSWORD = 'users/forgot';
+export const FORGOT_PASSWORD = 'forgot-password';
+export const RESET_PASSWORD = 'reset-password';
+export const CHANGE_PASSWORD = 'change-password';
 export const COUNTRY_LIST = 'countries';
 export const CITY_LIST = 'cities';
 export const CLUBS = 'clubs';
@@ -38,6 +40,9 @@ export const SUBMIT_EXAM = 'exams/submit';
 export const EXAM_HISTORY = 'exams/history';
 export const AUDIT_LOGS = 'audit-logs';
 export const UPDATE_DEVICE_TOKEN = 'users/device-token';
+export const GET_NOTIFICATION = 'notifications';
+export const GET_UNREAD_NOTIFICATION = 'notifications/unread-count';
+export const MARK_AS_READ_NOTIFICATION = 'notifications/mark-as-read';
 
 export const CHECK_TOKEN_EXPIRED_WHITE_LIST = [
     LOGIN,

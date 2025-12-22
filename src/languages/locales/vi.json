@@ -49,5 +49,6 @@
     "week_ago": "{{count}} tuần trước",
     "weeks_ago": "{{count}} tuần trước",
     "month_ago": "{{count}} tháng trước",
-    "months_ago": "{{count}} tháng trước"
+    "months_ago": "{{count}} tháng trước",
+    "change_password": "Đổi mật khẩu",
 }

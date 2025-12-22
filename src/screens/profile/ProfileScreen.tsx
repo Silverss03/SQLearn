@@ -25,6 +25,8 @@ import useCallAPI from '@src/hooks/useCallAPI';
 import { updateAvatarService } from '@src/network/services/authServices';
 import ImageComponent from '@src/components/ImageComponent';
 import { updateUserData } from '@src/network/util/authUtility';
+import notifee from '@notifee/react-native';
+import FireBaseMessaging from '@react-native-firebase/messaging';
 
 const ProfileScreen = () => {
     const Dimens = useDimens();
@@ -36,9 +38,15 @@ const ProfileScreen = () => {
     const userProfile = useAppSelector((state) => state.storageReducer.userData);
 
     const handleLogout = useCallback(() => {
+        notifee.cancelAllNotifications();
+        FireBaseMessaging().deleteToken(),
         dispatch(StorageActions.removeStorageUserData());
         NavigationService.reset(SCREENS.LOGIN_SCREEN);
     }, [dispatch]);
+
+    const handleChangePassword = useCallback(() => {
+        NavigationService.navigate(SCREENS.CHANGE_PASSWORD_SCREEN);
+    }, []);
 
     const { callApi: updateAvatar } = useCallAPI(
             updateAvatarService,
@@ -130,6 +138,15 @@ const ProfileScreen = () => {
                     </View>
 
                 </View>
+
+                <TouchableComponent
+                    style={styles.changePasswordButton}
+                    onPress={handleChangePassword}
+                >
+                    <TextComponent style={styles.changePasswordText}>
+                        {t('change_password')}
+                    </TextComponent>
+                </TouchableComponent>
 
                 <TouchableComponent
                     style={styles.logoutButton}
@@ -230,5 +247,17 @@ const stylesF = (Dimens: DimensType, themeColors: ReturnType<typeof useThemeColo
         height: Dimens.W_100,
         borderRadius: Dimens.RADIUS_999,
         resizeMode: 'cover',
+    },
+    changePasswordButton: {
+        backgroundColor: themeColors.color_button_default,
+        padding: Dimens.H_16,
+        borderRadius: Dimens.RADIUS_8,
+        alignItems: 'center',
+        marginBottom: Dimens.H_16,
+    },
+    changePasswordText: {
+        color: themeColors.color_button_text,
+        fontSize: Dimens.FONT_16,
+        fontWeight: '600',
     },
 });
