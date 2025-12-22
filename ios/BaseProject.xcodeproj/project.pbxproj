@@ -10,7 +10,7 @@
 		03F446510590427EA9C7C40A /* SFProDisplay-Semibold.otf in Resources */ = {isa = PBXBuildFile; fileRef = E49EB542826A4BBEA5FC5813 /* SFProDisplay-Semibold.otf */; };
 		052689D6370A403BBAC06D3F /* SFProDisplay-SemiboldItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = E5CA1E662D644905BFD25126 /* SFProDisplay-SemiboldItalic.otf */; };
 		09394F95806043C09731E9C2 /* SFProDisplay-Thin.otf in Resources */ = {isa = PBXBuildFile; fileRef = C87E50150CFB42F69026F4D1 /* SFProDisplay-Thin.otf */; };
-		0C80B921A6F3F58F76C31292 /* BuildFile in Frameworks */ = {isa = PBXBuildFile; };
+		0C80B921A6F3F58F76C31292 /* (null) in Frameworks */ = {isa = PBXBuildFile; };
 		0D2E7B076EB94F7680CEE5F1 /* SFProDisplay-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = B76A88E83AF94934896DFE9E /* SFProDisplay-Medium.otf */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.mm */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
@@ -104,7 +104,13 @@
 		A5D1DBDD2D1E699900E519E7 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = A5D1DBDA2D1E699900E519E7 /* PrivacyInfo.xcprivacy */; };
 		A5D1DBDE2D1E699900E519E7 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = A5D1DBDA2D1E699900E519E7 /* PrivacyInfo.xcprivacy */; };
 		C19EE313B93467FD8E93E58B /* libPods-AppStag.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 728B155B637CCCE3618D7BF3 /* libPods-AppStag.a */; };
+		C970BFF42EF066EF0021F6E4 /* GoogleService-Info (1).plist in Resources */ = {isa = PBXBuildFile; fileRef = C970BFF32EF066EF0021F6E4 /* GoogleService-Info (1).plist */; };
+		C970BFF52EF066EF0021F6E4 /* GoogleService-Info (1).plist in Resources */ = {isa = PBXBuildFile; fileRef = C970BFF32EF066EF0021F6E4 /* GoogleService-Info (1).plist */; };
+		C970BFF62EF066EF0021F6E4 /* GoogleService-Info (1).plist in Resources */ = {isa = PBXBuildFile; fileRef = C970BFF32EF066EF0021F6E4 /* GoogleService-Info (1).plist */; };
+		C970BFF72EF066EF0021F6E4 /* GoogleService-Info (1).plist in Resources */ = {isa = PBXBuildFile; fileRef = C970BFF32EF066EF0021F6E4 /* GoogleService-Info (1).plist */; };
 		C9B6069A74111DDFC6B2E479 /* libPods-AppProd.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E46281DD076DA32758773E8 /* libPods-AppProd.a */; };
+		C9EDA1812EED7FDB00940E32 /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9EDA17E2EED7B8B00940E32 /* File.swift */; };
+		C9EDA1822EED7FDE00940E32 /* Void.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9EDA1802EED7CCC00940E32 /* Void.swift */; };
 		CE2AE189F866446CBACCEC0F /* SFProDisplay-Heavy.otf in Resources */ = {isa = PBXBuildFile; fileRef = 8B2A1FF558AF4724B0CB392A /* SFProDisplay-Heavy.otf */; };
 		ECDF9A944AA84413AA311698 /* SFProDisplay-ThinItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = 4D0A956B9ABB485AA93AF96D /* SFProDisplay-ThinItalic.otf */; };
 /* End PBXBuildFile section */
@@ -158,6 +164,9 @@
 		C7DAC3107BA94BD9A680D31C /* SFProDisplay-RegularItalic.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SFProDisplay-RegularItalic.otf"; path = "../assets/fonts/SFProDisplay-RegularItalic.otf"; sourceTree = "<group>"; };
 		C83B8B83C68E01A8BA21486F /* Pods-AppProd.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AppProd.release.xcconfig"; path = "Target Support Files/Pods-AppProd/Pods-AppProd.release.xcconfig"; sourceTree = "<group>"; };
 		C87E50150CFB42F69026F4D1 /* SFProDisplay-Thin.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SFProDisplay-Thin.otf"; path = "../assets/fonts/SFProDisplay-Thin.otf"; sourceTree = "<group>"; };
+		C970BFF32EF066EF0021F6E4 /* GoogleService-Info (1).plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info (1).plist"; sourceTree = "<group>"; };
+		C9EDA17E2EED7B8B00940E32 /* File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
+		C9EDA1802EED7CCC00940E32 /* Void.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Void.swift; sourceTree = "<group>"; };
 		DA7296C2535A41C880DBD685 /* SFProDisplay-Bold.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SFProDisplay-Bold.otf"; path = "../assets/fonts/SFProDisplay-Bold.otf"; sourceTree = "<group>"; };
 		DE2662EBD24D48F0B0DD108E /* SFProDisplay-Light.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SFProDisplay-Light.otf"; path = "../assets/fonts/SFProDisplay-Light.otf"; sourceTree = "<group>"; };
 		E49EB542826A4BBEA5FC5813 /* SFProDisplay-Semibold.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SFProDisplay-Semibold.otf"; path = "../assets/fonts/SFProDisplay-Semibold.otf"; sourceTree = "<group>"; };
@@ -175,7 +184,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0C80B921A6F3F58F76C31292 /* BuildFile in Frameworks */,
+				0C80B921A6F3F58F76C31292 /* (null) in Frameworks */,
 				7F02A6743446668B27064541 /* libPods-BaseProject.a in Frameworks */,
 				89D037B6DCE9780811D2673D /* libPods-BaseProject.a in Frameworks */,
 			);
@@ -269,6 +278,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				C970BFF32EF066EF0021F6E4 /* GoogleService-Info (1).plist */,
 				A5D1DBDA2D1E699900E519E7 /* PrivacyInfo.xcprivacy */,
 				A57ADB172AFCE45800DCCE08 /* AppDev */,
 				A57ADB182AFCE58D00DCCE08 /* AppStag */,
@@ -309,7 +319,9 @@
 		A57ADB172AFCE45800DCCE08 /* AppDev */ = {
 			isa = PBXGroup;
 			children = (
+				C9EDA1802EED7CCC00940E32 /* Void.swift */,
 				A545803C2D93BC4300F9E262 /* AppDev.entitlements */,
+				C9EDA17E2EED7B8B00940E32 /* File.swift */,
 			);
 			path = AppDev;
 			sourceTree = "<group>";
@@ -455,7 +467,16 @@
 				LastUpgradeCheck = 1210;
 				TargetAttributes = {
 					13B07F861A680F5B00A75B9A = {
-						LastSwiftMigration = 1120;
+						LastSwiftMigration = 2600;
+					};
+					A57ADADD2AFCD34300DCCE08 = {
+						LastSwiftMigration = 2600;
+					};
+					A57ADAF02AFCD3AA00DCCE08 = {
+						LastSwiftMigration = 2600;
+					};
+					A57ADB032AFCD3B800DCCE08 = {
+						LastSwiftMigration = 2600;
 					};
 				};
 			};
@@ -494,6 +515,7 @@
 				CE2AE189F866446CBACCEC0F /* SFProDisplay-Heavy.otf in Resources */,
 				35048D8B9B294DEBA94BF4A7 /* SFProDisplay-HeavyItalic.otf in Resources */,
 				681722FC217D4B82BF199AFA /* SFProDisplay-Light.otf in Resources */,
+				C970BFF42EF066EF0021F6E4 /* GoogleService-Info (1).plist in Resources */,
 				7124BEBE5ED940EC9D238796 /* SFProDisplay-LightItalic.otf in Resources */,
 				0D2E7B076EB94F7680CEE5F1 /* SFProDisplay-Medium.otf in Resources */,
 				332DF37DEB4B4E01ADE7DADA /* SFProDisplay-MediumItalic.otf in Resources */,
@@ -522,6 +544,7 @@
 				A545800C2D93B81600F9E262 /* SFProDisplay-Light.otf in Resources */,
 				A545800D2D93B81600F9E262 /* SFProDisplay-LightItalic.otf in Resources */,
 				A545800E2D93B81600F9E262 /* SFProDisplay-Medium.otf in Resources */,
+				C970BFF72EF066EF0021F6E4 /* GoogleService-Info (1).plist in Resources */,
 				A545800F2D93B81600F9E262 /* SFProDisplay-MediumItalic.otf in Resources */,
 				A54580102D93B81600F9E262 /* SFProDisplay-Regular.otf in Resources */,
 				A54580112D93B81600F9E262 /* SFProDisplay-RegularItalic.otf in Resources */,
@@ -555,6 +578,7 @@
 				A54580232D93B81F00F9E262 /* SFProDisplay-RegularItalic.otf in Resources */,
 				A54580242D93B81F00F9E262 /* SFProDisplay-Semibold.otf in Resources */,
 				A54580252D93B81F00F9E262 /* SFProDisplay-SemiboldItalic.otf in Resources */,
+				C970BFF62EF066EF0021F6E4 /* GoogleService-Info (1).plist in Resources */,
 				A54580262D93B81F00F9E262 /* SFProDisplay-Thin.otf in Resources */,
 				A54580272D93B81F00F9E262 /* SFProDisplay-ThinItalic.otf in Resources */,
 				A54580282D93B81F00F9E262 /* SFProDisplay-Ultralight.otf in Resources */,
@@ -584,6 +608,7 @@
 				A54580352D93B82600F9E262 /* SFProDisplay-RegularItalic.otf in Resources */,
 				A54580362D93B82600F9E262 /* SFProDisplay-Semibold.otf in Resources */,
 				A54580372D93B82600F9E262 /* SFProDisplay-SemiboldItalic.otf in Resources */,
+				C970BFF52EF066EF0021F6E4 /* GoogleService-Info (1).plist in Resources */,
 				A54580382D93B82600F9E262 /* SFProDisplay-Thin.otf in Resources */,
 				A54580392D93B82600F9E262 /* SFProDisplay-ThinItalic.otf in Resources */,
 				A545803A2D93B82600F9E262 /* SFProDisplay-Ultralight.otf in Resources */,
@@ -622,9 +647,13 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-BaseProject/Pods-BaseProject-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
+			inputPaths = (
+			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-BaseProject/Pods-BaseProject-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -696,9 +725,13 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-AppDev/Pods-AppDev-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
+			inputPaths = (
+			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-AppDev/Pods-AppDev-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -713,9 +746,13 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-AppDev/Pods-AppDev-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
+			inputPaths = (
+			);
 			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-AppDev/Pods-AppDev-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -787,9 +824,13 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-AppStag/Pods-AppStag-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
+			inputPaths = (
+			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-AppStag/Pods-AppStag-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -804,9 +845,13 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-AppStag/Pods-AppStag-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
+			inputPaths = (
+			);
 			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-AppStag/Pods-AppStag-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -878,9 +923,13 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-AppProd/Pods-AppProd-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
+			inputPaths = (
+			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-AppProd/Pods-AppProd-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -895,9 +944,13 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-AppProd/Pods-AppProd-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
+			inputPaths = (
+			);
 			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-AppProd/Pods-AppProd-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -934,9 +987,13 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-BaseProject/Pods-BaseProject-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
+			inputPaths = (
+			);
 			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-BaseProject/Pods-BaseProject-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -969,6 +1026,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C9EDA1822EED7FDE00940E32 /* Void.swift in Sources */,
+				C9EDA1812EED7FDB00940E32 /* File.swift in Sources */,
 				13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 			);
@@ -1011,8 +1070,10 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = LVX42P4GUD;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = BaseProject/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1023,8 +1084,9 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.ManhNguyen.SQLearn.dev;
 				PRODUCT_NAME = BaseProject;
+				SWIFT_OBJC_BRIDGING_HEADER = "";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -1038,7 +1100,9 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = LVX42P4GUD;
 				INFOPLIST_FILE = BaseProject/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1049,8 +1113,9 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.ManhNguyen.SQLearn.dev;
 				PRODUCT_NAME = BaseProject;
+				SWIFT_OBJC_BRIDGING_HEADER = "";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -1233,6 +1298,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.base;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "AppDev-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -1264,6 +1330,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.base;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "AppDev-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -1292,6 +1359,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.base;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "AppStag-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -1320,6 +1388,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.base;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "AppStag-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -1348,6 +1417,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.base;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "AppProd-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -1376,6 +1446,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.base;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "AppProd-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};

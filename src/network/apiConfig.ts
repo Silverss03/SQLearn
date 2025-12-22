@@ -37,6 +37,7 @@ export const START_EXAM = 'exams/start';
 export const SUBMIT_EXAM = 'exams/submit';
 export const EXAM_HISTORY = 'exams/history';
 export const AUDIT_LOGS = 'audit-logs';
+export const UPDATE_DEVICE_TOKEN = 'users/device-token';
 
 export const CHECK_TOKEN_EXPIRED_WHITE_LIST = [
     LOGIN,

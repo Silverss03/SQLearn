@@ -64,6 +64,16 @@ export const forgotPasswordService = (params: { email: string }) =>
 
 export const refreshTokenService = () => AXIOS.post(ApiConfigs.REFRESH_TOKEN);
 
+export const registerNotificationTokenService = (params: {
+    device_type: string;
+    device_name: string;
+    device_token: string;
+}) =>
+    AXIOS.post<APIResponseCommon.ResponseCommon<any>>(
+            ApiConfigs.UPDATE_DEVICE_TOKEN,
+            params,
+    );
+
 export const updateAvatarService = (_params?: { image: string; } | undefined) => {
     const formData = new FormData();
 

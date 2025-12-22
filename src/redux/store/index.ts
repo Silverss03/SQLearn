@@ -14,6 +14,7 @@ import { reducer as pokemonReducer } from '@src/redux/toolkit/actions/pokemonAct
 import { reducer as exerciseReducer } from '@src/redux/toolkit/actions/exercisesActions';
 import { reducer as progressReducer } from '@src/redux/toolkit/actions/progressActions';
 import { MMKVReduxStorage } from '@src/storage';
+import { reducer as notificationReducer } from '@src/redux/toolkit/actions/notificationActions';
 
 const rootReducer = combineReducers({
     storageReducer: storageReducer,
@@ -21,6 +22,7 @@ const rootReducer = combineReducers({
     pokemonReducer: pokemonReducer,
     exerciseReducer: exerciseReducer,
     progressReducer: progressReducer,
+    notificationReducer: notificationReducer,
 });
 
 const persistConfig = {

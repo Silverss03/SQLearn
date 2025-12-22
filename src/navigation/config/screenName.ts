@@ -23,6 +23,7 @@ export const SCREENS = {
     EXAM_COMPLETE_SCREEN: 'ExamCompleteScreen',
 
     SPLASH_SCREEN: 'SplashScreen',
+    NOTIFICATION_SCREEN: 'NotificationScreen',
     POKEMON_LIST_SCREEN: 'PokemonListScreen',
     POKEMON_DETAIL_SCREEN: 'PokemonDetailScreen',
 };

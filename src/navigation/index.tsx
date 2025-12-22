@@ -27,12 +27,13 @@ import useThemeColors from '@src/themes/useThemeColors';
 import { log } from '@src/utils/logger';
 import LoginScreen from '@src/screens/login/LoginScreen';
 import ForgotPasswordScreen from '@src/screens/login/ForgotPasswordScreen';
+import useMessaging from '@src/hooks/useMessaging';
 
 const StackNavigator = createStackNavigator<RootStackParamList>();
 
 const AppNavigation = () => {
     const themeColors = useThemeColors();
-    // useMessaging();
+    useMessaging();
     // useDeepLinkHandle();
 
     const navigationRef = useRef<NavigationContainerRef<{}>>();
