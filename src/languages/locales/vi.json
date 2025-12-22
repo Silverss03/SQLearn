@@ -51,4 +51,13 @@
     "month_ago": "{{count}} tháng trước",
     "months_ago": "{{count}} tháng trước",
     "change_password": "Đổi mật khẩu",
+    "Thành công!": "Thành công!",
+    "Mật khẩu của bạn đã được đặt lại thành công. Vui lòng đăng nhập lại với mật khẩu mới.": "Mật khẩu của bạn đã được đặt lại thành công. Vui lòng đăng nhập lại với mật khẩu mới.",
+    "Quay lại đăng nhập": "Quay lại đăng nhập",
+    "Quên mật khẩu?": "Quên mật khẩu?",
+    "Nhập email của bạn để nhận liên kết đặt lại mật khẩu": "Nhập email của bạn để nhận liên kết đặt lại mật khẩu",
+    "Gửi mã": "Gửi mã",
+    "Mã xác nhận": "Mã xác nhận",
+    "Xác nhận mật khẩu": "Xác nhận mật khẩu",
+    "Đặt lại mật khẩu": "Đặt lại mật khẩu",
 }

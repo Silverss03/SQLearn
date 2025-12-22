@@ -15,6 +15,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import { useTranslation } from 'react-i18next';
 import useCallAPI from '@src/hooks/useCallAPI';
 import TouchableComponent from '@src/components/TouchableComponent';
+import RefreshControlComponent from '@src/components/RefreshControlComponent';
 import {
     ArrowRightIcon, BackArrowIcon, ChapterIcon
 } from '@src/assets/svg';
@@ -57,7 +58,7 @@ const LessonsScreen = () => {
 
     const [lessonsList, setLessonsList] = React.useState<LessonType.Lesson[]>([]);
 
-    const { callApi: fetchLessonsList } = useCallAPI(
+    const { callApi: fetchLessonsList, refreshing, refreshData } = useCallAPI(
             useCallback(() => getLessonsByTopicService(topicId), [topicId]),
             undefined,
             useCallback((data: LessonType.Lesson[]) => {
@@ -194,7 +195,15 @@ const LessonsScreen = () => {
                 </View>
             )}
 
-            <ScrollView style={styles.contentContainer}>
+            <ScrollView
+                style={styles.contentContainer}
+                refreshControl={
+                    <RefreshControlComponent
+                        refreshing={refreshing}
+                        onRefresh={refreshData}
+                    />
+                }
+            >
 
                 <Accordion
                     sections={lessonsList}
