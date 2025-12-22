@@ -62,7 +62,29 @@ export const forgotPasswordService = (params: { email: string }) =>
             params,
     );
 
+export const resetPasswordService = (params: { email: string; token: string; password: string; password_confirmation: string }) =>
+    AXIOS.post<APIResponseCommon.ResponseCommon<any>>(
+            ApiConfigs.RESET_PASSWORD,
+            params,
+    );
+
+export const changePasswordService = (params?: { current_password: string; password: string; password_confirmation: string }) =>
+    AXIOS.post<APIResponseCommon.ResponseCommon<any>>(
+            ApiConfigs.CHANGE_PASSWORD,
+            params,
+    );
+
 export const refreshTokenService = () => AXIOS.post(ApiConfigs.REFRESH_TOKEN);
+
+export const registerNotificationTokenService = (params: {
+    device_type: string;
+    device_name: string;
+    device_token: string;
+}) =>
+    AXIOS.post<APIResponseCommon.ResponseCommon<any>>(
+            ApiConfigs.UPDATE_DEVICE_TOKEN,
+            params,
+    );
 
 export const updateAvatarService = (_params?: { image: string; } | undefined) => {
     const formData = new FormData();

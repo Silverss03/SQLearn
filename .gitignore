@@ -77,3 +77,9 @@ coverage/
 *.tgz
 *.tar.gz
 *.zip
+
+# Expo
+.expo
+dist/
+web-build/
+vendor/

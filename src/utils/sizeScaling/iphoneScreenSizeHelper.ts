@@ -1,12 +1,30 @@
-import { Dimensions } from 'react-native';
-import DeviceInfo from 'react-native-device-info';
+console.log('iphoneScreenSizeHelper: Module Start Loading');
+
+import {
+    Dimensions, Platform, StatusBar
+} from 'react-native';
+// import DeviceInfo from 'react-native-device-info';
+// import { initialWindowMetrics } from 'react-native-safe-area-context';
 
 const { height: DEVICE_SCREEN_HEIGHT, width: DEVICE_SCREEN_WIDTH } = Dimensions.get('window');
+
+console.log('iphoneScreenSizeHelper: Dimensions Loaded');
 
 export const CURRENT_SCREEN_HEIGHT = DEVICE_SCREEN_HEIGHT;
 export const CURRENT_SCREEN_WIDTH = DEVICE_SCREEN_WIDTH;
 
 export const X_AND_AFTER_X_DEVICES: string[] = [
+    'iPhone18,2', //'iPhone 17 Pro Max'
+    'iPhone18,1', //iPhone 17 Pro',
+    'iPhone18,4', //iPhone Air',
+    'iPhone18,3', //iPhone 17',
+
+    'iPhone17,5', //'iPhone 16e'
+    'iPhone17,2', //'iPhone 16 Pro Max'
+    'iPhone17,1', //iPhone 16 Pro',
+    'iPhone17,4', //iPhone 16 Plus',
+    'iPhone17,3', //iPhone 16',
+
     'iPhone16,2', //'iPhone 15 Pro Max'
     'iPhone16,1', //iPhone 15 Pro',
     'iPhone15,5', //iPhone 15 Plus',
@@ -40,6 +58,17 @@ export const X_AND_AFTER_X_DEVICES: string[] = [
 ];
 
 export const DEVICE_STANDARD_WIDTHS: any = {
+    'iPhone18,2': 440,
+    'iPhone18,1': 402,
+    'iPhone18,4': 420,
+    'iPhone18,3': 402,
+
+    'iPhone17,5': 390,
+    'iPhone17,2': 440,
+    'iPhone17,1': 402,
+    'iPhone17,4': 430,
+    'iPhone17,3': 393,
+
     'iPhone16,2': 430,
     'iPhone16,1': 393,
     'iPhone15,5': 430,
@@ -91,6 +120,17 @@ export const DEVICE_STANDARD_WIDTHS: any = {
 };
 
 export const DEVICE_STANDARD_HEIGHTS: any = {
+    'iPhone18,2': 956,
+    'iPhone18,1': 874,
+    'iPhone18,4': 912,
+    'iPhone18,3': 874,
+
+    'iPhone17,5': 844,
+    'iPhone17,2': 956,
+    'iPhone17,1': 874,
+    'iPhone17,4': 932,
+    'iPhone17,3': 852,
+
     'iPhone16,2': 932,
     'iPhone16,1': 852,
     'iPhone15,5': 932,
@@ -142,6 +182,17 @@ export const DEVICE_STANDARD_HEIGHTS: any = {
 };
 
 export const DEVICE_STATUS_BAR_HEIGHTS: any = {
+    'iPhone18,2': 62,
+    'iPhone18,1': 62,
+    'iPhone18,4': 68,
+    'iPhone18,3': 62,
+
+    'iPhone17,5': 47,
+    'iPhone17,2': 62,
+    'iPhone17,1': 62,
+    'iPhone17,4': 59,
+    'iPhone17,3': 59,
+
     'iPhone16,2': 59,
     'iPhone16,1': 59,
     'iPhone15,5': 59,
@@ -192,11 +243,25 @@ export const DEVICE_STATUS_BAR_HEIGHTS: any = {
     'iPhone7,2': 20,
 };
 
-const deviceId = DeviceInfo.getDeviceId();
-const hasDynamicIsland = DeviceInfo.hasDynamicIsland();
+// const deviceId = DeviceInfo.getDeviceId();
+// const hasDynamicIsland = DeviceInfo.hasDynamicIsland();
+const deviceId = 'iPhone16,2'; // Mock
+const hasDynamicIsland = true; // Mock
 
 export const getIOSOriginScreenHeight = () => DEVICE_STANDARD_HEIGHTS[deviceId] || CURRENT_SCREEN_HEIGHT;
 export const getIOSOriginScreenWidth = () => DEVICE_STANDARD_WIDTHS[deviceId] || CURRENT_SCREEN_WIDTH;
-export const getIOSDeviceStatusBarHeight = () => DEVICE_STATUS_BAR_HEIGHTS[deviceId] || (hasDynamicIsland ? 59 : 47);
+export const getIOSDeviceStatusBarHeight = () => DEVICE_STATUS_BAR_HEIGHTS[deviceId] || (hasDynamicIsland ? 62 : 47);
 export const isIPhoneXAndAfterX = () => X_AND_AFTER_X_DEVICES.includes(deviceId);
+
+export function getStatusBarHeight() {
+    if (Platform.OS === 'ios') {
+        console.log('getStatusBarHeight called. Platform:', Platform.OS);
+    }
+    return Platform.select({
+        ios: getIOSDeviceStatusBarHeight(),
+        android: StatusBar.currentHeight, // initialWindowMetrics?.insets.top || StatusBar.currentHeight,
+        default: 0,
+    });
+}
+console.log('iphoneScreenSizeHelper loaded. getStatusBarHeight:', getStatusBarHeight);
 

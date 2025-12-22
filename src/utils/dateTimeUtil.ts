@@ -25,6 +25,31 @@ export const getDaysBetweenDates = function(startDate: string, endDate: string) 
     return dates;
 };
 
+export const getTimeAgo = (sentAt: string, t: any): string => {
+    const now = dayjs();
+
+    const sentTime = dayjs(sentAt, 'YYYY-MM-DD HH:mm:ss');
+    const diffInMinutes = now.diff(sentTime, 'minutes');
+    const diffInHours = now.diff(sentTime, 'hours');
+    const diffInDays = now.diff(sentTime, 'days');
+    const diffInWeeks = now.diff(sentTime, 'weeks');
+    const diffInMonths = now.diff(sentTime, 'months');
+
+    if (diffInMinutes < 1) {
+        return t('just_now');
+    } else if (diffInMinutes < 60) {
+        return diffInMinutes === 1 ? t('minute_ago', { count: diffInMinutes }) : t('minutes_ago', { count: diffInMinutes });
+    } else if (diffInHours < 24) {
+        return diffInHours === 1 ? t('hour_ago', { count: diffInHours }) : t('hours_ago', { count: diffInHours });
+    } else if (diffInDays < 7) {
+        return diffInDays === 1 ? t('day_ago', { count: diffInDays }) : t('days_ago', { count: diffInDays });
+    } else if (diffInWeeks < 4) {
+        return diffInWeeks === 1 ? t('week_ago', { count: diffInWeeks }) : t('weeks_ago', { count: diffInWeeks });
+    } else {
+        return diffInMonths === 1 ? t('month_ago', { count: diffInMonths }) : t('months_ago', { count: diffInMonths });
+    }
+};
+
 export const calculateTimeLeft = (startDate: string): string => {
     const now = new Date();
     const examDate = new Date(startDate);
