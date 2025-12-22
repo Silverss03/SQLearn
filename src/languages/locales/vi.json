@@ -38,5 +38,16 @@
     "password_holder": "Vui lòng nhập mật khẩu",
     "invalid_email": "Định dạng email không hợp lệ",
     "Invalid credentials": "Email hoặc mật khẩu không đúng",
-    "Các bài học vẫn đang trong quá trình biên soạn...": "Các bài học vẫn đang trong quá trình biên soạn..."
+    "Các bài học vẫn đang trong quá trình biên soạn...": "Các bài học vẫn đang trong quá trình biên soạn...",
+    "just_now": "vừa xong",
+    "minute_ago": "{{count}} phút trước",
+    "minutes_ago": "{{count}} phút trước",
+    "hour_ago": "{{count}} giờ trước",
+    "hours_ago": "{{count}} giờ trước",
+    "day_ago": "{{count}} ngày trước",
+    "days_ago": "{{count}} ngày trước",
+    "week_ago": "{{count}} tuần trước",
+    "weeks_ago": "{{count}} tuần trước",
+    "month_ago": "{{count}} tháng trước",
+    "months_ago": "{{count}} tháng trước"
 }

@@ -36,7 +36,7 @@ const LoginScreen = () => {
     const styles = stylesF(Dimens, themeColors);
     const dispatch = useAppDispatch();
 
-    const [email, setEmail] = useState(__DEV__ ? 'student3@gmail.com' : '');
+    const [email, setEmail] = useState(__DEV__ ? 'nguyenhuumanh1082003@gmail.com' : '');
     const [password, setPassword] = useState(__DEV__ ? '123@12347' : '');
     const [emailErrorMessage, setEmailErrorMessage] = useState('');
     const [passwordErrorMessage, setPasswordErrorMessage] = useState('');
