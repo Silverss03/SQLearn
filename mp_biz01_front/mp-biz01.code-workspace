@@ -1,0 +1,12 @@
+{
+  "folders": [
+    {
+      "name": "sql-biz01",
+      "path": "src/sql-biz01"
+    },
+    {
+      "name": "root",
+      "path": "."
+    }
+  ]
+}

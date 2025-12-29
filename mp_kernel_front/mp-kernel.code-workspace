@@ -1,0 +1,12 @@
+{
+  "folders": [
+    {
+      "name": "sql-kernel",
+      "path": "src/sql-kernel"
+    },
+    {
+      "name": "root",
+      "path": "."
+    }
+  ]
+}
