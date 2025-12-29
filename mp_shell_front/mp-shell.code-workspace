@@ -1,0 +1,12 @@
+{
+  "folders": [
+    {
+      "name": "sql-shell",
+      "path": "src/sql-shell"
+    },
+    {
+      "name": "root",
+      "path": "."
+    }
+  ]
+}

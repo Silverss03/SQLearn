@@ -1,0 +1,108 @@
+user  nginx;
+worker_processes  1;
+
+error_log  /var/log/nginx/error.log warn;
+pid        /var/run/nginx.pid;
+
+load_module modules/ngx_http_datadog_module.so;
+
+events {
+    worker_connections  1024;
+}
+
+
+http {
+    geo $http_x_forwarded_for $allow_ip {
+        126.144.6.144/29 allow;
+        126.144.40.12/32 allow;
+    }
+
+    include       /etc/nginx/mime.types;
+    default_type  application/octet-stream;
+
+    log_format main escape=json '{"time": "$time_iso8601",'
+        '"host": "$remote_addr",'
+        '"vhost": "$host",'
+        '"user": "$remote_user",'
+        '"status": "$status",'
+        '"protocol": "$server_protocol",'
+        '"method": "$request_method",'
+        '"path": "$request_uri",'
+        '"req": "$request",'
+        '"size": "$body_bytes_sent",'
+        '"reqtime": "$request_time",'
+        '"apptime": "$upstream_response_time",'
+        '"ua": "$http_user_agent",'
+        '"x-forwarded-for": "$http_x_forwarded_for",'
+        '"x-forwarded-proto": "$http_x_forwarded_proto",'
+        '"referrer": "$http_referer"}';
+
+    access_log  /var/log/nginx/access.log  main;
+
+    sendfile        on;
+    #tcp_nopush     on;
+
+    keepalive_timeout  75;
+    proxy_read_timeout 3600;
+
+    gzip  on;
+    client_max_body_size 60m;
+
+    proxy_buffer_size 128k;
+    proxy_buffers 4 256k;
+    proxy_busy_buffers_size 256k;
+    fastcgi_buffers 16 16k;
+    fastcgi_buffer_size 32k;
+
+    add_header X-XSS-Protection "1; mode=block";
+    add_header Strict-Transport-Security "max-age=31536000; includeSubDomains";
+    add_header X-Content-Type-Options nosniff;
+    add_header Content-Security-Policy "frame-ancestors 'self' https://idp.${ALLOW_FRAME_ANCESTORS_DOMAIN}";
+
+    map $http_origin $access_controll_allow_origin {
+      default '';
+      ${ACCESS_CONTROL_ALLOW_ORIGIN_MAP}
+    }
+
+    server {
+        listen ${NGINX_PORT};
+
+        #proxy_set_header    Host               $http_host;
+        proxy_set_header    X-Forwarded-Host   $host;
+        proxy_set_header    X-Forwarded-For    $proxy_add_x_forwarded_for;
+        proxy_set_header    X-Forwarded-Proto  $http_x_forwarded_proto;
+
+        set $maintenance false;
+
+        if (-e /tmp/maintenance) {
+          set $maintenance true;
+        }
+
+        if ($allow_ip) {
+          set $maintenance false;
+        }
+
+        if ($http_user_agent ~* '^ELB-HealthChecker.*$') {
+          set $maintenance false;
+        }
+
+        if ($maintenance = true) {
+          return 503;
+        }
+
+        location /ping {
+            access_log off;
+            add_header Content-Type 'text/html';
+            return 200 'LIVE';
+        }
+
+        location / {
+          add_header Access-Control-Allow-Origin '$access_controll_allow_origin' always;
+          add_header Access-Control-Allow-Methods 'GET, OPTIONS' always;
+          root       /usr/share/nginx/html;
+          index      index.html;
+          try_files  $uri /index.html;
+          expires    -1;
+        }
+    }
+}
