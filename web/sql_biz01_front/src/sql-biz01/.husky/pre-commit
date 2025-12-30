@@ -1,0 +1,2 @@
+cd src/sql-biz01 
+yarn pre-commit

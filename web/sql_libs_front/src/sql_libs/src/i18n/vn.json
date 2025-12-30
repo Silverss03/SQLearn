@@ -1,0 +1,59 @@
+{
+  "LIBS": {
+    "AUTOCOMPLETE": {
+      "NO_OPTIONS": "Không có lựa chọn"
+    },
+    "COMPLETION_DIALOG": {
+      "TITLE": "Đã hoàn thành",
+      "CONTENT": "Đã hoàn tất {{taskName}}"
+    },
+    "DELETE_CONFIRMATION_DIALOG": {
+      "TITLE": "Bạn có chắc chắn muốn {{taskName}}?",
+      "CONTENT1": "Một khi đã xóa, không thể hoàn tác được!",
+      "CONTENT2": "Bạn có chắc chắn muốn xóa không?"
+    },
+    "EXIT_CONFIRMATION_DIALOG": {
+      "TITLE": "Có nội dung chưa lưu",
+      "CONTENT1": "Nếu bạn di chuyển, mọi nội dung chưa lưu sẽ bị mất.",
+      "CONTENT2": "Bạn có chắc chắn muốn chuyển sang trang khác không?"
+    },
+    "HEADER": {
+      "SIGN_IN": "Đăng nhập",
+      "SIGN_OUT": "Đăng xuất",
+      "TOP_PAGE": "Trang chủ",
+      "TEACHER_MANAGEMENT": "Quản lý giáo viên",
+      "TEACHER_DETAIL": "Thông tin chi tiêt giáo viên",
+      "IMPORT_TEACHER": "Nhập danh sách giáo viên",
+      "CLASS_MANAGEMENT": "Quản lý danh sách lớp",
+      "CLASS_DETAIL": "Thông tin chi tiêt của lớp",
+      "CLASS_STUDENT_MANAGEMENT": "Danh sách sinh viên trong lớp",
+      "CLASS_STUDENT_DETAIL": "Thông tin chi tiêt của lớp",
+      "LESSON_MANAGEMENT": "Danh sách bài học",
+      "LESSON_DETAIL": "Thông tin chi tiêt bài học",
+      "LESSON_CREATE": "Thêm mới bài học",
+      "ASSIGNMENT_MANAGEMENT": "Danh sách bài tập",
+      "ASSIGNMENT_DETAIL": "Thông tin chi tiêt bài tập",
+      "ASSIGNMENT_CREATE": "Thêm mới bài tập"
+    },
+    "OVERLAY_LOADING": {
+      "MESSAGE": "Đang tải dữ liệu..."
+    },
+    "SEARCH_BAR": {
+      "PLACEHOLDER": "Tìm kiếm"
+    },
+    "SUGGESTIVE_SELECT": {
+      "AUTOCOMPLETE_PLACEHOLDER": ""
+    },
+    "MANUAL": {
+      "ICON_TEXT": ""
+    },
+    "ERROR_LAYOUT": {
+      "COPIED": "Đã sao chép",
+      "COPY_TO_CLIPBOARD": "Sao chép vào bảng tạm",
+      "TRACEPARENT_ID_DESCRIPTION": "Khi liên hệ với chúng tôi, vui lòng cung cấp mã theo dõi bên dưới."
+    },
+    "SEARCH_FILTER_BAR": {
+      "CURRENT_FILTERS": "Tiêu chí tìm kiếm hiện tại"
+    }
+  }
+}

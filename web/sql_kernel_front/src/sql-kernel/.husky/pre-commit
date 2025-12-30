@@ -1,0 +1,2 @@
+cd src/sql-kernel 
+yarn pre-commit

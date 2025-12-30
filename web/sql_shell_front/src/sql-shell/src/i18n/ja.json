@@ -1,0 +1,14 @@
+{
+  "SHELL": {
+    "IMPORT_ERROR": {
+      "NO_CONTENT": "Không tải được nội dung",
+      "HERE": "tại đây",
+      "CLICK_TO_TOP_PAGE": "Về trang chủ"
+    },
+    "RELOGIN_DIALOG": {
+      "TITLE": "Bạn đã đăng xuất",
+      "MESSAGE": "Vui lòng đăng nhập lại.",
+      "CLOSE": "Đóng"
+    }
+  }
+}

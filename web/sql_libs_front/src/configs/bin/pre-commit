@@ -1,0 +1,8 @@
+#! /usr/bin/env sh
+# commit時にHuskyで実行される
+
+yarn prettier --write=false --check && \
+yarn tsc && \
+yarn textlint && \
+yarn stylelint && \
+yarn eslint
