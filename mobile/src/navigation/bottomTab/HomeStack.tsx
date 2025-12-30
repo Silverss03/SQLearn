@@ -1,0 +1,50 @@
+import React, { memo } from 'react';
+
+import { SCREENS } from '@navigation/config/screenName';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { screenOptionsDefault } from '@src/navigation/config/screenOptionsDefault';
+import { RootStackParamList } from '@src/navigation/NavigationRouteProps';
+import useThemeColors from '@src/themes/useThemeColors';
+import HomeScreen from '@src/screens/home/HomeScreen';
+import ExamDetailScreen from '@src/screens/home/components/ExamDetailScreen';
+import ExamCompleteScreen from '@src/screens/home/components/ExamCompleteScreen';
+import NotificationScreen from '@src/screens/notification/NotificationScreen';
+
+const StackNavigator = createNativeStackNavigator<RootStackParamList>();
+
+const ProfileStack = () => {
+    const themeColors = useThemeColors();
+
+    return (
+        <StackNavigator.Navigator
+            screenOptions={{
+                ...screenOptionsDefault,
+                gestureEnabled: false,
+                statusBarStyle: 'light',
+                headerShown: false,
+                animation: 'slide_from_right',
+                contentStyle: { backgroundColor: themeColors.color_app_background }
+            }}
+            // initialRouteName={SCREENS.HOME_SCREEN}
+        >
+            <StackNavigator.Screen
+                name={SCREENS.HOME_SCREEN}
+                component={HomeScreen}
+            />
+            <StackNavigator.Screen
+                name={SCREENS.EXAM_DETAIL_SCREEN}
+                component={ExamDetailScreen}
+            />
+            <StackNavigator.Screen
+                name={SCREENS.EXAM_COMPLETE_SCREEN}
+                component={ExamCompleteScreen}
+            />
+            <StackNavigator.Screen
+                name={SCREENS.NOTIFICATION_SCREEN}
+                component={NotificationScreen}
+            />
+        </StackNavigator.Navigator>
+    );
+};
+
+export default memo(ProfileStack);
