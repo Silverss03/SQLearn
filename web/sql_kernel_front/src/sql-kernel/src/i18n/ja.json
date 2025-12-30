@@ -1,0 +1,25 @@
+{
+  "KERNEL": {
+    "TOP_PAGE": {
+      "TITLE": "Trang chủ",
+      "MENU": {
+        "TITLE": "Menu"
+      }
+    },
+    "GLOBAL_HEADER": {
+      "ERROR_DIALOG_CLOSE": "Đóng",
+      "ERROR_DIALOG_TITLE": "Mã lỗi: {{errorCode}}"
+    },
+    "SIDEBAR": {},
+    "DIALOG": {
+      "ERROR": {
+        "TITLE": {
+          "COMMON": "Mã lỗi: {{errorCode}}",
+          "CREATE": "Lưu thất bại",
+          "UPDATE": "Cập nhật thất bại"
+        }
+      }
+    },
+    "MESSAGE": {}
+  }
+}

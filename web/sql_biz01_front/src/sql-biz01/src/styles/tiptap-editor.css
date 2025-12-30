@@ -1,0 +1,168 @@
+/* Custom styles for reactjs-tiptap-editor layout fixes */
+
+/* Container fixes */
+.reactjs-tiptap-editor {
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+/* ProseMirror editor fixes */
+.reactjs-tiptap-editor .ProseMirror {
+  width: 100% !important;
+  max-width: 100% !important;
+  box-sizing: border-box !important;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word;
+}
+
+/* Toolbar responsive fixes */
+.reactjs-tiptap-editor .toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  padding: 8px;
+  border-bottom: 1px solid #e5e7eb;
+  background-color: #f9fafb;
+}
+
+/* Bubble menu positioning fixes */
+.reactjs-tiptap-editor .bubble-menu {
+  position: absolute;
+  z-index: 1000;
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  padding: 4px;
+}
+
+/* Image handling */
+.reactjs-tiptap-editor .image-view {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+}
+
+.reactjs-tiptap-editor .image-view img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Table responsive fixes */
+.reactjs-tiptap-editor .tableWrapper {
+  overflow-x: auto;
+  margin: 1em 0;
+}
+
+.reactjs-tiptap-editor table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: auto;
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+  .reactjs-tiptap-editor .ProseMirror {
+    padding: 12px !important;
+    min-height: 150px !important;
+  }
+
+  .reactjs-tiptap-editor .toolbar {
+    padding: 6px;
+    gap: 2px;
+  }
+
+  .reactjs-tiptap-editor .toolbar button {
+    padding: 4px 6px;
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .reactjs-tiptap-editor .ProseMirror {
+    padding: 8px !important;
+    min-height: 120px !important;
+  }
+
+  .reactjs-tiptap-editor .toolbar {
+    padding: 4px;
+    gap: 1px;
+  }
+
+  .reactjs-tiptap-editor .toolbar button {
+    padding: 2px 4px;
+    font-size: 10px;
+  }
+}
+
+/* Dark mode fixes */
+.dark .reactjs-tiptap-editor .ProseMirror {
+  background-color: hsl(var(--richtext-background));
+  color: hsl(var(--richtext-foreground));
+  border-color: hsl(var(--richtext-border));
+}
+
+.dark .reactjs-tiptap-editor .toolbar {
+  background-color: hsl(var(--richtext-muted));
+  border-color: hsl(var(--richtext-border));
+}
+
+.dark .reactjs-tiptap-editor .bubble-menu {
+  background-color: hsl(var(--richtext-popover));
+  border-color: hsl(var(--richtext-border));
+  color: hsl(var(--richtext-popover-foreground));
+}
+
+/* Focus states */
+.reactjs-tiptap-editor .ProseMirror:focus {
+  outline: 2px solid hsl(var(--richtext-ring));
+  outline-offset: 2px;
+}
+
+/* Placeholder styling */
+.reactjs-tiptap-editor .ProseMirror p.is-editor-empty:first-child::before {
+  content: attr(data-placeholder);
+  float: left;
+  color: #9ca3af;
+  pointer-events: none;
+  height: 0;
+}
+
+/* Selection styling */
+.reactjs-tiptap-editor .ProseMirror .ProseMirror-selectednode {
+  background-color: hsl(var(--richtext-accent));
+  border-radius: 4px;
+}
+
+/* Link styling */
+.reactjs-tiptap-editor .ProseMirror a {
+  color: hsl(var(--richtext-primary));
+  text-decoration: underline;
+}
+
+.reactjs-tiptap-editor .ProseMirror a:hover {
+  color: hsl(var(--richtext-primary));
+  text-decoration: none;
+}
+
+/* Code block styling */
+.reactjs-tiptap-editor .ProseMirror pre {
+  background-color: hsl(var(--richtext-muted));
+  border-radius: 4px;
+  padding: 12px;
+  overflow-x: auto;
+  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+}
+
+/* Blockquote styling */
+.reactjs-tiptap-editor .ProseMirror blockquote {
+  border-left: 4px solid hsl(var(--richtext-border));
+  padding-left: 16px;
+  margin: 16px 0;
+  font-style: italic;
+  color: hsl(var(--richtext-muted-foreground));
+}

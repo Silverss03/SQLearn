@@ -1,0 +1,4 @@
+{
+  "//": "package.json to recognize rules as commonjs",
+  "type": "commonjs"
+}

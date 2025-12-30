@@ -1,0 +1,10 @@
+{
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "prettier.ignorePath": ".gitignore",
+  "eslint.options": {
+    "extensions": [".js", ".ts", ".jsx", ".tsx"],
+    "ignorePath": ".gitignore"
+  },
+  "eslint.workingDirectories": ["./src/mp-libs"]
+}

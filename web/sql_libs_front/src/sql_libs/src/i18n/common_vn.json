@@ -1,0 +1,34 @@
+{
+  "COMMON": {
+    "REGISTER": "Đăng kí",
+    "UPDATE": "Cập nhật",
+    "DELETE": "Xoá",
+    "MOVE_TO_TOP_PAGE": "Về trang chủ",
+    "ENVIRONMENT": "Môi trường",
+    "CANCEL": "Huỷ",
+    "CLOSE": "Đóng",
+    "CONFIRM": "Xác nhận",
+    "YES": "Đồng ý",
+    "NO": "Không",
+    "NEXT": "Tiếp theo",
+    "PREVIOUS": "Quay lại",
+    "CONFIRMATION": "Xác nhận",
+    "SEARCH": "Tìm kiếm",
+    "RESET": "Đặt lại",
+    "ALL": "Tất cả",
+    "MSG_ERROR": {
+      "001": "Lỗi máy chủ nội bộ",
+      "002": "Chúng tôi rất tiếc, nhưng chúng tôi đang gặp sự cố kỹ thuật với trang được chỉ định. Vui lòng liên hệ với quản trị viên của bạn.",
+      "003": "Trang được chỉ định không tồn tại.",
+      "004": "Chúng tôi rất tiếc.\nTrang được chỉ định có thể đã bị xóa\nhoặc địa chỉ có thể không chính xác.",
+      "005": "Chúng tôi hiện đang trong quá trình bảo trì",
+      "006": "Chúng tôi xin lỗi vì sự bất tiện này.\nChúng tôi hiện đang bảo trì hệ thống.\nVui lòng đợi một lát cho đến khi quá trình bảo trì hoàn tất.",
+      "035": "Tài khoản của bạn đã bị quản trị viên đình chỉ.\n\nVui lòng liên hệ với quản trị viên.",
+      "036": "Chúng tôi rất tiếc. \nBạn không có quyền sử dụng chức năng này. \n\nVui lòng liên hệ với quản trị viên của bạn."
+    },
+    "TITLE_ERROR": {
+      "035": "Việc sử dụng bị đình chỉ"
+    },
+    "M-003": "Không có dữ liệu nào khớp với kết quả tìm kiếm của bạn."
+  }
+}
