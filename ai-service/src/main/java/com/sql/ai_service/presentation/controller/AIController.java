@@ -8,14 +8,13 @@ import com.sql.ai_service.presentation.dto.request.AIInteractionRequest;
 import com.sql.ai_service.presentation.dto.response.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.Collections;
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/ai")
@@ -45,6 +44,8 @@ public class AIController {
             responseContent = response.getInitialDraft();
             type = "create";
             
+            UUID lessonId = UUID.fromString(response.getLessonId());
+            chatService.linkConversationToLesson(conversationId, lessonId);
 
             chatService.recordInteraction(conversationId, 
                     "Create lesson with prompt: " + request.getPrompt(), 

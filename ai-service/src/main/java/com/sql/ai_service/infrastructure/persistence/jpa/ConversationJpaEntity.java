@@ -24,6 +24,9 @@ public class ConversationJpaEntity {
     @Column(name = "title")
     private String title;
 
+    @Column(name = "lesson_id")
+    private UUID lessonId;
+
     @OneToMany(mappedBy = "conversation", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @Builder.Default
     private List<ChatMessageJpaEntity> messages = new ArrayList<>();

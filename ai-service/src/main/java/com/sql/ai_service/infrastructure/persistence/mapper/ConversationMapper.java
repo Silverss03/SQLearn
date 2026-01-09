@@ -15,21 +15,22 @@ public class ConversationMapper {
         return ConversationJpaEntity.builder()
                 .id(domain.getId())
                 .title(domain.getTitle())
+                .lessonId(domain.getLessonId())
                 .createdAt(domain.getCreatedAt())
                 .updatedAt(domain.getUpdatedAt())
                 .build();
     }
 
-    public Conversation toDomain(ConversationJpaEntity jpa) {
-        if (jpa == null) {
+    public Conversation toDomain(ConversationJpaEntity entity) {
+        if (entity == null) {
             return null;
         }
-
         return Conversation.builder()
-                .id(jpa.getId())
-                .title(jpa.getTitle())
-                .createdAt(jpa.getCreatedAt())
-                .updatedAt(jpa.getUpdatedAt())
+                .id(entity.getId())
+                .title(entity.getTitle())
+                .lessonId(entity.getLessonId())
+                .createdAt(entity.getCreatedAt())
+                .updatedAt(entity.getUpdatedAt())
                 .build();
     }
 }

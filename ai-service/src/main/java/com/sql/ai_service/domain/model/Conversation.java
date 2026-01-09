@@ -13,6 +13,7 @@ public class Conversation {
 
     private UUID id;
     private String title;
+    private UUID lessonId;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
@@ -27,6 +28,11 @@ public class Conversation {
 
     public void updateTitle(String newTitle) {
         this.title = newTitle;
+        this.updatedAt = LocalDateTime.now();
+    }
+
+    public void linkToLesson(UUID lessonId) {
+        this.lessonId = lessonId;
         this.updatedAt = LocalDateTime.now();
     }
 }
