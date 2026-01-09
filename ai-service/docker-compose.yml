@@ -1,0 +1,39 @@
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: ai-service-postgres
+    environment:
+      POSTGRES_DB: ai_service_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5444:5432" 
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - ai-service-network
+
+  ai-service:
+    build: .
+    container_name: ai-service-app
+    env_file: .env
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/ai_service_db
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+      OPENROUTER_API_KEY: ${OPENROUTER_API_KEY}
+    ports:
+      - "8090:8095"  
+    depends_on:
+      - postgres
+    networks:
+      - ai-service-network
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+    driver: local
+
+networks:
+  ai-service-network:
+    driver: bridge
